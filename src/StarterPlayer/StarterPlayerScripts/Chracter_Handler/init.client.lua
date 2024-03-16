@@ -17,8 +17,6 @@ local player = players.LocalPlayer
 
 local ui = nil
 
-print('wow')
-
 -- Update the UI
 local function UpdateUI(charHandler)
 	
