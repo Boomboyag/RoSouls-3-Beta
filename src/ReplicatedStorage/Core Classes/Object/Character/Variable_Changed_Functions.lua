@@ -34,6 +34,8 @@ local statsChangedFunctions = {
 			-- Check if tha character can change states
 			if not character.characterStats.canChangeState then
 
+				warn("Character cannot change state, it is disabled!")
+
 				newValue = oldValue
 				return
 			end
@@ -49,7 +51,7 @@ local statsChangedFunctions = {
 		end) 
 
 		if not success then
-			print(response)
+			warn(response)
 		end
 		
 		return newValue
@@ -96,7 +98,7 @@ local statsChangedFunctions = {
 		end) 
 
 		if not success then
-			print(response)
+			warn(response)
 		end
 		
 		return newValue	
@@ -119,7 +121,7 @@ local statsChangedFunctions = {
 		end) 
 
 		if not success then
-			print(response)
+			warn(response)
 		end
 
 		return newValue	
@@ -144,7 +146,7 @@ local statsChangedFunctions = {
 		end) 
 
 		if not success then
-			print(response)
+			warn(response)
 		end
 	end,
 
@@ -164,7 +166,7 @@ local statsChangedFunctions = {
 		end) 
 
 		if not success then
-			print(response)
+			warn(response)
 		end
 	end,
 
@@ -195,7 +197,7 @@ local statsChangedFunctions = {
 		end) 
 
 		if not success then
-			print(response)
+			warn(response)
 		end
 	end,
 
@@ -214,7 +216,7 @@ local statsChangedFunctions = {
 		end) 
 
 		if not success then
-			print(response)
+			warn(response)
 		end
 	end,
 
@@ -264,7 +266,7 @@ local statsChangedFunctions = {
 		end) 
 
 		if not success then
-			print(response)
+			warn(response)
 		end
 
 		return newValue	
@@ -340,7 +342,7 @@ local statsChangedFunctions = {
 		end) 
 
 		if not success then
-			print(response)
+			warn(response)
 		end
 
 		return newValue	
@@ -361,7 +363,7 @@ local statsChangedFunctions = {
 		end) 
 
 		if not success then
-			print(response)
+			warn(response)
 		end
 	end,
 
@@ -389,7 +391,7 @@ local statsChangedFunctions = {
 		end) 
 
 		if not success then
-			print(response)
+			warn(response)
 		end
 	end,
 
@@ -417,7 +419,7 @@ local statsChangedFunctions = {
 		end) 
 
 		if not success then
-			print(response)
+			warn(response)
 		end
 	end,
 
@@ -437,7 +439,7 @@ local statsChangedFunctions = {
 		end) 
 
 		if not success then
-			print(response)
+			warn(response)
 		end
 	end,
 
@@ -458,7 +460,7 @@ local statsChangedFunctions = {
 		end) 
 
 		if not success then
-			print(response)
+			warn(response)
 		end
 	end,	
 	
@@ -484,7 +486,7 @@ local statsChangedFunctions = {
 		end) 
 
 		if not success then
-			print(response)
+			warn(response)
 		end
 	end,	
 }
