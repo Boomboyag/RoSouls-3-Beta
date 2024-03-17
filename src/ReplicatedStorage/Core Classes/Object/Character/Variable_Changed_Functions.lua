@@ -231,7 +231,7 @@ local statsChangedFunctions = {
 			if not oldValue and not startup then return end
 
 			-- Check if stamina has just gone below zero
-			if oldValue > 0 and newValue <= 0 then
+			if oldValue and oldValue > 0 and newValue <= 0 then
 
 				-- Fire the event
 				character.StaminaDrained:Fire(oldValue, newValue)
@@ -248,6 +248,8 @@ local statsChangedFunctions = {
 
 			-- Check if we can regenerate stamina
 			coroutine.wrap(function()
+
+				if not oldValue then return end
 
 				-- Check if the stamina is being drained
 				if oldValue < newValue then return end

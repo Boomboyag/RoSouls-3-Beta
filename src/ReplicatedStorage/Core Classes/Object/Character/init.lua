@@ -438,7 +438,7 @@ function character.new(newCharacter)
 			statsChangedFunctions[tostring(key)](newChar, nil, value, true)
 		end
 	end
-	for key, value in pairs(newChar.characterStats) do
+	for key, value in pairs(newChar.defaultCharacterStats) do
 
 		-- Check if there are any functions to call when changing the variable
 		if statsChangedFunctions[tostring(key)] then
@@ -790,7 +790,7 @@ end
 
 -- || ANIMATIONS ||
 
--- Apply root motion to the character [WIP - May be removed]
+-- Apply root motion to the character
 function character:ApplyRootMotion(deltaTime)
 	
 	local transform = self.rootJoint.Transform
@@ -817,7 +817,6 @@ function character:ApplyRootMotion(deltaTime)
 
 	-- Remove Y axis rotation from animation.
 	self.rootJoint.Transform = rootMotionModule:GetTransform(transform).Rotation:Inverse() * self.rootJoint.Transform
-
 end
 
 -- Change the current core animation being played

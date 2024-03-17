@@ -136,6 +136,9 @@ function player.new(newPlayerTable)
 	end
 	
 	-- || STATS ||
+
+	-- The player
+	self.player = game:GetService("Players").LocalPlayer
 	
 	-- The player stats
 	self.playerStats = TrackStats(playerStatsSheet.new(newPlayer, self), self)
@@ -186,11 +189,11 @@ function player.new(newPlayerTable)
 			statsChangedFunctions[tostring(key)](newPlayer, nil, value, true)
 		end
 	end
-	for key, value in pairs(newPlayer.playerStats) do
+	for key, value in pairs(newPlayer.defaultPlayerStats) do
 
 		-- Check if there are any functions to call when changing the variable
 		if statsChangedFunctions[tostring(key)] then
-
+			
 			-- Call said function
 			statsChangedFunctions[tostring(key)](newPlayer, nil, value, true)
 		end
