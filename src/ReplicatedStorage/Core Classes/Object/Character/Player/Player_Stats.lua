@@ -8,7 +8,9 @@ function playerStats.new(newPlayerTable, player)
 	
 	-- || CAMERA SETTINGS ||
 
+	self.cameraFollowsTarget = true
 	self.cameraStiffness = 40
+
 	self.cameraOffset = Vector3.new(0, 2, 0)
 
 	self.minimumZoom = 12
@@ -16,8 +18,12 @@ function playerStats.new(newPlayerTable, player)
 
 	self.fieldOfView = 70
 	
-	self.cameraFollow = player.torso
-	self.cameraSubject = player.cameraBlock
+	self.cameraFollow = nil
+	self.cameraSubject = nil
+
+	-- || MOUSE SETTINGS ||
+
+	self.mouseMovesCamera = true
 	
 	-- Set the metatable and return
 	setmetatable(self, playerStats)

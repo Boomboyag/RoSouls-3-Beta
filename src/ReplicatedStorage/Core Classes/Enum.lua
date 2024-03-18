@@ -1,5 +1,6 @@
 -- Roblox services
 local replicatedStorage = game:GetService("ReplicatedStorage")
+local userInputService = game:GetService("UserInputService")
 
 -- Required folders
 local coreFolder = replicatedStorage:WaitForChild("Core Classes")
@@ -316,6 +317,15 @@ enums.CustomCursorType = {
 		1,
 
 		Name = "Unlocked",
+
+		StateBeganFunction = function(player)
+			
+			-- Unlock the cursor
+			userInputService.MouseBehavior = Enum.MouseBehavior.Default
+
+			-- Show the cursor
+			userInputService.MouseIconEnabled = true
+		end,
 	},
 
 	Locked = {
@@ -323,6 +333,15 @@ enums.CustomCursorType = {
 		2,
 
 		Name = "Locked",
+
+		StateBeganFunction = function(player)
+			
+			-- Lock the cursor
+			userInputService.MouseBehavior = Enum.MouseBehavior.LockCenter
+
+			-- Hide the cursor
+			userInputService.MouseIconEnabled = false
+		end,
 	},
 }
 

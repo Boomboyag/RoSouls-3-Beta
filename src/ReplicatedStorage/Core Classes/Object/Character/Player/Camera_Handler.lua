@@ -10,6 +10,9 @@ function cameraHandler.new(player)
 	self.camera = player.camera
 	
 	-- || CAMERA SETTINGS ||
+
+	self.cameraFollowsTarget = player.playerStats.cameraFollowsTarget
+
 	self.cameraStiffness = player.playerStats.cameraStiffness
 	self.cameraOffset = player.playerStats.cameraOffset
 	
@@ -23,8 +26,7 @@ function cameraHandler.new(player)
 	self.cameraBodyPosition.MaxForce = Vector3.new(math.huge, math.huge, math.huge)
 	
 	-- What the camera is 'following'
-	self.cameraFollow = player.torso
-	self.cameraSubject = player.cameraBlock
+	self.cameraFollow = player.playerStats.cameraFollow
 	
 	return self
 end
@@ -64,17 +66,18 @@ function cameraHandler:SmoothCamera()
 
 	-- Tween the camera part over time
 	self.cameraBodyPosition.P = 1000 * self.cameraStiffness
-
-	-- Make the camera look at the desired subject
-	self.camera.CameraSubject = self.cameraSubject
 end
 
 -- || UPDATE ||
 
 function cameraHandler:Update(deltaTime)
 	
-	-- Smooth the camera movement
-	self:SmoothCamera()
+	-- Check if we want the camera to be delayed
+	if self.cameraFollowsTarget then
+		
+		-- Smooth the camera movement
+		self:SmoothCamera()
+	end
 end
 
 return cameraHandler

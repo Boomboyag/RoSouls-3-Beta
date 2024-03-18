@@ -153,6 +153,10 @@ function player.new(newPlayerTable)
 	-- The camera and camera block
 	self.camera = newPlayerTable.camera or game.Workspace.CurrentCamera
 	self.cameraBlock = cameraHandler:CreateCameraBlock(self)
+
+	-- Camera settings
+	self.playerStats.cameraFollow = self.torso
+	self.playerStats.cameraSubject = self.cameraBlock
 	
 	-- Camera handler
 	self.cameraHandler = cameraHandler.new(self)
