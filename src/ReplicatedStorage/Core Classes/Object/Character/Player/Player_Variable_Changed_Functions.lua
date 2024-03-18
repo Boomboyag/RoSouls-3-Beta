@@ -18,6 +18,7 @@ local statsChangedFunctions = {
 
     -- || CAMERA SETTINGS ||
 
+    -- The camera's field of view
     ["fieldOfView"] = function(player, oldValue, newValue, startup)
 
         -- Create the pcall
@@ -36,6 +37,7 @@ local statsChangedFunctions = {
         end
     end,
 
+    -- The maximum zoom distance
     ["maximumZoom"] = function(player, oldValue, newValue, startup)
 
         -- Create the pcall
@@ -54,6 +56,7 @@ local statsChangedFunctions = {
         end
     end,
 
+    -- The minimum zoom distance
     ["minimumZoom"] = function(player, oldValue, newValue, startup)
 
         -- Create the pcall

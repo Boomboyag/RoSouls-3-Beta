@@ -7,14 +7,14 @@ function playerStats.new(newPlayerTable, player)
 	local self = {}
 	
 	-- || CAMERA SETTINGS ||
-	
+
 	self.cameraStiffness = 40
 	self.cameraOffset = Vector3.new(0, 2, 0)
 
 	self.minimumZoom = 12
 	self.maximumZoom = 12
 
-	self.fieldOfView = 60
+	self.fieldOfView = 70
 	
 	self.cameraFollow = player.torso
 	self.cameraSubject = player.cameraBlock

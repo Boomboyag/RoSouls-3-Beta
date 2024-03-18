@@ -69,4 +69,12 @@ function cameraHandler:SmoothCamera()
 	self.camera.CameraSubject = self.cameraSubject
 end
 
+-- || UPDATE ||
+
+function cameraHandler:Update(deltaTime)
+	
+	-- Smooth the camera movement
+	self:SmoothCamera()
+end
+
 return cameraHandler

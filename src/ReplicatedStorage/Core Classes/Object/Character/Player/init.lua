@@ -32,11 +32,11 @@ end
 setmetatable(player, character)
 
 function player.new(newPlayerTable)
-	
+
 	-- Inherit the character class
 	local newPlayer = character.new(newPlayerTable)
 	setmetatable(newPlayer, player)
-	
+
 	-- Create the proxy table to track changes made to variables
 	local self = setmetatable({}, {
 
@@ -134,22 +134,22 @@ function player.new(newPlayerTable)
 		setmetatable(proxy, metatable)
 		return proxy
 	end
-	
+
 	-- || STATS ||
 
 	-- The player
 	self.player = game:GetService("Players").LocalPlayer
-	
+
 	-- The player stats
 	self.playerStats = TrackStats(playerStatsSheet.new(newPlayer, self), self)
 	self.defaultPlayerStats = playerStatsSheet.new(newPlayer, self)
-	
+
 	-- Add the player stats to the effect table
 	table.insert(self.validEffectTables, self.playerStats)
 	table.insert(self.defaultValues, self.defaultPlayerStats)
-	
+
 	-- || CAMERA ||
-	
+
 	-- The camera and camera block
 	self.camera = newPlayerTable.camera or game.Workspace.CurrentCamera
 	self.cameraBlock = cameraHandler:CreateCameraBlock(self)
@@ -174,7 +174,7 @@ function player.new(newPlayerTable)
 	runService:BindToRenderStep("Camera Update", Enum.RenderPriority.Camera.Value, function(deltaTime)
 		
 		-- Update the camera
-		self.cameraHandler:SmoothCamera()
+		self.cameraHandler:Update(deltaTime)
 	end)
 	
 	-- || STARTUP ||
