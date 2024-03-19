@@ -31,6 +31,7 @@ player.__tostring = function(player)
 end
 setmetatable(player, character)
 
+-- Class constructor
 function player.new(newPlayerTable)
 
 	-- Inherit the character class
@@ -131,6 +132,7 @@ function player.new(newPlayerTable)
 		}
 
 		-- Set the metatable and return
+		proxy.tableToTrack = tableToTrack
 		setmetatable(proxy, metatable)
 		return proxy
 	end
@@ -179,6 +181,15 @@ function player.new(newPlayerTable)
 		
 		-- Update the camera
 		self.cameraHandler:Update(deltaTime)
+	end)
+
+	-- || CONNECTIONS ||
+
+	-- The player's current action was changed
+	self.NewAction.Event:Connect(function(oldValue, newValue)
+		
+		-- Call any related functions
+		statsChangedFunctions["currentAction"](newPlayer, oldValue, newValue, false)
 	end)
 	
 	-- || STARTUP ||

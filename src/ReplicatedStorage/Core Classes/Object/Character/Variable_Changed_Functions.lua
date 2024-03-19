@@ -64,7 +64,7 @@ local statsChangedFunctions = {
 
 		local success, response = pcall(function()
 
-			-- Check if this is being fired for the first time or if the values are the same
+			-- Check if this is being fired for the first time
 			if startup then return end
 
 			-- Check if character ations are enabled
@@ -84,15 +84,15 @@ local statsChangedFunctions = {
 				end
 				
 				coroutine.wrap(function()
+
+					-- Fire the event
+					character.NewAction:Fire(oldValue, newValue)
 					
 					-- End the current action
 					if oldValue then oldValue:EndAction(character) end
 
 					-- Begin the new action
 					if newValue then newValue:BeginAction(character) end
-
-					-- Fire the event
-					character.NewAction:Fire(oldValue, newValue)
 				end)()
 			end
 		end) 

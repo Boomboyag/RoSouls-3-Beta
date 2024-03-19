@@ -16,6 +16,29 @@ local effectPrefabs = require(playerFolder:WaitForChild("Player_Effect_Prefabs")
 
 local statsChangedFunctions = {
 
+    -- || ACTIONS ||
+
+    ["currentAction"] = function(player, oldValue, newValue, startup)
+
+		local success, response = pcall(function()
+
+			-- Check if this is being fired for the first time or is the same action
+			if startup or oldValue == newValue then return end
+
+			-- End the current action
+            if oldValue and oldValue.actionEndFunctionPlayer then oldValue:EndActionPlayer(player) end
+
+            -- Begin the new action
+            if newValue and newValue.actionBeginFunctionPlayer then newValue:BeginActionPlayer(player) end
+		end) 
+
+		if not success then
+			warn(response)
+		end
+		
+		return newValue	
+	end,
+
     -- || CAMERA SETTINGS ||
 
     -- The camera's current subject

@@ -44,6 +44,18 @@ local actionTableExample = {
 
 		-- Do something
 	end,
+
+	-- The function performed on the PLAYER when the action begins (optional)
+	["ActionBeginFunction_PLAYER"] = function(player)
+		
+		-- Do something
+	end,
+
+	-- The function performed on the PLAYER when the action is finished (optional)
+	["ActionEndFunction_PLAYER"] = function(player)
+
+		-- Do something
+	end,
 }
 
 -- Class constructor
@@ -67,8 +79,14 @@ function action.new(newEffect)
 	-- The function performed on the character when the action begins
 	self.actionBeginFunction = newEffect["ActionBeginFunction"]
 	
-	-- The function performed on the character when the action begins
+	-- The function performed on the character when the action ends
 	self.actionEndFunction = newEffect["ActionEndFunction"]
+
+	-- The function performed on the PLAYER when the action begins (optional)
+	self.actionBeginFunctionPlayer = newEffect["ActionBeginFunction_PLAYER"] or nil
+	
+	-- The function performed on the PLAYER when the action ends (optional)
+	self.actionEndFunctionPlayer = newEffect["ActionEndFunction_PLAYER"] or nil
 
 	-- Set the metatable and return
 	setmetatable(self, action)
@@ -112,7 +130,7 @@ function action:GetPrerequisites()
 	return prerequisites
 end
 
--- || FUNCTIONS ||
+-- || CHARACTER FUNCTIONS ||
 
 -- The function called when the action begins
 function action:BeginAction(character)
@@ -126,6 +144,22 @@ function action:EndAction(character)
 	
 	-- Call the function
 	self.actionEndFunction(character)
+end
+
+-- || PLAYER FUNCTIONS ||
+
+-- The function called when the action begins
+function action:BeginActionPlayer(player)
+	
+	-- Call the function
+	self.actionBeginFunctionPlayer(player)
+end
+
+-- The function called when the action is ended
+function action:EndActionPlayer(player)
+	
+	-- Call the function
+	self.actionEndFunctionPlayer(player)
 end
 
 -- || GETS ||
