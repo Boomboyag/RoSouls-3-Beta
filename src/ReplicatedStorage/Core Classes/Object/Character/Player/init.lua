@@ -220,6 +220,9 @@ end
 
 -- Destroy the player
 function player:Destroy()
+
+	-- Disable the camera shake
+	self.cameraHandler.shakeModule:Stop()
 	
 	-- Disconnect all connections
 	self.renderSteppedConnection:Disconnect()

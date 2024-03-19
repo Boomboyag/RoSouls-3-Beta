@@ -13,7 +13,7 @@ function playerStats.new(newPlayerTable, player)
 	self.cameraStiffness = 40
 
 	-- The camera's offset from it's current target
-	self.cameraOffset = Vector3.new(0, 2, 0)
+	self.cameraOffset = Vector3.new(0, 1.75, 0)
 
 	-- Zoom distance
 	self.minimumZoom = 12
