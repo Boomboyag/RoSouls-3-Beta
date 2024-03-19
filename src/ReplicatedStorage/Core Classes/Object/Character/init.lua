@@ -625,12 +625,12 @@ function character:RemoveEffect(effectName : string)
 						break
 					end
 				end
-				
+
 				-- Loop through all tables effects can be applied to
 				for index, validTable in self.validEffectTables do
 
 					-- Check if the table contains the data
-					if validTable[changedData] ~= nil and defaultValue then
+					if validTable[changedData] ~= nil then
 
 						-- Reset the effect to it's original value
 						validTable[changedData] = defaultValue
@@ -851,8 +851,11 @@ function character:ChangeCoreAnimationSpeed(characterSpeed, reset)
 		return
 	end
 	
+	-- Create the speed
+	local newSpeed = (self.characterStats.currentWalkSpeed / self.defaultCharacterStats.currentWalkSpeed) * characterSpeed
+
 	-- Adjust the speed
-	characterSpeed = (self.characterStats.currentWalkSpeed / self.defaultCharacterStats.currentWalkSpeed) * characterSpeed
+	characterSpeed = newSpeed
 	
 	-- Make sure the speed is different from the current speed
 	if characterSpeed ~= self.characterStats.currentCoreAnimation.Speed then
