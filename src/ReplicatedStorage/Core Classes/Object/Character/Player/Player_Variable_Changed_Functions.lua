@@ -26,10 +26,10 @@ local statsChangedFunctions = {
 			if startup or oldValue == newValue then return end
 
 			-- End the current action
-            if oldValue and oldValue.actionEndFunctionPlayer then oldValue:EndActionPlayer(player) end
+            if oldValue and oldValue.actionEndFunctionPlayer then oldValue.actionEndFunctionPlayer(player) end
 
             -- Begin the new action
-            if newValue and newValue.actionBeginFunctionPlayer then newValue:BeginActionPlayer(player) end
+            if newValue and newValue.actionBeginFunctionPlayer then newValue.actionBeginFunctionPlayer(player) end
 		end) 
 
 		if not success then

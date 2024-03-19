@@ -69,13 +69,17 @@ local effectTable = {
 		-- The function performed on the PLAYER when the action begins
 		["ActionBeginFunction_PLAYER"] = function(player)
 
-			print("WOW")
+			-- Change the camera sway
+			player:AddEffect(playerEffectPrefabs.Sprint_Camera_Sway_Speed)
+			player:AddEffect(playerEffectPrefabs.Sprint_Camera_Sway_Amount)
 		end,
 
 		-- The function performed on the PLAYER when the action is finished
 		["ActionEndFunction_PLAYER"] = function(player)
 
-			
+			-- Reset the camera sway
+			player:RemoveEffect(playerEffectPrefabs.Sprint_Camera_Sway_Speed.Name)
+			player:RemoveEffect(playerEffectPrefabs.Sprint_Camera_Sway_Amount.Name)
 		end,
 	},
 	
