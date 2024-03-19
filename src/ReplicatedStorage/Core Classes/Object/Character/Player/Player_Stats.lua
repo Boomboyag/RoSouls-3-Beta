@@ -27,7 +27,7 @@ function playerStats.new(newPlayerTable, player)
 
 	-- The amount and speed of the camera sway on both axes
 	self.cameraSwayAmount = Vector2.new(0.35, 0.35)
-	self.cameraSwaySpeed = Vector2.new(10, 10)
+	self.cameraSwaySpeed = Vector2.new(0.7, 0.7)
 
 	-- || MOUSE SETTINGS ||
 
