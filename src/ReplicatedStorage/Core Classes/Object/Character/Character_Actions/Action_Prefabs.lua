@@ -6,6 +6,7 @@ local coreFolder = replicatedStorage:WaitForChild("Core Classes")
 
 -- Required scripts
 local characterEffectPrefabs = require(script.Parent.Parent:WaitForChild("Character_Effects").Effect_Prefabs)
+local playerEffectPrefabs = require(script.Parent.Parent.Player:WaitForChild("Player_Effect_Prefabs"))
 local Enum = require(coreFolder:WaitForChild("Enum"))
 
 -- The table of effects
@@ -63,6 +64,18 @@ local effectTable = {
 			character:RemoveEffect(characterEffectPrefabs.Sprint_Walkspeed.Name)
 			character:RemoveEffect(characterEffectPrefabs.Sprint_Character_Tilt.Name)
 			character:RemoveEffect(characterEffectPrefabs.Disable_Climbing.Name)
+		end,
+	
+		-- The function performed on the PLAYER when the action begins
+		["ActionBeginFunction_PLAYER"] = function(character)
+
+			print("WOW")
+		end,
+
+		-- The function performed on the PLAYER when the action is finished
+		["ActionEndFunction_PLAYER"] = function(character)
+
+			
 		end,
 	},
 	
