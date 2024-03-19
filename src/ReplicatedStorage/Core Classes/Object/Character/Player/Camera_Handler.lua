@@ -1,3 +1,6 @@
+-- Required scripts
+local cameraShaker = require(script:WaitForChild("CameraShaker"))
+
 local cameraHandler = {}
 cameraHandler.__index = cameraHandler
 
@@ -37,6 +40,13 @@ function cameraHandler.new(player)
 	-- The amount and speed of the camera sway on both axes
 	self.cameraSwayAmount = Vector2.new(0.35, 0.35)
 	self.cameraSwaySpeed = Vector2.new(10, 10)
+
+	-- || CAMERA SHAKE ||
+
+	-- The shake module
+	self.shakeModule = cameraShaker.new(Enum.RenderPriority.Camera.Value, function(shakeCf)
+		self.camera.CFrame = self.camera.CFrame * shakeCf
+	end)
 	
 	return self
 end
@@ -99,8 +109,10 @@ function cameraHandler:CameraSway()
 end
 
 -- Shake the camera
-function cameraHandler:ShakeCamera(amount : number, duration : number)
+function cameraHandler:ShakeCamera(magnitude, roughness, fadeInTime, fadeOutTime)
 	
+	-- Shake the camera via the shake module
+	self.shakeModule:ShakeOnce(magnitude, roughness, fadeInTime, fadeOutTime)
 end
 
 -- || UPDATE ||
