@@ -44,7 +44,6 @@ function cameraHandler.new(player)
 	-- || CAMERA SHAKE ||
 
 	-- The shake module
-	print(cameraShaker)
 	self.shakeModule = cameraShaker.new(Enum.RenderPriority.Camera.Value, function(shakeCf)
 		self.camera.CFrame = self.camera.CFrame * shakeCf
 	end)

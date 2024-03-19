@@ -67,13 +67,13 @@ local effectTable = {
 		end,
 	
 		-- The function performed on the PLAYER when the action begins
-		["ActionBeginFunction_PLAYER"] = function(character)
+		["ActionBeginFunction_PLAYER"] = function(player)
 
 			print("WOW")
 		end,
 
 		-- The function performed on the PLAYER when the action is finished
-		["ActionEndFunction_PLAYER"] = function(character)
+		["ActionEndFunction_PLAYER"] = function(player)
 
 			
 		end,
