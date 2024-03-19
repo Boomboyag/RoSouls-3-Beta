@@ -48,6 +48,8 @@ function cameraHandler.new(player)
 		self.camera.CFrame = self.camera.CFrame * shakeCf
 	end)
 	
+	self.shakeModule:Start()
+
 	return self
 end
 
@@ -110,7 +112,7 @@ end
 
 -- Shake the camera
 function cameraHandler:ShakeCamera(magnitude, roughness, fadeInTime, fadeOutTime)
-	
+
 	-- Shake the camera via the shake module
 	self.shakeModule:ShakeOnce(magnitude, roughness, fadeInTime, fadeOutTime)
 end

@@ -23,7 +23,7 @@ local effectTable = {
 		-- The function performed on the DataToModify (takes the DataToModify as an argument)
 		["EffectFunction"] = function(input)
 
-			return Vector2.new(3, 1)
+			return Vector2.new(1, 1.5)
 		end,
 
 		-- || OPTIONAL VARIABLES ||
@@ -52,7 +52,7 @@ local effectTable = {
 		-- The function performed on the DataToModify (takes the DataToModify as an argument)
 		["EffectFunction"] = function(input)
 
-			return Vector2.new(2, 1)
+			return Vector2.new(1, 10)
 		end,
 
 		-- || OPTIONAL VARIABLES ||

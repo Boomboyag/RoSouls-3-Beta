@@ -300,6 +300,21 @@ local effectTable = {
 
 
 		end,
+	
+		-- The function performed on the PLAYER when the action begins
+		["ActionBeginFunction_PLAYER"] = function(player)
+
+			-- Create the shake multiplier
+			local shakeMultiplier = player.fallAnimationSpeed - 0.5
+
+			-- Shake the camera
+			player.cameraHandler:ShakeCamera(5 * shakeMultiplier, 10 * shakeMultiplier, 0, 1)
+		end,
+
+		-- The function performed on the PLAYER when the action is finished
+		["ActionEndFunction_PLAYER"] = function(player)
+
+		end,
 	},
 }
 
