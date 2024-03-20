@@ -318,6 +318,8 @@ enums.CustomCursorType = {
 
 		Name = "Unlocked",
 
+		MouseBehavior = Enum.MouseBehavior.Default,
+
 		StateBeganFunction = function(player)
 			
 			-- Unlock the cursor
@@ -333,6 +335,8 @@ enums.CustomCursorType = {
 		2,
 
 		Name = "Locked",
+
+		MouseBehavior = Enum.MouseBehavior.LockCenter,
 
 		StateBeganFunction = function(player)
 			

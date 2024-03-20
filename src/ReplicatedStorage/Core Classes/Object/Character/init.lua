@@ -422,7 +422,7 @@ function character.new(newCharacter)
 	-- The final update
 	runService:BindToRenderStep("Final Update", Enum.RenderPriority.Last.Value, function(deltaTime)
 
-		-- Tilt the player
+		-- Tilt the charatcer
 		self:TiltBody(deltaTime)
 	end)
 	

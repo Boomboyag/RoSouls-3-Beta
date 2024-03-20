@@ -3,6 +3,7 @@ local runService = game:GetService("RunService")
 local pathfindingService = game:GetService("PathfindingService")
 local chatService = game:GetService("Chat")
 local replicatedStorage = game:GetService("ReplicatedStorage")
+local userInputService = game:GetService("UserInputService")
 
 -- Required folders and directories
 local coreFolder = replicatedStorage:WaitForChild("Core Classes")
@@ -156,6 +157,9 @@ function player.new(newPlayerTable)
 	self.camera = newPlayerTable.camera or game.Workspace.CurrentCamera
 	self.cameraBlock = cameraHandler:CreateCameraBlock(self)
 
+	-- The mouse
+	self.mouse = self.player:GetMouse()
+
 	-- Camera settings
 	self.playerStats.cameraFollow = self.torso
 	self.playerStats.cameraSubject = self.cameraBlock
@@ -172,6 +176,9 @@ function player.new(newPlayerTable)
 	-- The input update
 	runService:BindToRenderStep("Input Update", Enum.RenderPriority.Input.Value, function(deltaTime)
 
+		-- Update the camera
+		self.cameraHandler:MoveCameraWithMouse()
+
 		-- Move the player
 		self:Move()
 	end)
@@ -181,6 +188,13 @@ function player.new(newPlayerTable)
 		
 		-- Update the camera
 		self.cameraHandler:Update(deltaTime)
+	end)
+
+	-- The final update
+	runService:BindToRenderStep("After Final Update", Enum.RenderPriority.Last.Value + 1, function(deltaTime)
+
+		-- Apply the current mouse setting
+		userInputService.MouseBehavior = self.cursorType.MouseBehavior
 	end)
 
 	-- || CONNECTIONS ||
@@ -228,6 +242,7 @@ function player:Destroy()
 	self.renderSteppedConnection:Disconnect()
 	self.heartbeatConnection:Disconnect()
 	runService:UnbindFromRenderStep("Final Update")
+	runService:UnbindFromRenderStep("After Final Update")
 	runService:UnbindFromRenderStep("Input Update")
 	runService:UnbindFromRenderStep("Camera Update")
 

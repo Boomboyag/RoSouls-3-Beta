@@ -31,6 +31,9 @@ function playerStats.new(newPlayerTable, player)
 
 	-- || MOUSE SETTINGS ||
 
+	-- The camera's mouse sensitivity
+	self.mouseSensitivity = 0.3
+
 	-- Whether or not the mouse moves the camera positon
 	self.mouseMovesCamera = true
 	
