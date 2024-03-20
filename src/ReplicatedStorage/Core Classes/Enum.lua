@@ -159,15 +159,17 @@ enums.CharacterState = {
 		-- Function called when the state begins
 		StateBeganFunction = function(character)
 
-			-- Apply the effects to the character
+			-- Stop the player from changing states
+			character:AddEffect(characterEffectPrefabs.Disable_State_Change)
+
+			-- Disable all actions
 			character:AddEffect(characterEffectPrefabs.Disable_Actions)
 		end,
 
 		-- Function called when the state ends
 		StateEndedFunction = function(character)
 
-			-- Remove the effect from the character
-			character:RemoveEffect(characterEffectPrefabs.Disable_Actions.Name)
+			-- One does not come back from death
 		end,
 	},
 

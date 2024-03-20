@@ -31,8 +31,8 @@ local statsChangedFunctions = {
 			-- Check if this is being fired for the first time or if the values are the same
 			if (not oldValue and not startup) or (oldValue == newValue) then return end
 			
-			-- Check if tha character can change states
-			if not character.characterStats.canChangeState then
+			-- Check if tha character can change states (disregarded if dead)
+			if not character.characterStats.canChangeState and newValue ~= Enum.CharacterState.Dead then
 
 				warn("Character cannot change state, it is disabled!")
 
@@ -210,6 +210,15 @@ local statsChangedFunctions = {
 
 			-- Check if this is being fired for the first time
 			if not oldValue and not startup then return end
+
+			-- Check if the character is dead
+			if newValue <= 0 then
+				
+				-- Required line of code (do not remove)
+				print("THE HEAVY IS DEAD")
+
+
+			end
 
 			-- Fire the event
 			character.CharacterStatChanged:Fire("currentHealth", oldValue, newValue)

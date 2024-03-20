@@ -16,6 +16,8 @@ function characterStats.new(newCharacter)
 	-- || HEALTH ||
 	self.currentHealth = newCharacter.health or 100
 	self.maxHealth = newCharacter.health or 100
+
+	self.immuneToDamage = false
 	
 	-- || STAMINA ||
 	self.minStamina = -50

@@ -369,11 +369,6 @@ function character.new(newCharacter)
 
 		self:HumanoidStateChanged(oldState, newState)
 	end)
-	self.humanoid.HealthChanged:Connect(function(newHealth)
-		
-		-- Change the stat
-		self.characterStats.currentHealth = newHealth
-	end)
 	self.humanoid:GetPropertyChangedSignal("MoveDirection"):Connect(function()
 		
 		-- Apply any other effects
@@ -788,6 +783,36 @@ function character:ApplyEffects(modifiedData : string, forceApply : boolean, eff
 	end
 end
 
+-- || HEALTH & DAMAGE ||
+
+-- Make the character take damage
+function character:TakeDamage(damage, noReaction)
+
+	-- Make sure the character can take damage
+	if damage > 0 and self.characterStats.immuneToDamage then return end
+	
+	-- Calculate the new health
+	local newHealth = self.characterStats.currentHealth - damage
+
+	-- Make sure the new health isn't going over the maximum
+	if newHealth > self.characterStats.maxHealth then newHealth = self.characterStats.maxHealth end
+	
+	-- Set the current health
+	self.characterStats.currentHealth = newHealth
+
+	-- Check if the character should react to the damage taken
+	if not noReaction then
+		
+		-- React to the damage
+		self:DamageTaken(damage)
+	end
+end
+
+-- Called when the player takes damage
+function character:DamageTaken(damageAmount)
+	
+end
+
 -- || ANIMATIONS ||
 
 -- Apply root motion to the character
@@ -993,12 +1018,6 @@ function character:Roll(forceRollDirection : Vector3)
 	end
 end
 
--- || DAMAGE ||
-
-function character:DamageTaken(damageAmount)
-	
-end
-
 -- || MISCELLANEOUS ||
 
 -- Fired when the humanoid state changes
@@ -1029,6 +1048,7 @@ function character:CheckFall(newTick)
 	-- Check if the player has spent the minimum time falling
 	if timeFalling >= 0.3 and self.fallDistance > 0 then
 		
+		-- Play the animation
 		self.fallAnimationSpeed = math.clamp(1 / timeFalling, 0.3, 1.25)
 		self.characterStats.currentAction = self.actionPrefabs["Landed"]
 	end
