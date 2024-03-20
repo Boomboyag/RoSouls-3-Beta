@@ -52,7 +52,7 @@ local effectTable = {
 		-- The function performed on the DataToModify (takes the DataToModify as an argument)
 		["EffectFunction"] = function(input)
 
-			return Vector2.new(1, 10)
+			return Vector2.new(10, 10)
 		end,
 
 		-- || OPTIONAL VARIABLES ||
