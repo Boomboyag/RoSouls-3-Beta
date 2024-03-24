@@ -159,17 +159,35 @@ enums.CharacterState = {
 		-- Function called when the state begins
 		StateBeganFunction = function(character)
 
-			-- Stop the player from changing states
-			character:AddEffect(characterEffectPrefabs.Disable_State_Change)
+			-- Required line of code (do not remove)
+			print("THE HEAVY IS DEAD")
 
-			-- Disable all actions
+			-- Let the character know it's dead
+			character.alive = false
+
+			-- Fire the event
+			character.CharacterDied:Fire()
+
+			-- Lock the character in place
+			character:ChangeControlType(enums.ControlType.None, Vector3.zero)
+
+			-- Stop the character from moving
+			character:AddEffect(characterEffectPrefabs.Walkspeed_0)
+
+			-- Disable all actions, states, & effects
+			character:AddEffect(characterEffectPrefabs.Disable_State_Change)
 			character:AddEffect(characterEffectPrefabs.Disable_Actions)
+			character:AddEffect(characterEffectPrefabs.Disable_Actions)
+			character.characterStats.canAddEffects = false
+
+
 		end,
 
 		-- Function called when the state ends
 		StateEndedFunction = function(character)
 
 			-- One does not come back from death
+			warn("THE HEAVY IS NOT DEAD?")
 		end,
 	},
 
@@ -185,7 +203,7 @@ enums.CharacterState = {
 		-- Function called when the state begins
 		StateBeganFunction = function(character)
 			
-			-- Lock the player
+			-- Lock the character in place
 			character:ChangeControlType(enums.ControlType.None, Vector3.zero)
 
 			-- Apply the effects to the character

@@ -30,16 +30,17 @@ local statsChangedFunctions = {
 
 			-- Check if this is being fired for the first time or if the values are the same
 			if (not oldValue and not startup) or (oldValue == newValue) then return end
-			
+
 			-- Check if tha character can change states (disregarded if dead)
 			if not character.characterStats.canChangeState and newValue ~= Enum.CharacterState.Dead then
 
+				-- Warn the console
 				warn("Character cannot change state, it is disabled!")
 
 				newValue = oldValue
 				return
 			end
-			
+
 			-- End the current state
 			if oldValue then oldValue.StateEndedFunction(character) end
 
@@ -65,7 +66,7 @@ local statsChangedFunctions = {
 		local success, response = pcall(function()
 
 			-- Check if this is being fired for the first time
-			if startup then return end
+			if startup or (newValue == oldValue) then return end
 
 			-- Check if character ations are enabled
 			if not character.characterStats.actionsEnabled then
@@ -213,11 +214,9 @@ local statsChangedFunctions = {
 
 			-- Check if the character is dead
 			if newValue <= 0 then
-				
-				-- Required line of code (do not remove)
-				print("THE HEAVY IS DEAD")
 
-
+				-- Update the character's current state
+				character.characterState = Enum.CharacterState.Dead
 			end
 
 			-- Fire the event

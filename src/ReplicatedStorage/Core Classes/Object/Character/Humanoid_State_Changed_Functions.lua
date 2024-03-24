@@ -92,9 +92,6 @@ local humanoidStateChangedFunctions = {
 	-- The character is dead
 	[Enum.HumanoidStateType.Dead] = function(character)
 
-		-- Let the character know it's dead
-		character.alive = false
-
 		-- Change the current state
 		character.characterState = Enum.CharacterState.Dead
 	end,

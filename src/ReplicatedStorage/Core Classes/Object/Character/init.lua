@@ -280,6 +280,11 @@ function character.new(newCharacter)
 	
 	-- Disable some humanoid states
 	self.humanoid:SetStateEnabled(Enum.HumanoidStateType.Ragdoll, false)
+	self.humanoid:SetStateEnabled(Enum.HumanoidStateType.Flying, false)
+	self.humanoid:SetStateEnabled(Enum.HumanoidStateType.PlatformStanding, false)
+	self.humanoid:SetStateEnabled(Enum.HumanoidStateType.StrafingNoPhysics, false)
+	self.humanoid:SetStateEnabled(Enum.HumanoidStateType.RunningNoPhysics, false)
+	self.humanoid:SetStateEnabled(Enum.HumanoidStateType.Swimming, false)
 
 	-- || PATHFINDING ||
 
@@ -318,6 +323,7 @@ function character.new(newCharacter)
 	-- Character events
 	self.FinishedPathfinding = Instance.new("BindableEvent")
 	self.StaminaDrained = Instance.new("BindableEvent")
+	self.CharacterDied = Instance.new("BindableEvent")
 	
 	-- States and stats
 	self.CharacterStateChanged = Instance.new("BindableEvent")
@@ -599,7 +605,7 @@ function character:RemoveEffect(effectName : string)
 					continue
 				end
 			end
-			
+
 			-- The effect to remove and it's effected data
 			local effectToRemove = self.effects[i]
 			local resetData = effectToRemove.resetDataWhenDone
@@ -1051,6 +1057,9 @@ function character:CheckFall(newTick)
 		-- Play the animation
 		self.fallAnimationSpeed = math.clamp(1 / timeFalling, 0.3, 1.25)
 		self.characterStats.currentAction = self.actionPrefabs["Landed"]
+
+		-- Take damage
+		self:TakeDamage(100)
 	end
 end
 
