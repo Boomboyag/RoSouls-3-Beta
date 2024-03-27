@@ -188,6 +188,13 @@ function character.new(newCharacter)
 	self.rollAttatchment.Name = 'VelocityPart'
 	self.rollAttatchment.Orientation = Vector3.new(0, 90, 0)
 
+	-- Character orientation attachments
+	self.rootOrientationAttachment = Instance.new("AlignOrientation", self.humanoidRootPart)
+	self.rootOrientationAttachment.Name = "Root Orientation"
+	self.rootOrientationAttachment.Mode = Enum.OrientationAlignmentMode.OneAttachment
+	self.rootOrientationAttachment.Attachment0 = self.rootAttachment
+	self.rootOrientationAttachment.Responsiveness = 60
+
 	-- || STATS ||
 
 	-- Get the character's state
@@ -285,6 +292,9 @@ function character.new(newCharacter)
 	self.humanoid:SetStateEnabled(Enum.HumanoidStateType.StrafingNoPhysics, false)
 	self.humanoid:SetStateEnabled(Enum.HumanoidStateType.RunningNoPhysics, false)
 	self.humanoid:SetStateEnabled(Enum.HumanoidStateType.Swimming, false)
+
+	-- Turn off the breaking of joints on death
+	self.humanoid.BreakJointsOnDeath = false
 
 	-- || PATHFINDING ||
 
@@ -789,36 +799,6 @@ function character:ApplyEffects(modifiedData : string, forceApply : boolean, eff
 	end
 end
 
--- || HEALTH & DAMAGE ||
-
--- Make the character take damage
-function character:TakeDamage(damage, noReaction)
-
-	-- Make sure the character can take damage
-	if damage > 0 and self.characterStats.immuneToDamage then return end
-	
-	-- Calculate the new health
-	local newHealth = self.characterStats.currentHealth - damage
-
-	-- Make sure the new health isn't going over the maximum
-	if newHealth > self.characterStats.maxHealth then newHealth = self.characterStats.maxHealth end
-	
-	-- Set the current health
-	self.characterStats.currentHealth = newHealth
-
-	-- Check if the character should react to the damage taken
-	if not noReaction then
-		
-		-- React to the damage
-		self:DamageTaken(damage)
-	end
-end
-
--- Called when the player takes damage
-function character:DamageTaken(damageAmount)
-	
-end
-
 -- || ANIMATIONS ||
 
 -- Apply root motion to the character
@@ -1022,6 +1002,19 @@ function character:Roll(forceRollDirection : Vector3)
 			self.characterStats.currentAction = self.actionPrefabs["Backstepping"]
 		end
 	end
+end
+
+-- Reaction animation to damage
+function character:DamageReaction(damageAmount)
+	
+end
+
+-- || HEALTH ||
+
+-- Make the humanoid take damage
+function character:TakeDamage(damageAmount, ignoreForceField)
+	
+	
 end
 
 -- || MISCELLANEOUS ||

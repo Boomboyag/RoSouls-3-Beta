@@ -69,6 +69,9 @@ local effectTable = {
 		-- The function performed on the PLAYER when the action begins
 		["ActionBeginFunction_PLAYER"] = function(player)
 
+			-- Increase the fov
+			player:AddEffect(playerEffectPrefabs.Sprint_Camera_FOV)
+
 			-- Change the camera sway
 			player:AddEffect(playerEffectPrefabs.Sprint_Camera_Sway_Speed)
 			player:AddEffect(playerEffectPrefabs.Sprint_Camera_Sway_Amount)
@@ -76,6 +79,9 @@ local effectTable = {
 
 		-- The function performed on the PLAYER when the action is finished
 		["ActionEndFunction_PLAYER"] = function(player)
+
+			-- Reset the FOV
+			player:RemoveEffect(playerEffectPrefabs.Sprint_Camera_FOV.Name)
 
 			-- Reset the camera sway
 			player:RemoveEffect(playerEffectPrefabs.Sprint_Camera_Sway_Speed.Name)

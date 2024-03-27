@@ -3,6 +3,8 @@ local runService = game:GetService("RunService")
 local pathfindingService = game:GetService("PathfindingService")
 local chatService = game:GetService("Chat")
 local replicatedStorage = game:GetService("ReplicatedStorage")
+local tweenService = game:GetService("TweenService")
+local userSettings = UserSettings():GetService("UserGameSettings")
 
 -- Required folders
 local coreFolder = replicatedStorage:WaitForChild("Core Classes")
@@ -40,6 +42,33 @@ local statsChangedFunctions = {
 	end,
 
     -- || CAMERA SETTINGS ||
+
+    -- Movement relative to camera
+    ["movementRelativeToCamera"] = function(player, oldValue, newValue, startup)
+        
+        -- Create the pcall
+        local success, response = pcall(function()
+
+            -- Change the game setting
+            if newValue then
+                
+                -- Camera relative
+                userSettings.RotationType = Enum.RotationType.CameraRelative
+            else
+
+                -- Movement relative
+                userSettings.RotationType = Enum.RotationType.MovementRelative
+            end
+
+            -- Change the camera setting
+            player.cameraHandler.movementRelativeToCamera = newValue
+        end)
+
+        -- Check if not a success
+        if not success then
+            warn(response)
+        end
+    end,
 
     -- The camera's current subject
     ["cameraSubject"] = function(player, oldValue, newValue, startup)
@@ -148,9 +177,11 @@ local statsChangedFunctions = {
 
             -- Check if this is being fired for the first time or if the values are the same
 		    if (not oldValue and not startup) or (oldValue == newValue) or not newValue then return end
-
-            -- Change the player's maximum camera zoom distance
-            player.camera.FieldOfView = newValue
+            
+            -- Tween the FOV
+            local tweenInfo = TweenInfo.new(0.5)
+            local tween = tweenService:Create(player.camera, tweenInfo, {FieldOfView  = newValue})
+            tween:Play()
         end)
 
         -- Check if not a success

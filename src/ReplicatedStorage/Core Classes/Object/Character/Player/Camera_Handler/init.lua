@@ -9,6 +9,12 @@ function cameraHandler.new(player)
 	
 	local self = setmetatable({}, cameraHandler)
 
+	-- || PLAYER VARIABLES
+
+	-- The humanoid root part and relative attachments
+	self.humanoidRootPart = player.humanoidRootPart
+	self.rootOrientation = player.rootOrientationAttachment
+
 	-- || CAMERA SETUP ||
 
 	-- The camera
@@ -27,6 +33,9 @@ function cameraHandler.new(player)
 	self.mouseMovesCamera = player.playerStats.mouseMovesCamera
 	
 	-- || CAMERA SETTINGS ||
+
+	-- Movement relative to camera
+	self.movementRelativeToCamera = false
 
 	-- Whether or not the camera will follow it's current target
 	self.cameraFollowsTarget = player.playerStats.cameraFollowsTarget
@@ -89,6 +98,17 @@ function cameraHandler:MoveCameraWithMouse()
 	
 	-- Updates the camera's CFrame (position and rotation) by applying the rotation calculated from mouse movement.
 	self.camera.CFrame = self.camera.CFrame * CFrame.Angles(math.rad(cameraRotation.X), math.rad(cameraRotation.Y), 0)
+end
+
+-- Make character look in camera direction
+function cameraHandler:LookInCameraDirection()
+	
+	-- The CFrame
+	local camFrame = Vector3.new(self.camera.CFrame.LookVector.X, 0, self.camera.CFrame.LookVector.Z).Unit
+	local newCFrame = CFrame.new(self.humanoidRootPart.CFrame.Position, self.humanoidRootPart.CFrame.Position + camFrame) 
+
+	-- Make the humanoid look in the direction via the orientation attachment
+	self.rootOrientation.CFrame = newCFrame
 end
 
 -- || CAMERA SMOOTHING ||
@@ -167,6 +187,9 @@ function cameraHandler:Update(deltaTime)
 		
 		-- Smooth the camera movement
 		self:SmoothCamera()
+
+		-- Check if we want to turn in the camera's direction
+		if self.movementRelativeToCamera then self:LookInCameraDirection() end
 	end
 end
 
