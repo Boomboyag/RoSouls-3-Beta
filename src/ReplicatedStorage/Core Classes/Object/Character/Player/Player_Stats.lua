@@ -9,7 +9,7 @@ function playerStats.new(newPlayerTable, player)
 	-- || CAMERA SETTINGS ||
 
 	-- Movement relative to camera
-	self.movementRelativeToCamera = false
+	self.movementRelativeToCamera = true
 
 	-- Whether or not the camera follow's it's current target
 	self.cameraFollowsTarget = true
