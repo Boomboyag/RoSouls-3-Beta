@@ -4,7 +4,6 @@ local pathfindingService = game:GetService("PathfindingService")
 local chatService = game:GetService("Chat")
 local replicatedStorage = game:GetService("ReplicatedStorage")
 local tweenService = game:GetService("TweenService")
-local userSettings = UserSettings():GetService("UserGameSettings")
 
 -- Required folders
 local coreFolder = replicatedStorage:WaitForChild("Core Classes")
@@ -50,15 +49,10 @@ local statsChangedFunctions = {
         local success, response = pcall(function()
 
             -- Change the game setting
-            if newValue then
-                
-                -- Camera relative
-                userSettings.RotationType = Enum.RotationType.CameraRelative
-            else
+            if newValue == nil then newValue = false end
 
-                -- Movement relative
-                userSettings.RotationType = Enum.RotationType.MovementRelative
-            end
+            -- Enable or disable the orientation attachment
+            player.rootOrientationAttachment.Enabled = newValue
 
             -- Change the camera setting
             player.cameraHandler.movementRelativeToCamera = newValue
@@ -68,6 +62,8 @@ local statsChangedFunctions = {
         if not success then
             warn(response)
         end
+
+        return newValue
     end,
 
     -- The camera's current subject
