@@ -3,6 +3,7 @@ local runService = game:GetService("RunService")
 local pathfindingService = game:GetService("PathfindingService")
 local chatService = game:GetService("Chat")
 local replicatedStorage = game:GetService("ReplicatedStorage")
+local tweenService = game:GetService("TweenService")
 
 -- Required folders
 local coreFolder = replicatedStorage:WaitForChild("Core Classes")
@@ -159,8 +160,18 @@ local statsChangedFunctions = {
 			-- Check if this is being fired for the first time
 			if not oldValue and not startup then return end
 
-			-- Set the speed of the character
-			character.humanoid.WalkSpeed = newValue
+			-- Make sure we can tween it
+			if newValue ~= 0 then
+				
+				-- Tween to the new value
+				local TweenInfo = TweenInfo.new(0.2, Enum.EasingStyle.Sine)
+				local tween = tweenService:Create(character.humanoid, TweenInfo, {WalkSpeed = newValue})
+				tween:Play() 
+			else
+			
+				-- Set the speed of the character
+				character.humanoid.WalkSpeed = newValue
+			end
 
 			-- Fire the event
 			character.CharacterStatChanged:Fire("currentWalkSpeed", oldValue, newValue)

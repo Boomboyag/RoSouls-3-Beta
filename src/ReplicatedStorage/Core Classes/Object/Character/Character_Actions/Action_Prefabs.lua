@@ -55,7 +55,16 @@ local effectTable = {
 		-- The function performed on the character when the action is finished
 		["ActionEndFunction"] = function(character)
 
-			character:ChangeActionAnimation(nil, 0.1)
+			-- Check if we can smoothly fade out the animation (if still moving)
+			if character:GetWorldMoveDirection() ~= Vector3.zero then
+				
+				-- Slowly stop the animation
+				character:ChangeActionAnimation(nil, 0.3)
+			else
+
+				-- Quickly stop the animation
+				character:ChangeActionAnimation(nil, 0.1)
+			end
 			
 			-- Regen the stamina
 			character:RemoveEffect(characterEffectPrefabs.Sprint_Stamina_Drain.Name)
