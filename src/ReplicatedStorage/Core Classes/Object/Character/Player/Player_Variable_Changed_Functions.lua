@@ -42,6 +42,47 @@ local statsChangedFunctions = {
 
     -- || CAMERA SETTINGS ||
 
+    -- First person camera
+    ["firstPersonCamera"] = function(player, oldValue, newValue, startup)
+        
+        -- Create the pcall
+        local success, response = pcall(function()
+
+            -- Make sure the values aren't the same
+            if(newValue == oldValue) then return end
+
+            -- Check if we want to go first person
+            if newValue then
+
+                -- Lock first person
+                player.player.CameraMode = Enum.CameraMode.LockFirstPerson
+                
+                -- Add all the effects
+                player:AddEffect(effectPrefabs.Humanoid_Camera_Subject)
+			    player:AddEffect(effectPrefabs.Max_Camera_Zoom_0)
+			    player:AddEffect(effectPrefabs.Min_Camera_Zoom_0)
+
+            elseif not newValue and oldValue then
+
+                -- Unlock the camera
+                player.player.CameraMode = Enum.CameraMode.Classic
+
+                -- Remove all the effects
+                player:RemoveEffect(effectPrefabs.Humanoid_Camera_Subject.Name)
+			    player:RemoveEffect(effectPrefabs.Max_Camera_Zoom_0.Name)
+			    player:RemoveEffect(effectPrefabs.Min_Camera_Zoom_0.Name)
+            end
+        end)
+
+        -- Check if not a success
+        if not success then
+            warn(response)
+        end
+
+        return newValue
+    end,
+
+
     -- Movement relative to camera
     ["movementRelativeToCamera"] = function(player, oldValue, newValue, startup)
         

@@ -162,7 +162,9 @@ function player.new(newPlayerTable)
 
 	-- Camera settings
 	self.playerStats.cameraFollow = self.torso
+	self.defaultPlayerStats.cameraFollow = self.torso
 	self.playerStats.cameraSubject = self.cameraBlock
+	self.defaultPlayerStats.cameraSubject = self.cameraBlock
 	
 	-- Camera handler
 	self.cameraHandler = cameraHandler.new(self)

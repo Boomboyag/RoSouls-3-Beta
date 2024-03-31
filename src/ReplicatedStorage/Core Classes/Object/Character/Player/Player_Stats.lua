@@ -8,6 +8,9 @@ function playerStats.new(newPlayerTable, player)
 	
 	-- || CAMERA SETTINGS ||
 
+	-- Whether or not the camera is in first person
+	self.firstPersonCamera = false
+
 	-- Movement relative to camera
 	self.movementRelativeToCamera = false
 
