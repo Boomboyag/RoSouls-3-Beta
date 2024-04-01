@@ -85,16 +85,16 @@ local statsChangedFunctions = {
 					return
 				end
 				
-				coroutine.wrap(function()
+				-- Fire the event
+				character.NewAction:Fire(oldValue, newValue)
 
-					-- Fire the event
-					character.NewAction:Fire(oldValue, newValue)
+				coroutine.wrap(function()
 					
 					-- End the current action
-					if oldValue then oldValue:EndAction(character) end
+					--if oldValue then oldValue:EndAction(character) end
 
 					-- Begin the new action
-					if newValue then newValue:BeginAction(character) end
+					--if newValue then newValue:BeginAction(character) end
 				end)()
 			end
 		end) 

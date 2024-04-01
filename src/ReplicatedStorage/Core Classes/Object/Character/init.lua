@@ -22,6 +22,7 @@ local humanoidStateChangedFunctions = require(script:WaitForChild("Humanoid_Stat
 
 -- Stats changed table
 local statsChangedFunctions = require(script:WaitForChild("Variable_Changed_Functions"))
+local afterStatChangedFunctions = require(script:WaitForChild("After_Variable_Change_Functions"))
 
 -- Class creation
 local character = {}
@@ -58,6 +59,13 @@ function character.new(newCharacter)
 			end
 
 			newChar[key] = value
+
+			-- Check if there are any functions to call after changing the variable
+			if afterStatChangedFunctions[tostring(key)] then
+
+				-- Call said function
+				afterStatChangedFunctions[tostring(key)](newChar, old_value, value)
+			end
 		end,
 
 		--__tostring = function(_) return newCharacter.name end,
@@ -122,13 +130,15 @@ function character.new(newCharacter)
 
 			-- Element has been changed
 			__newindex = function(character, key, value)
+				
+
+				local old_value = tableToTrack[key]
 
 				-- Check if there are any functions to call when changing the variable
 				if statsChangedFunctions[tostring(key)] then
 
 					-- Call said function
 					value = statsChangedFunctions[tostring(key)](characterTable, character[key], value) or value
-					
 				end
 				
 				-- Check if the player is currently in an action
@@ -138,7 +148,14 @@ function character.new(newCharacter)
 					self:CheckCurrentAction()
 				end
 
-				rawset(tableToTrack, key, value)
+				tableToTrack[key] = value
+
+				-- Check if there are any functions to call after changing the variable
+				if afterStatChangedFunctions[tostring(key)] then
+
+					-- Call said function
+					afterStatChangedFunctions[tostring(key)](characterTable, old_value, value)
+				end
 			end,
 
 			-- Elements are being iterated over
@@ -456,6 +473,13 @@ function character.new(newCharacter)
 			-- Call said function
 			statsChangedFunctions[tostring(key)](newChar, nil, value, true)
 		end
+
+		-- Check if there are any functions to call after changing the variable
+		if afterStatChangedFunctions[tostring(key)] then
+
+			-- Call said function
+			afterStatChangedFunctions[tostring(key)](newChar, nil, value)
+		end
 	end
 	for key, value in pairs(newChar.defaultCharacterStats) do
 
@@ -464,6 +488,13 @@ function character.new(newCharacter)
 
 			-- Call said function
 			statsChangedFunctions[tostring(key)](newChar, nil, value, true)
+		end
+
+		-- Check if there are any functions to call after changing the variable
+		if afterStatChangedFunctions[tostring(key)] then
+
+			-- Call said function
+			afterStatChangedFunctions[tostring(key)](newChar, nil, value)
 		end
 	end
 	

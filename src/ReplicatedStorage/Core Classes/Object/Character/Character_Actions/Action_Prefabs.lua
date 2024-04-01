@@ -182,6 +182,24 @@ local effectTable = {
 		["ActionEndFunction"] = function(character)
 
 		end,
+	
+		-- The function performed on the PLAYER when the action begins
+		["ActionBeginFunction_PLAYER"] = function(player)
+
+			-- Stop the movement being relative to the camera
+			player:AddEffect(playerEffectPrefabs.Disable_Movement_Relative_To_Camera)
+
+			-- Wait for the animation to finish
+			task.wait(player.animations.rollAnimation.length)
+
+			-- Allow the movement being relative to the camera
+			player:RemoveEffect(playerEffectPrefabs.Disable_Movement_Relative_To_Camera.Name)
+		end,
+
+		-- The function performed on the PLAYER when the action is finished
+		["ActionEndFunction_PLAYER"] = function(player)
+
+		end,
 	},	
 	
 	["Backstep"] = {
@@ -263,6 +281,24 @@ local effectTable = {
 		-- The function performed on the character when the action is finished
 		["ActionEndFunction"] = function(character)
 
+
+		end,
+
+		-- The function performed on the PLAYER when the action begins
+		["ActionBeginFunction_PLAYER"] = function(player)
+
+			-- Stop the movement being relative to the camera
+			player:AddEffect(playerEffectPrefabs.Disable_Movement_Relative_To_Camera)
+
+			-- Wait for the animation to finish
+			task.wait(player.animations.backstepAnimation.length)
+
+			-- Allow the movement being relative to the camera
+			player:RemoveEffect(playerEffectPrefabs.Disable_Movement_Relative_To_Camera.Name)
+		end,
+
+		-- The function performed on the PLAYER when the action is finished
+		["ActionEndFunction_PLAYER"] = function(player)
 
 		end,
 	},		
