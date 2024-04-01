@@ -84,6 +84,9 @@ local effectTable = {
 			-- Change the camera sway
 			player:AddEffect(playerEffectPrefabs.Sprint_Camera_Sway_Speed)
 			player:AddEffect(playerEffectPrefabs.Sprint_Camera_Sway_Amount)
+
+			-- Stop the movement being relative to the camera
+			player:AddEffect(playerEffectPrefabs.Disable_Movement_Relative_To_Camera)
 		end,
 
 		-- The function performed on the PLAYER when the action is finished
@@ -95,6 +98,9 @@ local effectTable = {
 			-- Reset the camera sway
 			player:RemoveEffect(playerEffectPrefabs.Sprint_Camera_Sway_Speed.Name)
 			player:RemoveEffect(playerEffectPrefabs.Sprint_Camera_Sway_Amount.Name)
+
+			-- Allow the movement being relative to the camera
+			player:RemoveEffect(playerEffectPrefabs.Disable_Movement_Relative_To_Camera.Name)
 		end,
 	},
 	

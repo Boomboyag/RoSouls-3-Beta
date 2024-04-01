@@ -200,7 +200,7 @@ function character.new(newCharacter)
 	-- Get the character's state
 	self.characterState = Enum.CharacterState.Default
 	self.controlType = Enum.ControlType.Full
-	self.movementType = Enum.MovementType.Default
+	self.movementType = Enum.MovementType.Strafing
 
 	-- Create the character stats
 	self.characterStats = TrackStats(characterStatsSheet.new(newCharacter), self)
