@@ -200,6 +200,7 @@ function character.new(newCharacter)
 	-- Get the character's state
 	self.characterState = Enum.CharacterState.Default
 	self.controlType = Enum.ControlType.Full
+	self.movementType = Enum.MovementType.Strafing
 
 	-- Create the character stats
 	self.characterStats = TrackStats(characterStatsSheet.new(newCharacter), self)
@@ -230,11 +231,18 @@ function character.new(newCharacter)
 	self.animator = self.humanoid:FindFirstChildOfClass("Animator")
 	self.animations = animationModule.new(self.humanoid, newCharacter.animationList)
 	self.coreAnimations = {
+
 		["Idle"] = self.animations.idleAnimation,
 		["Walking"] = self.animations.walkAnimation,
 		["Falling"] = self.animations.fallAnimation,
 		["Jumping"] = self.animations.jumpAnimation,
-		["Climbing"] = self.animations.climbAnimation
+		["Climbing"] = self.animations.climbAnimation,
+
+		["Strafing"] = {
+			
+			["Left"] = self.animations.strafeLeft,
+			["Right"] = self.animations.strafeRight
+		},
 	}
 
 	-- Stop all current animations 

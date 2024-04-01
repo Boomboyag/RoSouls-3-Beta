@@ -143,7 +143,7 @@ function cameraHandler:SmoothCamera()
 	end
 
 	-- Assign the position of the camera part
-	self.cameraBodyPosition.Position = (self.cameraFollow.CFrame.Position + self.appliedCameraOffset)
+	self.cameraBodyPosition.Position = self.cameraFollow.CFrame:ToWorldSpace(CFrame.new(self.appliedCameraOffset)).Position
 
 	-- Tween the camera part over time
 	self.cameraBodyPosition.P = 1000 * self.cameraStiffness

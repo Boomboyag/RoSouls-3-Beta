@@ -12,11 +12,11 @@ function playerStats.new(newPlayerTable, player)
 	self.firstPersonCamera = false
 
 	-- Movement relative to camera
-	self.movementRelativeToCamera = false
+	self.movementRelativeToCamera = true
 
 	-- Whether or not the camera follow's it's current target
 	self.cameraFollowsTarget = true
-	self.cameraStiffness = 40
+	self.cameraStiffness = 30
 
 	-- The camera's offset from it's current target
 	self.cameraOffset = Vector3.new(0, 1.75, 0)

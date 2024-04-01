@@ -1,6 +1,7 @@
 -- Roblox services
 local replicatedStorage = game:GetService("ReplicatedStorage")
 local userInputService = game:GetService("UserInputService")
+local runService = game:GetService("RunService")
 
 -- Required folders
 local coreFolder = replicatedStorage:WaitForChild("Core Classes")
@@ -27,6 +28,103 @@ enums.ObjectType = {
 enums.ControlType = {
 	Full = {1, Name = "Full"},
 	None = {2, Name = "None"}
+}
+
+-- The character's movement type
+enums.MovementType = {
+
+	-- The default movement type
+	Default = {
+
+		1, 
+		Name = "Default",
+
+		-- Called when changed to
+		StartFunction = function(character)
+
+		end,
+
+		-- Called when changed from
+		EndFunction = function(character)
+			
+		end
+	},
+
+	-- The character is strafing
+	Strafing = {
+
+		2, 
+		Name = "Strafing",
+
+		-- Called when changed to
+		StartFunction = function(character)
+
+			-- The animations
+			local strafeLeft = character.coreAnimations.Strafing["Left"]
+			local strafeRight = character.coreAnimations.Strafing["Right"]
+
+			-- Play the animations
+			strafeLeft:Play()
+			strafeRight:Play()
+
+			-- Set the animation priority
+			strafeLeft.Priority = Enum.AnimationPriority.Movement
+			strafeRight.Priority = Enum.AnimationPriority.Movement
+
+			-- Fade the animations to 0
+			strafeLeft:AdjustWeight(0, 0)
+			strafeRight:AdjustWeight(0, 0)
+
+			-- Bind the strafe update to the render stepped
+			runService:BindToRenderStep("Strafe Update", Enum.RenderPriority.Character.Value + 1, function()
+				
+				-- Get the current movement direction
+				local moveDir = character.humanoidRootPart.CFrame:VectorToObjectSpace(character:GetWorldMoveDirection())
+
+				-- Get the individual axis
+				local x = moveDir.X
+				local z = moveDir.Z
+
+				-- Make sure the character can strafe
+				if character.characterStats.canStrafe then
+
+					-- Check what direction on the x-axis the character is moving
+					if x >= 0.5 then
+
+						-- Fade the animations back to 0
+						strafeLeft:AdjustWeight(0.8 * x)
+						strafeRight:AdjustWeight(0)
+
+					elseif x <= -0.5 then
+						
+						-- Fade the animations back to 0
+						strafeLeft:AdjustWeight(0)
+						strafeRight:AdjustWeight(0.8 * math.abs(x))
+					else
+					
+						-- Fade the animations back to 0
+						strafeLeft:AdjustWeight(0, 0.1)
+						strafeRight:AdjustWeight(0, 0.1)
+					end
+				end
+			end)
+		end,
+
+		-- Called when changed from
+		EndFunction = function(character)
+
+			-- The animations
+			local strafeLeft = character.coreAnimations.Strafing["Left"]
+			local strafeRight = character.coreAnimations.Strafing["Right"]
+
+			-- Stop the animations
+			strafeLeft:Play()
+			strafeRight:Play()
+			
+			-- Unbind the strafe
+			runService:UnbindFromRenderStep("Strafe Update")
+		end
+	},
 }
 
 -- The character's state
@@ -165,6 +263,9 @@ enums.CharacterState = {
 			-- Let the character know it's dead
 			character.alive = false
 
+			-- Return to the default movement state
+			character.movementType = enums.MovementType.Default
+
 			-- Fire the event
 			character.CharacterDied:Fire()
 
@@ -179,8 +280,6 @@ enums.CharacterState = {
 			character:AddEffect(characterEffectPrefabs.Disable_Actions)
 			character:AddEffect(characterEffectPrefabs.Disable_Actions)
 			character.characterStats.canAddEffects = false
-
-
 		end,
 
 		-- Function called when the state ends

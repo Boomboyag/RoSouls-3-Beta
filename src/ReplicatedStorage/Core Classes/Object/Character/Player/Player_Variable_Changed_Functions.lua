@@ -179,6 +179,7 @@ local statsChangedFunctions = {
 
             -- Change the camera handler to reflect the new value
             player.cameraHandler.cameraOffset = newValue
+            player.humanoid.CameraOffset = newValue
         end)
 
         -- Check if not a success

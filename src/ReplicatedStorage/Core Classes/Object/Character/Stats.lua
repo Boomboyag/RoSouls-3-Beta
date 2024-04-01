@@ -52,6 +52,7 @@ function characterStats.new(newCharacter)
 	self.canClimb = true
 	self.canSprint = true
 	self.canRoll = true
+	self.canStrafe = true
 	self.canAddEffects = true
 	self.canTilt = true
 

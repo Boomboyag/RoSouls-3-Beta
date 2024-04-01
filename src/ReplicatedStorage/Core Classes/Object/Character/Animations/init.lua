@@ -6,6 +6,7 @@ animations.__index = animations
 local defaultAnims = script:WaitForChild("Default_Animations")
 local idleAnims = defaultAnims:WaitForChild("Idle")
 local movementAnims = defaultAnims:WaitForChild("Movement")
+local strafeAnimations = movementAnims:WaitForChild("Strafe")
 local actionAnimations = defaultAnims:WaitForChild("Actions")
 
 -- Class constructor
@@ -19,6 +20,10 @@ function animations.new(humanoid, animationList)
 	self.walkAnimation = humanoid:LoadAnimation(animationList['Walk'] or movementAnims.Standing_Walk)
 	self.fallAnimation = humanoid:LoadAnimation(animationList['Fall'] or actionAnimations.Fall_Animation)
 	
+	-- || STRAFING ANIMATIONS
+	self.strafeLeft = humanoid:LoadAnimation(animationList["StrafeLeft"] or strafeAnimations.Strafe_Left)
+	self.strafeRight = humanoid:LoadAnimation(animationList["StrafeRight"] or strafeAnimations.Strafe_Right)
+
 	-- || ACTION ANIMATIONS ||
 	self.jumpAnimation = humanoid:LoadAnimation(animationList['Jump'] or actionAnimations.Jump_Animation)
 	self.landAnimation = humanoid:LoadAnimation(animationList["Land"] or actionAnimations.Land_Animation)

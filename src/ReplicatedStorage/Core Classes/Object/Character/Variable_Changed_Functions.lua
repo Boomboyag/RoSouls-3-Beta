@@ -131,6 +131,31 @@ local statsChangedFunctions = {
 
 	-- || MOVEMENT ||
 
+	-- The type of movement the character is using
+	["movementType"] = function(character, oldValue, newValue, startup)
+
+		local success, response = pcall(function()
+
+			-- Check if this is being fired for the first time or if the values are the same
+			if (not oldValue and not startup) or (oldValue == newValue) then return end
+
+			-- End the current state
+			if oldValue then oldValue.EndFunction(character) end
+
+			-- Begin the new state
+			newValue.StartFunction(character)
+
+			-- Fire the event
+			character.CharacterStatChanged:Fire("movementType", oldValue, newValue)
+		end) 
+
+		if not success then
+			warn(response)
+		end
+		
+		return newValue
+	end,
+
 	-- The direction the character is moving in has changed
 	["movementDirection"] = function(character, oldValue, newValue, startup)
 
