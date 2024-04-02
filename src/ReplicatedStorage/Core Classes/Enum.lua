@@ -118,8 +118,8 @@ enums.MovementType = {
 			local strafeRight = character.coreAnimations.Strafing["Right"]
 
 			-- Stop the animations
-			strafeLeft:Play()
-			strafeRight:Play()
+			strafeLeft:Stop()
+			strafeRight:Stop()
 			
 			-- Unbind the strafe
 			runService:UnbindFromRenderStep("Strafe Update")
@@ -440,12 +440,12 @@ enums.CustomCursorType = {
 		MouseBehavior = Enum.MouseBehavior.Default,
 
 		StateBeganFunction = function(player)
-			
-			-- Unlock the cursor
-			userInputService.MouseBehavior = Enum.MouseBehavior.Default
 
 			-- Show the cursor
 			userInputService.MouseIconEnabled = true
+			
+			-- Unlock the cursor
+			userInputService.MouseBehavior = Enum.MouseBehavior.Default
 		end,
 	},
 
@@ -458,12 +458,12 @@ enums.CustomCursorType = {
 		MouseBehavior = Enum.MouseBehavior.LockCenter,
 
 		StateBeganFunction = function(player)
-			
-			-- Lock the cursor
-			userInputService.MouseBehavior = Enum.MouseBehavior.LockCenter
 
 			-- Hide the cursor
 			userInputService.MouseIconEnabled = false
+			
+			-- Lock the cursor
+			userInputService.MouseBehavior = Enum.MouseBehavior.LockCenter
 		end,
 	},
 }

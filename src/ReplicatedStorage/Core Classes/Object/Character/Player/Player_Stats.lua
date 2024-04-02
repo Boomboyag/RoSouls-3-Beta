@@ -1,3 +1,13 @@
+-- Required services
+local replicatedStorage = game:GetService("ReplicatedStorage")
+
+-- Required folders
+local coreFolder = replicatedStorage:WaitForChild("Core Classes")
+local characterFolder = coreFolder:WaitForChild("Object"):WaitForChild("Character")
+
+-- Required scripts
+local Enum = require(coreFolder:WaitForChild("Enum"))
+
 -- Class creation
 local playerStats = {}
 playerStats.__index = playerStats
@@ -7,6 +17,9 @@ function playerStats.new(newPlayerTable, player)
 	local self = {}
 	
 	-- || CAMERA SETTINGS ||
+
+	-- The camera state
+	self.cameraType = Enum.CustomCameraType.Default
 
 	-- Whether or not the camera is in first person
 	self.firstPersonCamera = false
@@ -36,6 +49,9 @@ function playerStats.new(newPlayerTable, player)
 	self.cameraSwaySpeed = Vector2.new(0.7, 0.7)
 
 	-- || MOUSE SETTINGS ||
+
+	-- The mouse states
+	self.cursorType = Enum.CustomCursorType.Locked
 
 	-- The camera's mouse sensitivity
 	self.mouseSensitivity = 0.3

@@ -94,6 +94,7 @@ local statsChangedFunctions = {
 
             -- Enable or disable the orientation attachment
             player.rootOrientationAttachment.Enabled = newValue
+            UserSettings():GetService("UserGameSettings").RotationType = newValue and Enum.RotationType.CameraRelative or Enum.RotationType.MovementRelative
 
             -- Change the camera setting
             player.cameraHandler.movementRelativeToCamera = newValue
@@ -334,7 +335,7 @@ local statsChangedFunctions = {
 		    if (not oldValue and not startup) or (oldValue == newValue) then return end
 
             -- Fire the related function
-            if newValue then newValue:StateBeganFunction() end
+            if newValue then newValue:StateBeganFunction(player) end
         end)
 
         -- Check if not a success

@@ -28,11 +28,6 @@ function playerProxy.new(newPlayer)
 		self:Crouch(wantToCrouch, oppositeOfCurrent)
 	end
 	
-	-- The slow walk function
-	local SlowWalk = function(newPlayer, wantToSprint, oppositeOfCurrent)
-		self:SlowWalk(wantToSprint, oppositeOfCurrent)
-	end
-	
 	-- The sprint function
 	local Sprint = function(newPlayer, wantToSprint, oppositeOfCurrent)
 		self:Sprint(wantToSprint, oppositeOfCurrent)
@@ -41,6 +36,12 @@ function playerProxy.new(newPlayer)
 	-- The roll function
 	local Roll = function(newPlayer, forceRoll : Vector3)
 		self:Roll(forceRoll)
+	end
+
+	-- The unlock / lock mouse function
+	local ChangeMouseLock = function(newPlayer)
+		
+		self:ChangeMouseLock()
 	end
 	
 	-- THe destroy function
@@ -53,10 +54,11 @@ function playerProxy.new(newPlayer)
 		
 		-- || FUNCTIONS ||
 		Crouch = Crouch,
-		SlowWalk = SlowWalk,
 		Sprint = Sprint,
 		Roll = Roll,
 		Destroy = Destroy,
+
+		ChangeMouseLock = ChangeMouseLock,
 		
 		-- || EVENTS ||
 		GetPlayerStat = self.GetStat,

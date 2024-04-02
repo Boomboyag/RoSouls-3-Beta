@@ -1045,6 +1045,7 @@ end
 -- Reaction animation to damage
 function character:DamageReaction(damageAmount)
 	
+	print("Ouch " .. damageAmount)
 end
 
 -- || HEALTH ||

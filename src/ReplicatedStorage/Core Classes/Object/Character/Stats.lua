@@ -1,5 +1,4 @@
 -- Required services
-
 local replicatedStorage = game:GetService("ReplicatedStorage")
 
 -- Required folders

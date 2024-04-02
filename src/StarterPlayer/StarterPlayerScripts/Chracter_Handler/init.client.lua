@@ -7,27 +7,11 @@ local replicatedStorage = game:GetService("ReplicatedStorage")
 local core = replicatedStorage:WaitForChild("Core Classes")
 
 -- Get the required scripts
-local Enum = require(core:WaitForChild("Enum"))
-local playerHandler = require(core:WaitForChild("Player_Proxy"))
-local uiHandler = require(script.GUI_Handler)
+local playerHandler = core:WaitForChild("Player_Proxy")
 
 -- The player
 local characterHandler
 local player = players.LocalPlayer
-
-local ui = nil
-
--- Update the UI
-local function UpdateUI(charHandler)
-	
-	if not ui then return end
-	
-	ui:ChangeHealth(charHandler.GetPlayerStat:Invoke("currentHealth"))
-	ui:ChangeSpeed(charHandler.GetPlayerStat:Invoke("currentWalkSpeed"))
-	ui:ChangeStamina(characterHandler.GetPlayerStat:Invoke("currentStamina"))
-	ui:CoreAnimationChange(characterHandler.GetPlayerStat:Invoke("currentCoreAnimation"))
-	ui:ChangeEffects(characterHandler.GetPlayerStat:Invoke("effects"))
-end
 
 player.CharacterAdded:Connect(function(character)
 	
@@ -39,25 +23,7 @@ player.CharacterAdded:Connect(function(character)
 	
 	-- Wait for the humanoid root part to appear
 	character:WaitForChild("HumanoidRootPart")
-	characterHandler = playerHandler.new(charTable)
-
-	ui = uiHandler.new(player)
-	UpdateUI(characterHandler)
-
-	characterHandler.PlayerStatChanged.Event:Connect(function()
-		task.wait(0.1)
-		UpdateUI(characterHandler)
-	end)
-	
-	characterHandler.EffectAdded.Event:Connect(function()
-		task.wait(0.1)
-		UpdateUI(characterHandler)
-	end)
-	
-	characterHandler.EffectRemoved.Event:Connect(function()
-		task.wait(0.1)
-		UpdateUI(characterHandler)
-	end)
+	characterHandler = require(playerHandler).new(charTable)
 end)
 
 player.CharacterRemoving:Connect(function()
@@ -67,7 +33,6 @@ player.CharacterRemoving:Connect(function()
 		
 		-- Remove the character handler
 		characterHandler:Destroy()
-		ui:Destroy()
 	end
 end)
 
@@ -96,6 +61,12 @@ userInputService.InputEnded:Connect(function(input, gameProcessed)
 
 		-- Crouch or uncrouch
 		characterHandler:Roll()
+	end
+
+	-- Check if we want to unlock the mouse
+	if input.KeyCode == Enum.KeyCode.U then
+		
+		characterHandler:ChangeMouseLock()
 	end
 	
 	-- Check if we want to stop sprinting
