@@ -230,6 +230,7 @@ function character.new(newCharacter)
 	-- || ACTIONS ||
 	
 	self.actionPrefabs = {
+		["Blank"] = actionModule.new(actionPrefabs.Blank),
 		["Sprinting"] = actionModule.new(actionPrefabs.Sprint),
 		["Rolling"] = actionModule.new(actionPrefabs.Roll),
 		["Backstepping"] = actionModule.new(actionPrefabs.Backstep),

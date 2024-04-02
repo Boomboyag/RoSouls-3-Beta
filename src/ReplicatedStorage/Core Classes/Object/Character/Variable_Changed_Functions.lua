@@ -73,6 +73,7 @@ local statsChangedFunctions = {
 			if not character.characterStats.actionsEnabled then
 				
 				newValue = oldValue
+				return
 			else
 				
 				-- Make sure the values aren't the same
@@ -101,6 +102,11 @@ local statsChangedFunctions = {
 
 		if not success then
 			warn(response)
+		end
+
+		if newValue == nil then
+			
+			newValue = character.actionPrefabs.Blank
 		end
 		
 		return newValue	

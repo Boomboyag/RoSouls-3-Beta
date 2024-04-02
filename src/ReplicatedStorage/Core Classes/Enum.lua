@@ -344,6 +344,11 @@ enums.ActionType = {
 		3,
 		Name = "Damage"
 	},	
+
+	None = {
+		4,
+		Name = "None"
+	}
 }
 
 -- What operator to use on an action prerequisite

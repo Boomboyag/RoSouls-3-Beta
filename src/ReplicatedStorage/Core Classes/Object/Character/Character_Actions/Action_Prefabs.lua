@@ -11,6 +11,49 @@ local Enum = require(coreFolder:WaitForChild("Enum"))
 
 -- The table of effects
 local effectTable = {
+
+	-- || BLANK ||
+
+	["Blank"] = {
+
+		-- || REQUIRED VARIABLES ||
+
+		-- The name of the effect
+		["Name"] = "Blank",
+		
+		-- The type of action
+		["Type"] = Enum.ActionType.None,
+		
+		-- If this action can be queued
+		["CanQueue"] = false,
+		["MaxQueueTime"] = 0,
+		["QueueWhenOveridden"] = false,
+
+		-- Variables that must be a certain value for the action to trigger
+		["Prerequisites"] = {
+			
+		},
+
+		-- The function performed on the character when the action begins
+		["ActionBeginFunction"] = function(character)
+
+		end,
+
+		-- The function performed on the character when the action is finished
+		["ActionEndFunction"] = function(character)
+
+		end,
+	
+		-- The function performed on the PLAYER when the action begins
+		["ActionBeginFunction_PLAYER"] = function(player)
+
+		end,
+
+		-- The function performed on the PLAYER when the action is finished
+		["ActionEndFunction_PLAYER"] = function(player)
+
+		end,
+	},
 	
 	-- || PLAYER MOVEMENT ||
 	
@@ -129,6 +172,8 @@ local effectTable = {
 
 		-- The function performed on the character when the action begins
 		["ActionBeginFunction"] = function(character)
+
+			character:AddEffect(characterEffectPrefabs.Disable_Actions)
 			
 			-- Lock the character
 			character.characterState = Enum.CharacterState.Locked
@@ -172,6 +217,7 @@ local effectTable = {
 			character:RemoveEffect(characterEffectPrefabs.Disable_Auto_Rotate.Name)
 			
 			-- Allow the player to use actions again
+			character:RemoveEffect(characterEffectPrefabs.Disable_Actions.Name)
 			character.characterStats.currentAction = nil
 			
 			-- Destroy the roll velocity
