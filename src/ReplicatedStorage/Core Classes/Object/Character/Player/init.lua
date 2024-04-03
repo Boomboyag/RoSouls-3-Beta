@@ -275,8 +275,8 @@ function player:DebugMenu()
 		local windowPosition = iris.State(Vector2.new(0, 0))
 		iris.Window({"DEBUG WINDOW"}, {position = windowPosition, size = windowSize, isUncollapsed = false})
 
-				-- Character stats
-				iris.CollapsingHeader({"Character Stats"}, {isUncollapsed = true})
+			-- Character stats
+			iris.CollapsingHeader({"Character Stats"}, {isUncollapsed = true})
 
 					-- CHARACTER HEALTH
 					iris.SameLine()
@@ -397,9 +397,9 @@ function player:DebugMenu()
 						end
 					iris.End()
 				iris.End()
-			
-				-- Character functions
-				iris.CollapsingHeader({"Character Functions"})
+		
+			-- Character functions
+			iris.CollapsingHeader({"Character Functions"})
 
 					-- STRAFING
 					local strafing = iris.Checkbox({"Strafing"})
@@ -430,9 +430,9 @@ function player:DebugMenu()
 					iris.End()
 
 				iris.End()
-
-				-- Camera
-				iris.CollapsingHeader({"Camera Functions"})
+			
+			-- Camera
+			iris.CollapsingHeader({"Camera Functions"})
 
 					-- FIRST PERSON CAMERA
 					local firstPersonEnabled = iris.Checkbox({"First Person"})
@@ -459,9 +459,19 @@ function player:DebugMenu()
 					end
 
 					-- CAMERA FOV
-					local fovSlider = iris.SliderNum({"Camera FOV"}, {number = 70})
+					local fovSlider = iris.SliderNum({"Camera FOV"}, {number = self.playerStats.fieldOfView})
 					if fovSlider.numberChanged() then
 						self.playerStats.fieldOfView = fovSlider.number.value
+					end
+					if fovSlider.hovered() then
+						iris.Tooltip("The camera's zoom")
+					end
+
+					-- CAMERA ZOOM
+					local zoomSlider = iris.SliderNum({"Camera Zoom"}, {number = self.playerStats.minimumZoom})
+					if zoomSlider.numberChanged() then
+						self.playerStats.minimumZoom = zoomSlider.number.value
+						self.playerStats.maximumZoom = zoomSlider.number.value
 					end
 					if fovSlider.hovered() then
 						iris.Tooltip("The player's field of view")
