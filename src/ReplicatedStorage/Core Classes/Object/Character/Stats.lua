@@ -38,8 +38,8 @@ function characterStats.new(newCharacter)
 	self.staminaRegenDelay = 0.5
 	
 	-- || ROLL AND BACKSTEP ||
-	self.rollVelocity = 30
-	self.backStepVelocity = 20
+	self.rollVelocity = 40
+	self.backStepVelocity = 30
 	
 	-- || WALK SPEED ||
 	self.currentWalkSpeed = newCharacter.walkSpeed or 11
