@@ -173,6 +173,10 @@ local effectTable = {
 		-- The function performed on the character when the action begins
 		["ActionBeginFunction"] = function(character)
 
+			-- Get the character's movement vector
+			local movementVector = character:GetWorldMoveDirection()
+			local newCFrame = CFrame.new(character.humanoidRootPart.CFrame.Position, character.humanoidRootPart.CFrame.Position + movementVector) 
+
 			character:AddEffect(characterEffectPrefabs.Disable_Actions)
 			
 			-- Lock the character
@@ -186,6 +190,16 @@ local effectTable = {
 			-- Change the animation
 			local rollAnimation = character.animations.rollAnimation
 			character:ChangeActionAnimation(rollAnimation, 0.1, Enum.AnimationPriority.Action, false, 1)
+
+			-- Create an align orientation to make the character look in their movement direction
+			local rootOrientationAttachment = Instance.new("AlignOrientation", character.humanoidRootPart)
+			rootOrientationAttachment.Name = "Roll Orientation"
+			rootOrientationAttachment.Mode = Enum.OrientationAlignmentMode.OneAttachment
+			rootOrientationAttachment.Attachment0 = character.rootAttachment
+			rootOrientationAttachment.Responsiveness = 150
+			
+			-- Make the humanoid look in their movement direction via the orientation attachment
+			rootOrientationAttachment.CFrame = newCFrame
 			
 			-- Create a new linear velocity to move the charatcer via physics
 			local rollVelocity = Instance.new("LinearVelocity", character.rollAttatchment)
@@ -221,6 +235,7 @@ local effectTable = {
 			character.characterStats.currentAction = nil
 			
 			-- Destroy the roll velocity
+			rootOrientationAttachment:Destroy()
 			rollVelocity:Destroy()
 		end,
 
