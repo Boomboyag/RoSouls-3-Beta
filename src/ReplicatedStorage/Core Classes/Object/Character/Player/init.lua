@@ -464,17 +464,16 @@ function player:DebugMenu()
 						self.playerStats.fieldOfView = fovSlider.number.value
 					end
 					if fovSlider.hovered() then
-						iris.Tooltip("The camera's zoom")
+						iris.Tooltip("The player's field of view")
 					end
 
 					-- CAMERA ZOOM
-					local zoomSlider = iris.SliderNum({"Camera Zoom"}, {number = self.playerStats.minimumZoom})
+					local zoomSlider = iris.SliderNum({"Camera Zoom", 1, 1, 200}, {number = self.playerStats.cameraZoomDistance})
 					if zoomSlider.numberChanged() then
-						self.playerStats.minimumZoom = zoomSlider.number.value
-						self.playerStats.maximumZoom = zoomSlider.number.value
+						self.playerStats.cameraZoomDistance = zoomSlider.number.value
 					end
 					if fovSlider.hovered() then
-						iris.Tooltip("The player's field of view")
+						iris.Tooltip("The camera's zoom distance")
 					end
 
 					-- CAMERA STIFFNESS

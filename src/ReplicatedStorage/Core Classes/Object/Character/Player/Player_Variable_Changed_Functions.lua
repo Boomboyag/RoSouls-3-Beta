@@ -230,7 +230,7 @@ local statsChangedFunctions = {
     end,
 
     -- The maximum zoom distance
-    ["maximumZoom"] = function(player, oldValue, newValue, startup)
+    ["cameraZoomDistance"] = function(player, oldValue, newValue, startup)
 
         -- Create the pcall
         local success, response = pcall(function()
@@ -238,26 +238,8 @@ local statsChangedFunctions = {
             -- Check if this is being fired for the first time or if the values are the same
 		    if (not oldValue and not startup) or (oldValue == newValue) or not newValue then return end
 
-            -- Change the player's maximum camera zoom distance
+            -- Change the player's camera zoom distance
             player.player.CameraMaxZoomDistance = newValue
-        end)
-
-        -- Check if not a success
-        if not success then
-            warn(response)
-        end
-    end,
-
-    -- The minimum zoom distance
-    ["minimumZoom"] = function(player, oldValue, newValue, startup)
-
-        -- Create the pcall
-        local success, response = pcall(function()
-
-            -- Check if this is being fired for the first time or if the values are the same
-		    if (not oldValue and not startup) or (oldValue == newValue) or not newValue then return end
-
-            -- Change the player's maximum camera zoom distance
             player.player.CameraMinZoomDistance = newValue
         end)
 

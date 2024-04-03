@@ -35,8 +35,7 @@ function playerStats.new(newPlayerTable, player)
 	self.cameraOffset = Vector3.new(0, 1.75, 0)
 
 	-- Zoom distance
-	self.minimumZoom = 12
-	self.maximumZoom = 12
+	self.cameraZoomDistance = 12
 
 	-- The field of view
 	self.fieldOfView = 70
