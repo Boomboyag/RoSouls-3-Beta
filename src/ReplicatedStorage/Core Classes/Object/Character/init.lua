@@ -1096,6 +1096,34 @@ function character:CheckFall(newTick)
 	end
 end
 
+-- Check if the character is grounded
+function character:CheckGround()
+	
+	-- The raycast origin and direction
+	local origin = self.humanoidRootPart.CFrame.Position
+	local direction = Vector3.new(0, -4, 0)
+
+	-- The raycast parameters
+	local raycastParams = RaycastParams.new()
+	raycastParams.FilterDescendantsInstances = {self.model}
+	raycastParams.FilterType = Enum.RaycastFilterType.Exclude
+	raycastParams.IgnoreWater = true
+
+	-- The raycast
+	local raycastResult = workspace:Raycast(origin, direction, raycastParams)
+
+	-- Check if the raycast hit anything
+	if raycastResult then
+		
+		-- Return trua and provide the material
+		return true, raycastResult.Material
+	else
+
+		-- Return false
+		return false
+	end
+end
+
 -- See if the character can see an object
 function character:CheckSight(newModel)
 
