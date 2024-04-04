@@ -495,10 +495,10 @@ function player:DebugMenu()
 					-- CAMERA FOLLOWS TARGET
 					local cameraFollowsTarget = iris.Checkbox({"Camera block Follows Target"}, {isChecked = true})
 					if cameraFollowsTarget.checked() then
-						self.playerStats.cameraFollowsTarget = true
+						self:RemoveEffect(effectPrefabs.Disable_Camera_Block_Follow.Name)
 					end
 					if cameraFollowsTarget.unchecked() then
-						self.playerStats.cameraFollowsTarget = false
+						self:AddEffect(effectPrefabs.Disable_Camera_Block_Follow)
 					end
 					if cameraFollowsTarget.hovered() then
 						iris.Tooltip("Whether or not the camera block will follow the current target")

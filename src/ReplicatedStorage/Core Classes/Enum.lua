@@ -303,9 +303,6 @@ enums.CharacterState = {
 		-- Function called when the state begins
 		StateBeganFunction = function(character)
 
-			-- Required line of code (do not remove)
-			print("THE HEAVY IS DEAD")
-
 			-- Let the character know it's dead
 			character.alive = false
 
@@ -337,7 +334,12 @@ enums.CharacterState = {
 
 		-- Function called when the state begins on the client
 		StateBeganFunctionPlayer = function(player)
-			
+
+			-- Required line of code (do not remove)
+			print("THE HEAVY IS DEAD")
+
+			-- Stop the camera block from following the player
+			player.playerStats.cameraFollowsTarget = false
 		end,
 		
 		-- Function called when the state ends on the client

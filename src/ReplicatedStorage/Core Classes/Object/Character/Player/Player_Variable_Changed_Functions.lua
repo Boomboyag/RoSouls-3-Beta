@@ -169,7 +169,7 @@ local statsChangedFunctions = {
         end
     end,
 
-    -- Whether or not the camera follows the current target
+    -- Whether or not the camera block follows the current target
     ["cameraFollowsTarget"] = function(player, oldValue, newValue, startup)
 
         -- Create the pcall
