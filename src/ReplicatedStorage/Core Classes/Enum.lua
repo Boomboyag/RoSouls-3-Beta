@@ -287,7 +287,7 @@ enums.CharacterState = {
 		StateEndedFunctionPlayer = function(player)
 
 			-- Allow the player to look in the camera's direction
-			player:RemoveEffect(playerEffectPrefabs.Disable_Movement_Relative_To_Camera)
+			player:RemoveEffect(playerEffectPrefabs.Disable_Movement_Relative_To_Camera.Name)
 		end,
 	},
 	
