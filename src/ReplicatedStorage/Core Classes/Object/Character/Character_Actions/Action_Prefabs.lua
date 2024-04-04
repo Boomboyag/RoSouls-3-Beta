@@ -229,14 +229,16 @@ local effectTable = {
 			-- Unlock the character
 			character.characterState = Enum.CharacterState.Default
 			character:RemoveEffect(characterEffectPrefabs.Disable_Auto_Rotate.Name)
+
+			-- Destroy the roll velocity
+			rootOrientationAttachment:Destroy()
+			rollVelocity:Destroy()
+
+			task.wait(0.1)
 			
 			-- Allow the player to use actions again
 			character:RemoveEffect(characterEffectPrefabs.Disable_Actions.Name)
 			character.characterStats.currentAction = nil
-			
-			-- Destroy the roll velocity
-			rootOrientationAttachment:Destroy()
-			rollVelocity:Destroy()
 		end,
 
 		-- The function performed on the character when the action is finished

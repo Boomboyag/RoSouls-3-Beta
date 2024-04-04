@@ -8,7 +8,9 @@ local coreFolder = replicatedStorage:WaitForChild("Core Classes")
 
 -- Required scripts
 local characterModule = coreFolder:WaitForChild("Object"):WaitForChild("Character")
+local playerModule = characterModule:WaitForChild("Player")
 local characterEffectPrefabs = require(characterModule:WaitForChild("Character_Effects").Effect_Prefabs)
+local playerEffectPrefabs = require(playerModule:WaitForChild("Player_Effect_Prefabs"))
 
 local enums = {}
 
@@ -148,6 +150,16 @@ enums.CharacterState = {
 		StateEndedFunction = function(character)
 
 		end,
+
+		-- Function called when the state begins on the client
+		StateBeganFunctionPlayer = function(player)
+			
+		end,
+		
+		-- Function called when the state ends on the client
+		StateEndedFunctionPlayer = function(player)
+
+		end,
 	},
 	
 	-- The sitting state
@@ -171,6 +183,16 @@ enums.CharacterState = {
 
 			-- Remove the effect from the character
 			character:RemoveEffect(characterEffectPrefabs.Disable_Actions.Name)
+		end,
+
+		-- Function called when the state begins on the client
+		StateBeganFunctionPlayer = function(player)
+			
+		end,
+		
+		-- Function called when the state ends on the client
+		StateEndedFunctionPlayer = function(player)
+
 		end,
 	},
 	
@@ -209,6 +231,16 @@ enums.CharacterState = {
 			character:CheckFall(tick())
 			character.fallTime = 0
 		end,
+
+		-- Function called when the state begins on the client
+		StateBeganFunctionPlayer = function(player)
+			
+		end,
+		
+		-- Function called when the state ends on the client
+		StateEndedFunctionPlayer = function(player)
+
+		end,
 	},
 
 	-- The climbing state
@@ -227,7 +259,7 @@ enums.CharacterState = {
 			character:AddEffect(characterEffectPrefabs.Disable_Actions)
 			character:AddEffect(characterEffectPrefabs.Movement_Effects_Core_Animation_Speed)
 			character:AddEffect(characterEffectPrefabs.Disable_Character_Tilt)
-			
+
 			-- Change the walkspeed
 			character:AddEffect(characterEffectPrefabs.Climb_Walkspeed)
 		end,
@@ -242,6 +274,20 @@ enums.CharacterState = {
 			
 			-- Revert the walkspeed
 			character:RemoveEffect(characterEffectPrefabs.Climb_Walkspeed.Name)
+		end,
+
+		-- Function called when the state begins on the client
+		StateBeganFunctionPlayer = function(player)
+			
+			-- Stop the player from moving to look in the camera's direction
+			player:AddEffect(playerEffectPrefabs.Disable_Movement_Relative_To_Camera)
+		end,
+		
+		-- Function called when the state ends on the client
+		StateEndedFunctionPlayer = function(player)
+
+			-- Allow the player to look in the camera's direction
+			player:RemoveEffect(playerEffectPrefabs.Disable_Movement_Relative_To_Camera)
 		end,
 	},
 	
@@ -288,6 +334,16 @@ enums.CharacterState = {
 			-- One does not come back from death
 			warn("THE HEAVY IS NOT DEAD?")
 		end,
+
+		-- Function called when the state begins on the client
+		StateBeganFunctionPlayer = function(player)
+			
+		end,
+		
+		-- Function called when the state ends on the client
+		StateEndedFunctionPlayer = function(player)
+
+		end,
 	},
 
 	-- The locked state
@@ -323,6 +379,16 @@ enums.CharacterState = {
 			
 			-- Allow the player to use actions again
 			character:RemoveEffect(characterEffectPrefabs.Disable_Actions.Name)
+		end,
+
+		-- Function called when the state begins on the client
+		StateBeganFunctionPlayer = function(player)
+			
+		end,
+		
+		-- Function called when the state ends on the client
+		StateEndedFunctionPlayer = function(player)
+
 		end,
 	}
 }

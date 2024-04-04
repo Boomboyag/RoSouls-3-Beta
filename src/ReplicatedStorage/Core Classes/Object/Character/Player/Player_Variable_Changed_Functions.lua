@@ -17,6 +17,44 @@ local effectPrefabs = require(playerFolder:WaitForChild("Player_Effect_Prefabs")
 
 local statsChangedFunctions = {
 
+    -- || CHARATCER STATE ||
+
+	-- The character's state has been changed
+	["characterState"] = function(player, oldValue, newValue, startup)
+
+		local success, response = pcall(function()
+
+			-- Check if this is being fired for the first time or if the values are the same
+			if (not oldValue and not startup) or (oldValue == newValue) then return end
+
+            local function FindEnum(num)
+                
+                for i, v in pairs(Enum.CharacterState) do
+ 
+                    if v[1] == num then
+                        return v
+                    end
+                end
+            end
+
+			-- End the current state
+			if oldValue then 
+                oldValue = FindEnum(oldValue[1])
+                oldValue.StateEndedFunctionPlayer(player) 
+            end
+
+			-- Begin the new state
+			if newValue then 
+                newValue = FindEnum(newValue[1])
+                newValue.StateBeganFunctionPlayer(player) 
+            end
+		end) 
+
+		if not success then
+			warn(response)
+		end
+	end,
+
     -- || ACTIONS ||
 
     ["currentAction"] = function(player, oldValue, newValue, startup)

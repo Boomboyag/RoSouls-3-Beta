@@ -222,6 +222,13 @@ function player.new(newPlayerTable)
 		statsChangedFunctions["currentAction"](newPlayer, oldValue, newValue, false)
 	end)
 	
+	-- The player's current state was changed
+	self.CharacterStateChanged.Event:Connect(function(oldValue, newValue)
+		
+		-- Call any related functions
+		statsChangedFunctions["characterState"](newPlayer, oldValue, newValue, false)
+	end)
+
 	-- || STARTUP ||
 
 	-- Check if there needs to be any default effects applied
