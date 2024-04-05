@@ -254,6 +254,12 @@ local statsChangedFunctions = {
 
             -- Check if this is being fired for the first time or if the values are the same
 		    if (not oldValue and not startup) or (oldValue == newValue) or not newValue then return end
+
+            -- Check if the field of view can be changed
+            if not player.playerStats.fieldOfViewEffectsAllowed then 
+                newValue = oldValue
+                return newValue
+            end
             
             -- Tween the FOV
             local tweenInfo = TweenInfo.new(0.5)
