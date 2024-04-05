@@ -486,6 +486,26 @@ local statsChangedFunctions = {
 		end
 	end,
 
+	-- Whether or not the footstep sound plays
+	["footstepsEnabled"] = function(character, oldValue, newValue, startup)
+
+		local success, response = pcall(function()
+
+			-- Check if this is being fired for the first time
+			if oldValue == nil and not startup then return end
+
+			-- Set the humanoid variable
+			character.footstepHandler.enabled = newValue
+
+			-- Fire the event
+			character.CharacterStatChanged:Fire("footstepsEnabled", oldValue, newValue)
+		end) 
+
+		if not success then
+			warn(response)
+		end
+	end,
+
 	-- || ANIMATION ||
 
 	-- The current core animation has been changed

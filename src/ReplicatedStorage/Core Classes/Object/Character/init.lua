@@ -16,6 +16,7 @@ local rootMotionModule = require(script:WaitForChild("Animations"):WaitForChild(
 local effectModule = require(script:WaitForChild("Character_Effects"))
 local actionModule = require(script:WaitForChild("Character_Actions"))
 local actionPrefabs = require(script:WaitForChild("Character_Actions"):WaitForChild("Action_Prefabs"))
+local footstepModule = require(script:WaitForChild("Footstep_Handler"))
 
 -- Humanoid state changed table
 local humanoidStateChangedFunctions = require(script:WaitForChild("Humanoid_State_Changed_Functions"))
@@ -273,6 +274,11 @@ function character.new(newCharacter)
 
 	-- Character tilt
 	self.tilt = CFrame.new()
+
+	-- || SOUNDS ||
+
+	self.footstepHandler = footstepModule.new(self.humanoidRootPart)
+	self.footstepHandler:SyncSteps(self.coreAnimations.Walking)
 
 	-- || HEALTH ||
 

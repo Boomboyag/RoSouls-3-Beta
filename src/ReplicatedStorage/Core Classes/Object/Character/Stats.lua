@@ -65,6 +65,7 @@ function characterStats.new(newCharacter)
 	self.canStrafe = true
 	self.canAddEffects = true
 	self.canTilt = true
+	self.footstepsEnabled = true
 
 	-- Set the metatable and return
 	setmetatable(self, characterStats)

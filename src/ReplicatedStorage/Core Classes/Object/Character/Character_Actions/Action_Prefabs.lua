@@ -84,6 +84,7 @@ local effectTable = {
 			-- Change the animation
 			local sprintAnimation = character.animations.sprintAnimation
 			character:ChangeActionAnimation(sprintAnimation, 0.2, Enum.AnimationPriority.Action, true, 0.8)
+			character.footstepHandler:SyncSteps(sprintAnimation)
 			
 			-- Drain the stamina
 			character:RemoveEffect(characterEffectPrefabs.Stamina_Regen.Name)
@@ -108,7 +109,8 @@ local effectTable = {
 				-- Quickly stop the animation
 				character:ChangeActionAnimation(nil, 0.1)
 			end
-			
+			character.footstepHandler:SyncSteps(character.coreAnimations.Walking)
+
 			-- Regen the stamina
 			character:RemoveEffect(characterEffectPrefabs.Sprint_Stamina_Drain.Name)
 			
