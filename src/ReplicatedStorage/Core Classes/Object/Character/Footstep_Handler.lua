@@ -331,7 +331,22 @@ function footstepHandler.new(humanoidRootPart)
     self.humanoidRootPart = humanoidRootPart
     self.savedAnimations = {}
 
+	-- || PARTICLES ||
+
+	-- Check if the character has the required vfx
+	self.particlesEnabled = true
+	self.leftParticle = humanoidRootPart:FindFirstChild("LeftStep")
+	self.rightParticle = humanoidRootPart:FindFirstChild("RightStep")
+	if not self.leftParticle or not self.rightParticle then self.particlesEnabled = false end
+
+	-- Get the particle emitter
+	if self.particlesEnabled then
+		self.leftParticle = self.leftParticle.ParticleEmitter
+		self.rightParticle = self.rightParticle.ParticleEmitter
+	end
+
     -- || SETTINGS ||
+
     self.enabled = true
     local volume = 0.1
 
@@ -372,24 +387,52 @@ function footstepHandler:SyncSteps(animation : AnimationTrack)
         return
     end
 
-    animation:GetMarkerReachedSignal("Footstep"):Connect(function()
+    animation:GetMarkerReachedSignal("Footstep"):Connect(function(foot)
 
         if self.currentAnimation ~= animation then return end
 
-        self:Step()
+        self:Step(foot)
     end)
 end
 
 -- The footstep function
-function footstepHandler:Step()
+function footstepHandler:Step(foot)
     
     -- Check if the character is grounded
-    local grounded, material = self:CheckGround()
+    local grounded, instance, material = self:CheckGround()
 
     if grounded and self.enabled then
         
+		-- Play the desired sound
         local sound = self:GetRandomSound(self:GetTableFromMaterial(material))
         sound:Play()
+
+		-- Check if we want to emit the particle
+		if foot and self.particlesEnabled then
+
+			-- Get the color of the ground
+			local particleColor = instance == workspace.Terrain and workspace.Terrain:GetMaterialColor(material) or instance.Color
+
+			-- A function to make a color darker
+			local function MakeDarker(color)
+				local H, S, V = color:ToHSV()
+				
+				V = math.clamp(V - 0.1, 0, 1)
+				
+				return Color3.fromHSV(H, S, V)
+			end
+
+			particleColor = MakeDarker(particleColor)
+			
+			-- Set the particle color and emit
+			if foot == "Left" then
+				self.leftParticle.Color = ColorSequence.new(particleColor)
+				self.leftParticle:Emit()
+			else
+				self.rightParticle.Color = ColorSequence.new(particleColor)
+				self.rightParticle:Emit()
+			end
+		end
     end
 end
 
@@ -413,7 +456,7 @@ function footstepHandler:CheckGround()
 	if raycastResult then
 		
 		-- Return trua and provide the material
-		return true, raycastResult.Material
+		return true, raycastResult.Instance, raycastResult.Material
 	else
 
 		-- Return false
