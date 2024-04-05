@@ -1,9 +1,12 @@
+-- Required services
+local replicatedStorage = game:GetService("ReplicatedStorage")
+
 -- Class creation
 local animations = {}
 animations.__index = animations
 
 -- Required folders
-local defaultAnims = script:WaitForChild("Default_Animations")
+local defaultAnims = replicatedStorage:WaitForChild("Default_Animations")
 local idleAnims = defaultAnims:WaitForChild("Idle")
 local movementAnims = defaultAnims:WaitForChild("Movement")
 local strafeAnimations = movementAnims:WaitForChild("Strafe")
