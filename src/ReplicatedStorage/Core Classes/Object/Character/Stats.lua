@@ -42,7 +42,7 @@ function characterStats.new(newCharacter)
 	self.backStepVelocity = 30
 	
 	-- || WALK SPEED ||
-	self.currentWalkSpeed = newCharacter.walkSpeed or 11
+	self.currentWalkSpeed = newCharacter.walkSpeed or 9
 	
 	-- || ANIMATION ||
 	self.actionAnimationInfluencedByCharacterMovement = false
@@ -65,7 +65,7 @@ function characterStats.new(newCharacter)
 	self.canStrafe = true
 	self.canAddEffects = true
 	self.canTilt = true
-	self.footstepsEnabled = true
+	self.footstepsEnabled = false -- CHANGE TO TRUE UPON RELEASE
 
 	-- Set the metatable and return
 	setmetatable(self, characterStats)
