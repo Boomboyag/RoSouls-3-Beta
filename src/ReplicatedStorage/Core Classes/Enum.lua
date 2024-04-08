@@ -323,6 +323,24 @@ enums.CharacterState = {
 			character:AddEffect(characterEffectPrefabs.Disable_Actions)
 			character:AddEffect(characterEffectPrefabs.Disable_Actions)
 			character.characterStats.canAddEffects = false
+
+			-- Play the death animation if grounded
+			if character:CheckGround() then
+				
+				-- Anchor the character
+				character.humanoidRootPart.Anchored = true
+
+				-- Play the death animation
+				local deathAnimation = character.coreAnimations.Death
+				character:ChangeActionAnimation(deathAnimation, 0.1, Enum.AnimationPriority.Action4, false, 1)
+
+				-- Unanchor the character after the animation playes
+				coroutine.wrap(function()
+					task.wait(deathAnimation.Length - 0.5)
+					deathAnimation:AdjustSpeed(0)
+					character.humanoidRootPart.Anchored = false
+				end)()
+			end
 		end,
 
 		-- Function called when the state ends

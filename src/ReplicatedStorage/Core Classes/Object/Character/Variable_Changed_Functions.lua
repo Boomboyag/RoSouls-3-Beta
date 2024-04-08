@@ -114,6 +114,12 @@ local statsChangedFunctions = {
 			-- Check if character ations are disabled
 			if newValue == false then
 
+				-- Make sure the current action can be canceled
+				if character.characterStats.currentAction and not character.characterStats.currentAction.canCancel then 
+					--warn(character.characterStats.currentAction.name .. " cannot be canceled.")
+					return 
+				end
+
 				-- Check if the current action needs to be removed
 				character.characterStats.currentAction = nil
 			end
@@ -250,6 +256,11 @@ local statsChangedFunctions = {
 
 				-- Update the character's current state
 				character.characterState = Enum.CharacterState.Dead
+			end
+
+			-- Check if the character needs to play a reaction
+			if oldValue and newValue < oldValue then
+				character:DamageReaction(oldValue - newValue)
 			end
 
 			-- Fire the event

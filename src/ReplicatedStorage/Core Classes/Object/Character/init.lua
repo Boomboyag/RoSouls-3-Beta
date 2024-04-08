@@ -192,6 +192,7 @@ function character.new(newCharacter)
 	self.head = self.model:WaitForChild("Head")
 	self.torso = self.model:WaitForChild("Torso")
 	self.model:WaitForChild("Animate"):Destroy()
+	self.model:WaitForChild("Health"):Destroy()
 	
 	-- Character joints
 	self.rootJoint = self.humanoidRootPart:WaitForChild('RootJoint')
@@ -236,6 +237,7 @@ function character.new(newCharacter)
 		["Rolling"] = actionModule.new(actionPrefabs.Roll),
 		["Backstepping"] = actionModule.new(actionPrefabs.Backstep),
 		["Landed"] = actionModule.new(actionPrefabs.Land),
+		["Light Stun"] = actionModule.new(actionPrefabs.Light_Damage_Impact)
 	}
 
 	-- || ANIMATIONS ||
@@ -255,6 +257,7 @@ function character.new(newCharacter)
 		["Falling"] = self.animations.fallAnimation,
 		["Jumping"] = self.animations.jumpAnimation,
 		["Climbing"] = self.animations.climbAnimation,
+		["Death"] = self.animations.deathAnimation,
 
 		["Strafing"] = {
 			
@@ -432,6 +435,11 @@ function character.new(newCharacter)
 
 			if self.isMoving then self.isMoving = false end
 		end
+	end)
+
+	-- Humanoid health connection
+	self.humanoid.HealthChanged:Connect(function(newHealth)
+		self.characterStats.currentHealth = newHealth
 	end)
 
 	-- || UPDATES ||
@@ -995,6 +1003,9 @@ function character:CheckCurrentAction()
 
 	-- Check if the prerequisites are met
 	if not self.characterStats.currentAction:CheckPrerequisites(self.characterStats) then
+
+		-- Make sure the action can be canceled
+		if not self.characterStats.currentAction.canCancel then return end
 		
 		-- Remove the action if not
 		self.characterStats.currentAction = nil
@@ -1051,8 +1062,9 @@ end
 
 -- Reaction animation to damage
 function character:DamageReaction(damageAmount)
-	
-	print("Ouch " .. damageAmount)
+
+	-- Play a light stun
+	self.characterStats.currentAction = self.actionPrefabs["Light Stun"]
 end
 
 -- || HEALTH ||
@@ -1060,7 +1072,16 @@ end
 -- Make the humanoid take damage
 function character:TakeDamage(damageAmount, ignoreForceField)
 	
-	
+	-- Check if we want to ignore forcefields
+	if not ignoreForceField then
+		
+		-- Use the :TakeDamage() function
+		self.humanoid:TakeDamage(math.abs(damageAmount))
+	else
+
+		-- Subtract the damage amount from the health
+		self.humanoid.Health -= math.abs(damageAmount)
+	end
 end
 
 -- || MISCELLANEOUS ||
@@ -1098,7 +1119,7 @@ function character:CheckFall(newTick)
 		self.characterStats.currentAction = self.actionPrefabs["Landed"]
 
 		-- Take damage
-		self:TakeDamage(100)
+		self:TakeDamage(10)
 	end
 end
 

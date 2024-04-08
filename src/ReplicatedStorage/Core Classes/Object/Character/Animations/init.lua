@@ -11,6 +11,7 @@ local idleAnims = defaultAnims:WaitForChild("Idle")
 local movementAnims = defaultAnims:WaitForChild("Movement")
 local strafeAnimations = movementAnims:WaitForChild("Strafe")
 local actionAnimations = defaultAnims:WaitForChild("Actions")
+local stunAnimations = actionAnimations:WaitForChild("Stun")
 
 -- Class constructor
 function animations.new(humanoid, animationList)
@@ -34,6 +35,22 @@ function animations.new(humanoid, animationList)
 	self.rollAnimation = humanoid:LoadAnimation(animationList['Roll'] or actionAnimations.Roll_Animation)
 	self.backstepAnimation = humanoid:LoadAnimation(animationList["Backstep"] or actionAnimations.Backstep_Animation)
 	self.climbAnimation = humanoid:LoadAnimation(animationList['Climb'] or actionAnimations.Climb_Animation)
+	self.deathAnimation = humanoid:LoadAnimation(animationList['Death'] or actionAnimations.Death_Animation)
+
+	-- || STUN ANIMATIONS ||
+	self.stunAnimations = {
+
+		-- Light stun
+		["Light"] = {
+			[1] = humanoid:LoadAnimation(animationList['Stun_Light_1'] or stunAnimations.Stun_A),
+			[2] = humanoid:LoadAnimation(animationList['Stun_Light_2'] or stunAnimations.Stun_B),
+			[3] = humanoid:LoadAnimation(animationList['Stun_Light_3'] or stunAnimations.Stun_C),
+			[4] = humanoid:LoadAnimation(animationList['Stun_Light_4'] or stunAnimations.Stun_D)
+		},
+		["Heavy"] = {
+			
+		}
+	}
 
 	-- Set the metatable and return
 	setmetatable(self, animations)

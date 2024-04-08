@@ -59,34 +59,37 @@ local actionTableExample = {
 }
 
 -- Class constructor
-function action.new(newEffect)
+function action.new(newAction)
 	local self = {}
 	
 	-- The name of the effect
-	self.name = newEffect["Name"]
+	self.name = newAction["Name"]
 	
 	-- The type of action
-	self.actionType = newEffect["Type"]
+	self.actionType = newAction["Type"]
 	
 	-- If the action can be queued
-	self.canQueue = newEffect["CanQueue"] or false
-	self.maxQueueTime = newEffect["MaxQueueTime"] or -1
-	self.queueWhenOveridden = newEffect["QueueWhenOveridden"] or false
+	self.canQueue = newAction["CanQueue"] or false
+	self.maxQueueTime = newAction["MaxQueueTime"] or -1
+	self.queueWhenOveridden = newAction["QueueWhenOveridden"] or false
+
+	-- If the action can be canceled
+	self.canCancel = newAction["CanCancel"]
 	
 	-- The action's prerequisites
-	self.prerequisites = newEffect["Prerequisites"]
+	self.prerequisites = newAction["Prerequisites"]
 
 	-- The function performed on the character when the action begins
-	self.actionBeginFunction = newEffect["ActionBeginFunction"]
+	self.actionBeginFunction = newAction["ActionBeginFunction"]
 	
 	-- The function performed on the character when the action ends
-	self.actionEndFunction = newEffect["ActionEndFunction"]
+	self.actionEndFunction = newAction["ActionEndFunction"]
 
 	-- The function performed on the PLAYER when the action begins (optional)
-	self.actionBeginFunctionPlayer = newEffect["ActionBeginFunction_PLAYER"] or nil
+	self.actionBeginFunctionPlayer = newAction["ActionBeginFunction_PLAYER"] or nil
 	
 	-- The function performed on the PLAYER when the action ends (optional)
-	self.actionEndFunctionPlayer = newEffect["ActionEndFunction_PLAYER"] or nil
+	self.actionEndFunctionPlayer = newAction["ActionEndFunction_PLAYER"] or nil
 
 	-- Set the metatable and return
 	setmetatable(self, action)
