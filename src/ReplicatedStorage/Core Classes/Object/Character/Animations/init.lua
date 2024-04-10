@@ -42,13 +42,13 @@ function animations.new(humanoid, animationList)
 
 		-- Light stun
 		["Light"] = {
-			[1] = humanoid:LoadAnimation(animationList['Stun_Light_1'] or stunAnimations.Stun_A),
-			[2] = humanoid:LoadAnimation(animationList['Stun_Light_2'] or stunAnimations.Stun_B),
-			[3] = humanoid:LoadAnimation(animationList['Stun_Light_3'] or stunAnimations.Stun_C),
-			[4] = humanoid:LoadAnimation(animationList['Stun_Light_4'] or stunAnimations.Stun_D)
+			[1] = humanoid:LoadAnimation(animationList['Stun_Light_2'] or stunAnimations.Stun_B),
+			[2] = humanoid:LoadAnimation(animationList['Stun_Light_3'] or stunAnimations.Stun_C),
+			
 		},
 		["Heavy"] = {
-			
+			[1] = humanoid:LoadAnimation(animationList['Stun_Light_4'] or stunAnimations.Stun_D),
+			[2] = humanoid:LoadAnimation(animationList['Stun_Light_1'] or stunAnimations.Stun_A),
 		}
 	}
 
