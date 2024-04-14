@@ -232,12 +232,23 @@ function character.new(newCharacter)
 	-- || ACTIONS ||
 	
 	self.actionPrefabs = {
+		
+		-- Default
 		["Blank"] = actionModule.new(actionPrefabs.Blank),
+
+		-- Sprinting
 		["Sprinting"] = actionModule.new(actionPrefabs.Sprint),
+
+		-- Rolling
 		["Rolling"] = actionModule.new(actionPrefabs.Roll),
 		["Backstepping"] = actionModule.new(actionPrefabs.Backstep),
+
+		-- Falling
 		["Landed"] = actionModule.new(actionPrefabs.Land),
-		["Light Stun"] = actionModule.new(actionPrefabs.Light_Damage_Impact)
+
+		-- Stun
+		["Light Stun"] = actionModule.new(actionPrefabs.Light_Damage_Impact),
+		["Heavy Stun"] = actionModule.new(actionPrefabs.Heavy_Damage_Impact),
 	}
 
 	-- || ANIMATIONS ||
