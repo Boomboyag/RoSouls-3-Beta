@@ -74,8 +74,8 @@ enums.MovementType = {
 			strafeRight.Priority = Enum.AnimationPriority.Movement
 
 			-- Fade the animations to 0
-			strafeLeft:AdjustWeight(0, 0)
-			strafeRight:AdjustWeight(0, 0)
+			strafeLeft:AdjustWeight(0.01, 0)
+			strafeRight:AdjustWeight(0.01, 0)
 
 			-- Bind the strafe update to the render stepped
 			runService:BindToRenderStep("Strafe Update", Enum.RenderPriority.Character.Value + 1, function()
@@ -95,18 +95,18 @@ enums.MovementType = {
 
 						-- Fade the animations back to 0
 						strafeLeft:AdjustWeight(0.8 * x)
-						strafeRight:AdjustWeight(0)
+						strafeRight:AdjustWeight(0.01)
 
 					elseif x <= -0.5 then
 						
 						-- Fade the animations back to 0
-						strafeLeft:AdjustWeight(0)
+						strafeLeft:AdjustWeight(0.01)
 						strafeRight:AdjustWeight(0.8 * math.abs(x))
 					else
 					
 						-- Fade the animations back to 0
-						strafeLeft:AdjustWeight(0, 0.1)
-						strafeRight:AdjustWeight(0, 0.1)
+						strafeLeft:AdjustWeight(0.01, 0.1)
+						strafeRight:AdjustWeight(0.01, 0.1)
 					end
 				end
 			end)
