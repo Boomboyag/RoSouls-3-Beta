@@ -30,17 +30,9 @@ local movementType = {
 			local strafeLeft = character.coreAnimations.Strafing["Left"]
 			local strafeRight = character.coreAnimations.Strafing["Right"]
 
-			-- Play the animations
-			strafeLeft:Play()
-			strafeRight:Play()
-
 			-- Set the animation priority
 			strafeLeft.Priority = Enum.AnimationPriority.Movement
 			strafeRight.Priority = Enum.AnimationPriority.Movement
-
-			-- Fade the animations to 0
-			strafeLeft:AdjustWeight(0.01, 0)
-			strafeRight:AdjustWeight(0.01, 0)
 
 			-- Bind the strafe update to the render stepped
 			game:GetService("RunService"):BindToRenderStep("Strafe Update", Enum.RenderPriority.Character.Value + 1, function()
@@ -58,20 +50,30 @@ local movementType = {
 					-- Check what direction on the x-axis the character is moving
 					if x >= 0.5 then
 
+						-- Play the left animation
+						if not strafeLeft.IsPlaying then
+							strafeLeft:Play()
+						end
+
 						-- Fade the animations back to 0
 						strafeLeft:AdjustWeight(0.8 * x)
-						strafeRight:AdjustWeight(0.01)
+						strafeRight:Stop()
 
 					elseif x <= -0.5 then
+
+						-- Play the right animation
+						if not strafeRight.IsPlaying then
+							strafeRight:Play()
+						end
 						
-						-- Fade the animations back to 0
-						strafeLeft:AdjustWeight(0.01)
+						-- Stop the left animation and play the right
+						strafeLeft:Stop()
 						strafeRight:AdjustWeight(0.8 * math.abs(x))
 					else
 					
-						-- Fade the animations back to 0
-						strafeLeft:AdjustWeight(0.01, 0.1)
-						strafeRight:AdjustWeight(0.01, 0.1)
+						-- Stop the animations
+						strafeLeft:Stop()
+						strafeRight:Stop()
 					end
 				end
 			end)
