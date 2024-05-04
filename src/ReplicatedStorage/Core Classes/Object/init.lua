@@ -1,5 +1,5 @@
 -- Required scripts
-local Enum = require(script.Parent:WaitForChild("Enum"))
+local objectsTypes = require(script.Parent:WaitForChild("Enum").ObjectType)
 
 -- Create the class
 local object = {}
@@ -20,7 +20,7 @@ function object.new(newObject)
 	self.name = newObject.name or newObject.model.Name
 	
 	-- Set the type
-	self.objectType  = newObject.objectType
+	self.objectType  = newObject.objectType or objectsTypes.Humanoid
 	
 	-- Create the model
 	self.model = newObject.cloneObject and newObject.model:Clone() or newObject.model

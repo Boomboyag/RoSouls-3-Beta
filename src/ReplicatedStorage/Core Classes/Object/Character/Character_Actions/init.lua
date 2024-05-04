@@ -4,14 +4,11 @@ local replicatedStorage = game:GetService("ReplicatedStorage")
 -- Required folders
 local coreFolder = replicatedStorage:WaitForChild("Core Classes")
 
--- Required scripts
-local Enum = require(coreFolder:WaitForChild("Enum"))
-
 -- Class creation
 local action = {}
 action.__index = action
 
--- This is what the table to create a new effect should look like
+--[[ This is what the table to create a new effect should look like
 local actionTableExample = {
 	
 	-- || REQUIRED VARIABLES ||
@@ -56,7 +53,7 @@ local actionTableExample = {
 
 		-- Do something
 	end,
-}
+} --]]
 
 -- Class constructor
 function action.new(newAction)

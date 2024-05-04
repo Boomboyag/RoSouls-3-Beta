@@ -10,7 +10,6 @@ local characterFolder = coreFolder:WaitForChild("Object"):WaitForChild("Characte
 local playerFolder = characterFolder:WaitForChild("Player")
 
 -- Required scripts
-local Enum = require(coreFolder:WaitForChild("Enum"))
 local playerStatsSheet = require(playerFolder:WaitForChild("Player_Stats"))
 local effectPrefabs = require(playerFolder:WaitForChild("Player_Effect_Prefabs"))
 

@@ -11,7 +11,7 @@ local characterFolder = coreFolder:WaitForChild("Object"):WaitForChild("Characte
 local playerFolder = characterFolder:WaitForChild("Player")
 
 -- Required scripts
-local Enum = require(coreFolder:WaitForChild("Enum"))
+local characterStates = require(coreFolder:WaitForChild("Enum").CharacterStates)
 local playerStatsSheet = require(playerFolder:WaitForChild("Player_Stats"))
 local effectPrefabs = require(playerFolder:WaitForChild("Player_Effect_Prefabs"))
 
@@ -27,9 +27,9 @@ local statsChangedFunctions = {
 			-- Check if this is being fired for the first time or if the values are the same
 			if (not oldValue and not startup) or (oldValue == newValue) then return end
 
-            local function FindEnum(num)
+            local function FindState(num)
                 
-                for i, v in pairs(Enum.CharacterState) do
+                for i, v in pairs(characterStates) do
  
                     if v[1] == num then
                         return v
@@ -39,13 +39,13 @@ local statsChangedFunctions = {
 
 			-- End the current state
 			if oldValue then 
-                oldValue = FindEnum(oldValue[1])
+                oldValue = FindState(oldValue[1])
                 oldValue.StateEndedFunctionPlayer(player) 
             end
 
 			-- Begin the new state
 			if newValue then 
-                newValue = FindEnum(newValue[1])
+                newValue = FindState(newValue[1])
                 newValue.StateBeganFunctionPlayer(player) 
             end
 		end) 

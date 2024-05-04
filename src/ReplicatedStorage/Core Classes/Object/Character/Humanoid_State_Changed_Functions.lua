@@ -10,7 +10,7 @@ local characterFolder = coreFolder:WaitForChild("Object"):WaitForChild("Characte
 
 -- Required scripts
 local object = require(coreFolder:WaitForChild("Object"))
-local Enum = require(coreFolder:WaitForChild("Enum"))
+local characterStates = require(coreFolder:WaitForChild("Enum").CharacterStates)
 local characterStatsSheet = require(characterFolder:WaitForChild("Stats"))
 local animationModule = require(characterFolder:WaitForChild("Animations"))
 local rootMotionModule = require(characterFolder:WaitForChild("Animations"):WaitForChild("RootMotion"))
@@ -24,10 +24,10 @@ local humanoidStateChangedFunctions = {
 	-- The character is walking or idle
 	[Enum.HumanoidStateType.Running] = function(character)
 		
-		if character.characterState ~= Enum.CharacterState.Locked then
+		if character.characterState ~= characterStates.Locked then
 			
 			-- Change the current state
-			character.characterState = Enum.CharacterState.Default
+			character.characterState = characterStates.Default
 		end
 
 		-- Check if the character is moving
@@ -55,14 +55,14 @@ local humanoidStateChangedFunctions = {
 		character.characterStats.currentCoreAnimation = character.coreAnimations["Falling"]
 
 		-- Change the current state
-		character.characterState = Enum.CharacterState.Falling
+		character.characterState = characterStates.Falling
 	end,
 
 	-- The character has landed
 	[Enum.HumanoidStateType.Landed] = function(character)
 
 		-- Change the current state back to default (if player was falling)
-		character.characterState = (character.characterState == Enum.CharacterState.Falling) and Enum.CharacterState.Default or character.characterState
+		character.characterState = (character.characterState == characterStates.Falling) and characterStates.Default or character.characterState
 	end,
 
 	-- The character is jumping
@@ -76,14 +76,14 @@ local humanoidStateChangedFunctions = {
 	[Enum.HumanoidStateType.Seated] = function(character)
 
 		-- Change the current state
-		character.characterState = Enum.CharacterState.Sitting
+		character.characterState = characterStates.Sitting
 	end,
 
 	-- The character is climbing
 	[Enum.HumanoidStateType.Climbing] = function(character)
 
 		-- Change the current state
-		character.characterState = Enum.CharacterState.Climbing
+		character.characterState = characterStates.Climbing
 
 		-- Change the animation to the falling track
 		character.characterStats.currentCoreAnimation = character.coreAnimations["Climbing"]
@@ -93,7 +93,7 @@ local humanoidStateChangedFunctions = {
 	[Enum.HumanoidStateType.Dead] = function(character)
 
 		-- Change the current state
-		character.characterState = Enum.CharacterState.Dead
+		character.characterState = characterStates.Dead
 	end,
 }
 

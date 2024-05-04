@@ -4,7 +4,6 @@ local chatService = game:GetService("Chat")
 
 -- Required scripts
 local player = require(script.Parent:WaitForChild("Object").Character.Player)
-local Enum = require(script.Parent:WaitForChild("Enum"))
 
 -- Class creation
 local playerProxy = {}

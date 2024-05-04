@@ -11,7 +11,7 @@ local characterFolder = coreFolder:WaitForChild("Object"):WaitForChild("Characte
 
 -- Required scripts
 local object = require(coreFolder:WaitForChild("Object"))
-local Enum = require(coreFolder:WaitForChild("Enum"))
+local characterStates = require(coreFolder:WaitForChild("Enum").CharacterStates)
 local characterStatsSheet = require(characterFolder:WaitForChild("Stats"))
 local animationModule = require(characterFolder:WaitForChild("Animations"))
 local rootMotionModule = require(characterFolder:WaitForChild("Animations"):WaitForChild("RootMotion"))
@@ -33,7 +33,7 @@ local statsChangedFunctions = {
 			if (not oldValue and not startup) or (oldValue == newValue) then return end
 
 			-- Check if tha character can change states (disregarded if dead)
-			if not character.characterStats.canChangeState and newValue ~= Enum.CharacterState.Dead then
+			if not character.characterStats.canChangeState and newValue ~= characterStates.Dead then
 
 				-- Warn the console
 				warn("Character cannot change state, it is disabled!")
@@ -255,7 +255,7 @@ local statsChangedFunctions = {
 			if newValue <= 0 then
 
 				-- Update the character's current state
-				character.characterState = Enum.CharacterState.Dead
+				character.characterState = characterStates.Dead
 			end
 
 			-- Check if the character needs to play a reaction

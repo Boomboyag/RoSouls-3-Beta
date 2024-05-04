@@ -1,24 +1,9 @@
 -- Required services
-local runService = game:GetService("RunService")
-local pathfindingService = game:GetService("PathfindingService")
-local chatService = game:GetService("Chat")
 local replicatedStorage = game:GetService("ReplicatedStorage")
-local tweenService = game:GetService("TweenService")
 
 -- Required folders
 local coreFolder = replicatedStorage:WaitForChild("Core Classes")
 local characterFolder = coreFolder:WaitForChild("Object"):WaitForChild("Character")
-
--- Required scripts
-local object = require(coreFolder:WaitForChild("Object"))
-local Enum = require(coreFolder:WaitForChild("Enum"))
-local characterStatsSheet = require(characterFolder:WaitForChild("Stats"))
-local animationModule = require(characterFolder:WaitForChild("Animations"))
-local rootMotionModule = require(characterFolder:WaitForChild("Animations"):WaitForChild("RootMotion"))
-local effectModule = require(characterFolder:WaitForChild("Character_Effects"))
-local effectPrefabs = require(characterFolder:WaitForChild("Character_Effects"):WaitForChild("Effect_Prefabs"))
-local actionModule = require(characterFolder:WaitForChild("Character_Actions"))
-local actionPrefabs = require(characterFolder:WaitForChild("Character_Actions"):WaitForChild("Action_Prefabs"))
 
 local statsChangedFunctions = {
 	
