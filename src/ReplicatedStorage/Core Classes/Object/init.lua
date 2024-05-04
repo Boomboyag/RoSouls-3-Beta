@@ -48,6 +48,11 @@ function object:ChangeParent(newParent)
 	self.model.Parent = newParent
 end
 
+-- Add a function to the object
+function object:AddFunction(name, func)
+	self[name] = func
+end
+
 -- The function to destroy the object
 function object:Destroy()
 	
