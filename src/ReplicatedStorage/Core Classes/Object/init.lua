@@ -50,6 +50,11 @@ end
 
 -- Add a function to the object
 function object:AddFunction(name, func)
+
+	if self[name] ~= nil then
+		warn("The function " .. name .. " was overridden")
+	end
+
 	self[name] = func
 end
 

@@ -17,6 +17,10 @@ local effectPrefabs = require(script:WaitForChild("Player_Effect_Prefabs"))
 local characterEffectPrefabs = require(characterPath.Character_Effects.Effect_Prefabs)
 local cameraHandler = require(script:WaitForChild("Camera_Handler"))
 
+-- Required actions
+local rollAction = characterPath.Action_Modules.Roll
+local sprintAction = characterPath.Action_Modules.Sprint
+
 -- Humanoid state changed table
 local humanoidStateChangedFunctions = require(script:WaitForChild("Player_Humanoid_State_Changed_Functions"))
 
@@ -154,6 +158,14 @@ function player.new(newPlayerTable)
 	-- Add the player stats to the effect table
 	table.insert(self.validEffectTables, self.playerStats)
 	table.insert(self.defaultValues, self.defaultPlayerStats)
+
+	-- || ACTIONS ||
+
+	-- The roll action
+	self:AddAction("Roll", rollAction)
+
+	-- The sprint action
+	self:AddAction("Sprint", sprintAction)
 
 	-- || CAMERA ||
 

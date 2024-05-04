@@ -236,13 +236,6 @@ function character.new(newCharacter)
 		-- Default
 		["Blank"] = actionModule.new(actionPrefabs.Blank),
 
-		-- Sprinting
-		["Sprinting"] = actionModule.new(actionPrefabs.Sprint),
-
-		-- Rolling
-		["Rolling"] = actionModule.new(actionPrefabs.Roll),
-		["Backstepping"] = actionModule.new(actionPrefabs.Backstep),
-
 		-- Falling
 		["Landed"] = actionModule.new(actionPrefabs.Land),
 
@@ -1023,52 +1016,15 @@ function character:CheckCurrentAction()
 	end
 end
 
--- Make the character sprint
-function character:Sprint(wantToSprint, oppositeOfCurrent)
+-- Add a new action to the character
+function character:AddAction(name, action)
+
+	action = require(action)
 	
-	-- Check if we want to do opposite of current
-	if oppositeOfCurrent then
-
-		wantToSprint =  self.characterStats.currentAction ~= self.actionPrefabs["Sprinting"] and true or false
-	end
-
-	-- Check if we want to sprint
-	local check = wantToSprint
-	if check and self.characterStats.currentAction ~= self.actionPrefabs["Sprinting"] then
-
-		-- Make the character sprint
-		self.characterStats.currentAction = self.actionPrefabs["Sprinting"]
-		return
-
-	elseif self.characterStats.currentAction == self.actionPrefabs["Sprinting"] then
-
-		-- Stop the sprint
-		self.characterStats.currentAction = nil
-		return
-	end
-end
-
--- Make the character roll or sprint
-function character:Roll(forceRollDirection : Vector3)
-	
-	-- Check if the character is moving
-	if self:GetWorldMoveDirection() ~= Vector3.zero or forceRollDirection then
-		
-		-- Check if the character can roll
-		if self.characterStats.currentAction ~= self.actionPrefabs["Rolling"] then
-			
-			-- Make the character roll
-			self.characterStats.currentAction = self.actionPrefabs["Rolling"]
-		end
-	else
-		
-		-- Check if the character can backstep
-		if self.characterStats.currentAction ~= self.actionPrefabs["Backstepping"] then
-
-			-- Make the character backstep
-			self.characterStats.currentAction = self.actionPrefabs["Backstepping"]
-		end
-	end
+	-- Add the given action
+	self:AddFunction(name, action.CallFunction)
+	print("Injected the " .. action.Name)
+	action = nil
 end
 
 -- Reaction animation to damage
