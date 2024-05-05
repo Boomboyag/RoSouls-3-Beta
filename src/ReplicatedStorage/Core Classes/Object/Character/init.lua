@@ -1019,7 +1019,16 @@ end
 -- Add a new action to the character
 function character:AddAction(name, action)
 
+	-- Get the action table
 	action = require(action)
+
+	-- Add the action stats
+	if action.stats then
+
+		-- Add the action stats to the effect table
+		table.insert(action.stats, self.playerStats)
+		table.insert(action.stats, self.defaultPlayerStats)
+	end
 	
 	-- Add the given action
 	self:AddFunction(name, action.CallFunction)

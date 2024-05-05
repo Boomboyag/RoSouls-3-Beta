@@ -51,10 +51,11 @@ local effects = {
 }
 
 -- Roll stats
-local stats = {
+module.stats = {
 	rollVelocity = 40,
 	backStepVelocity = 30
 }
+local stats = module.stats
 
 -- The roll action
 local rollAction = actionModule.new({
