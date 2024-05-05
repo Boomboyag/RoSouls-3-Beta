@@ -40,7 +40,7 @@ function playerStats.new(newPlayerTable, player)
 
 	-- The field of view
 	self.fieldOfView = 70
-	self.fieldOfViewEffectsAllowed = false
+	self.fieldOfViewEffectsAllowed = true
 	
 	self.cameraFollow = nil
 	self.cameraSubject = nil
