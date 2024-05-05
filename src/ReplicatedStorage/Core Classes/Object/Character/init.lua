@@ -1026,8 +1026,8 @@ function character:AddAction(name, action)
 	if action.stats then
 
 		-- Add the action stats to the effect table
-		table.insert(action.stats, self.playerStats)
-		table.insert(action.stats, self.defaultPlayerStats)
+		table.insert(self.validEffectTables, action.stats)
+		table.insert(self.defaultValues, action.stats)
 	end
 	
 	-- Add the given action
