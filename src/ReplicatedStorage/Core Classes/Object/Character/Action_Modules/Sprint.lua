@@ -10,9 +10,9 @@ local characterEffectPrefabs = require(replicatedStorage["Core Classes"].Object.
 local playerEffectPrefabs = require(replicatedStorage["Core Classes"].Object.Character.Player.Player_Effect_Prefabs)
 local Enum = require(coreFolder:WaitForChild("Enum"))
 
-local sprint = {}
+local module = {}
 
-sprint.Name = "Sprint Module"
+module.Name = "Sprint Module"
 
 -- The roll action
 local sprintAction = actionModule.new({
@@ -111,7 +111,7 @@ local sprintAction = actionModule.new({
 })
 
 -- The function to be called
-function sprint:CallFunction(wantToSprint, oppositeOfCurrent)
+function module:CallFunction(wantToSprint, oppositeOfCurrent)
     
     -- Check if we want to do opposite of current
 	if oppositeOfCurrent then
@@ -135,4 +135,4 @@ function sprint:CallFunction(wantToSprint, oppositeOfCurrent)
 	end
 end
 
-return sprint
+return module

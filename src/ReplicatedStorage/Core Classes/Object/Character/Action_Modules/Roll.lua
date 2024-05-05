@@ -10,9 +10,9 @@ local characterEffectPrefabs = require(replicatedStorage["Core Classes"].Object.
 local playerEffectPrefabs = require(replicatedStorage["Core Classes"].Object.Character.Player.Player_Effect_Prefabs)
 local Enum = require(coreFolder:WaitForChild("Enum"))
 
-local roll = {}
+local module = {}
 
-roll.Name = "Roll Module"
+module.Name = "Roll Module"
 
 -- The roll action
 local rollAction = actionModule.new({
@@ -241,7 +241,7 @@ local backstepAction = actionModule.new({
 })
 
 -- The function to be called
-function roll:CallFunction(forceRollDirection : Vector3)
+function module:CallFunction(forceRollDirection : Vector3)
 	
     -- Check if the character is moving
     if self:GetWorldMoveDirection() ~= Vector3.zero or forceRollDirection then
@@ -265,4 +265,4 @@ function roll:CallFunction(forceRollDirection : Vector3)
     return 0
 end
 
-return roll
+return module
