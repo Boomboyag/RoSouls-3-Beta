@@ -50,6 +50,9 @@ local statsChangedFunctions = {
 
 			-- Fire the event
 			character.CharacterStateChanged:Fire(oldValue, newValue)
+
+			-- Change the stat
+			character.characterStats.characterStateRef = newValue
 		end) 
 
 		if not success then

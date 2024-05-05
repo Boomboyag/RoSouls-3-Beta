@@ -35,7 +35,7 @@ local sprintAction = actionModule.new({
 
     -- Variables that must be a certain value for the action to trigger
     ["Prerequisites"] = {
-        ["canSprint"] = {true, Enum.ActionPrerequisiteOperator.Equals},
+        ["characterStateRef"] = {Enum.CharacterState.Default, Enum.ActionPrerequisiteOperator.Equals},
         ["currentStamina"] = {0, Enum.ActionPrerequisiteOperator.GreaterThan},
     },
 

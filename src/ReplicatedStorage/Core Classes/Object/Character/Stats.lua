@@ -5,7 +5,8 @@ local replicatedStorage = game:GetService("ReplicatedStorage")
 local coreFolder = replicatedStorage:WaitForChild("Core Classes")
 
 -- Required scripts
-local movementTypes = require(coreFolder:WaitForChild("Enum").MovementType) 
+local movementTypes = require(coreFolder:WaitForChild("Enum").MovementType)
+local characterStates = require(coreFolder:WaitForChild("Enum").CharacterStates) 
 
 -- Class creation
 local characterStats = {}
@@ -18,6 +19,7 @@ function characterStats.new(newCharacter)
 	-- CHARACTER STATES
 	self.canChangeState = true
 	self.movementType = movementTypes.Default
+	self.characterStateRef = characterStates.Default
 	
 	-- || ACTIONS ||
 	self.currentAction = nil

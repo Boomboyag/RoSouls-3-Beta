@@ -35,7 +35,7 @@ local rollAction = actionModule.new({
 
     -- Variables that must be a certain value for the action to trigger
     ["Prerequisites"] = {
-        ["canRoll"] = {true, Enum.ActionPrerequisiteOperator.Equals},
+        ["characterStateRef"] = {Enum.CharacterState.Default, Enum.ActionPrerequisiteOperator.Equals},
         ["currentStamina"] = {0, Enum.ActionPrerequisiteOperator.GreaterThan},
     },
 
@@ -156,23 +156,23 @@ local backstepAction = actionModule.new({
 
     -- Variables that must be a certain value for the action to trigger
     ["Prerequisites"] = {
-        ["canRoll"] = {true, Enum.ActionPrerequisiteOperator.Equals},
+        ["characterStateRef"] = {Enum.CharacterState.Default, Enum.ActionPrerequisiteOperator.Equals},
         ["currentStamina"] = {0, Enum.ActionPrerequisiteOperator.GreaterThan},
     },
 
     -- The function performed on the character when the action begins
     ["ActionBeginFunction"] = function(character)
 
-        -- Lock the character
-        character.characterState = Enum.CharacterState.Locked
-        character:AddEffect(characterEffectPrefabs.Disable_Auto_Rotate)
-
-        -- Drain the stamina
-        character:RemoveEffect(characterEffectPrefabs.Stamina_Regen.Name)
-        character:AddEffect(characterEffectPrefabs.Roll_Stamina_Drain)
-
-        -- Disable all other actions
-        character:AddEffect(characterEffectPrefabs.Disable_Actions)
+         -- Disable actions
+         character:AddEffect(characterEffectPrefabs.Disable_Actions)
+        
+         -- Lock the character
+         character.characterState = Enum.CharacterState.Locked
+         character:AddEffect(characterEffectPrefabs.Disable_Auto_Rotate)
+         
+         -- Drain the stamina
+         character:RemoveEffect(characterEffectPrefabs.Stamina_Regen.Name)
+         character:AddEffect(characterEffectPrefabs.Roll_Stamina_Drain)
 
         -- Change the animation
         local rollAnimation = character.animations.backstepAnimation
@@ -203,16 +203,18 @@ local backstepAction = actionModule.new({
 
         until animationEnded
 
-        -- Unlock the character
-        character.characterState = Enum.CharacterState.Default
-        character:RemoveEffect(characterEffectPrefabs.Disable_Auto_Rotate.Name)
-        
-        -- Allow the player to use actions again
-        character.characterStats.currentAction = nil
-        character:RemoveEffect(characterEffectPrefabs.Disable_Actions.Name)
-
-        -- Destroy the roll velocity
-        rollVelocity:Destroy()
+         -- Unlock the character
+         character.characterState = Enum.CharacterState.Default
+         character:RemoveEffect(characterEffectPrefabs.Disable_Auto_Rotate.Name)
+ 
+         -- Destroy the roll velocity
+         rollVelocity:Destroy()
+ 
+         task.wait(0.1)
+         
+         -- Allow the player to use actions again
+         character:RemoveEffect(characterEffectPrefabs.Disable_Actions.Name)
+         character.characterStats.currentAction = nil
     end,
 
     -- The function performed on the character when the action is finished
