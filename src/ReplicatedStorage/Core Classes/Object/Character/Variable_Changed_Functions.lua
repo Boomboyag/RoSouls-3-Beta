@@ -226,17 +226,13 @@ local statsChangedFunctions = {
 
 				-- Change the animation to the walking track
 				character.characterStats.currentCoreAnimation = character.coreAnimations["Walking"]
-
-				-- Remove the disable sprint effect
-				character:RemoveEffect(effectPrefabs.Disable_Sprint.Name)
 			else
 
 				-- Change the animation to the idle
 				character.characterStats.currentCoreAnimation = character.coreAnimations["Idle"]
-				
-				-- Add the disable sprint effect
-				character:AddEffect(effectPrefabs.Disable_Sprint)
 			end
+
+			character.characterStats.isMovingRef = newValue
 		end) 
 
 		if not success then
@@ -406,23 +402,6 @@ local statsChangedFunctions = {
 	end,
 
 	-- || BOOLEANS ||
-
-	-- Whether or not the character can sprint
-	["canSprint"] = function(character, oldValue, newValue, startup)
-
-		local success, response = pcall(function()
-
-			-- Check if this is being fired for the first time
-			if oldValue == nil and not startup then return end
-
-			-- Fire the event
-			character.CharacterStatChanged:Fire("canSprint", oldValue, newValue)
-		end) 
-
-		if not success then
-			warn(response)
-		end
-	end,
 
 	-- Whether or not the character can jump
 	["canJump"] = function(character, oldValue, newValue, startup)

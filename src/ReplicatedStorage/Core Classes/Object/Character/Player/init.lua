@@ -352,26 +352,7 @@ function player:DebugMenu()
 								self.characterStats.canClimb and Color3.new(0, 0.184313, 1) or Color3.new(1, 0, 0)
 							})
 						iris.End()
-
-						-- Can Sprint
-						iris.SameLine()
-							iris.Text({"Can sprint: "})
-							iris.Text({
-								tostring(self.characterStats.canSprint),
-								false,
-								self.characterStats.canSprint and Color3.new(0, 0.184313, 1) or Color3.new(1, 0, 0)
-							})
-						iris.End()
-
-						-- Can roll
-						iris.SameLine()
-							iris.Text({"Can roll: "})
-							iris.Text({
-								tostring(self.characterStats.canRoll),
-								false,
-								self.characterStats.canRoll and Color3.new(0, 0.184313, 1) or Color3.new(1, 0, 0)
-							})
-						iris.End()
+						
 					iris.End()
 
 					-- CHARACTER ACTIONS

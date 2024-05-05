@@ -14,6 +14,48 @@ local module = {}
 
 module.Name = "Roll Module"
 
+-- Roll effects
+local effects = {
+	
+	["Roll_Stamina_Drain"] = {
+
+		-- The name of the effect
+		["Name"] = "Roll_Stamina_Drain",
+
+		-- The priority of the effect (the lower the number the sooner it is called)
+		["Priority"] = 10,
+
+		-- The data the effect will modify (must be within the 'Stats' module script of character)
+		["DataToModify"] = "currentStamina",
+
+		-- The amount of times the effect will be called (0 lasts forever until manually removed, 1 calls the effect once)
+		["EffectTickAmount"] = 1,
+
+		-- The time in between the effect being called in seconds (will not be used if the EffectTickAmount is 1), will call effect once when 0
+		["TimeBetweenEffectTick"] = 0,
+
+		-- The function performed on the DataToModify (takes the DataToModify as an argument)
+		["EffectFunction"] = function(input)
+
+			return input - 20
+		end,
+
+		-- || OPTIONAL VARIABLES ||
+
+		-- Whether or not the effects can stack
+		["Can_Stack"] = false,
+
+		-- Whether or not the effect resets the DataToModify value when finished (default is false)
+		["ResetDataWhenDone"] = false,
+	},
+}
+
+-- Roll stats
+local stats = {
+	rollVelocity = 40,
+	backStepVelocity = 30
+}
+
 -- The roll action
 local rollAction = actionModule.new({
 
@@ -55,7 +97,7 @@ local rollAction = actionModule.new({
         
         -- Drain the stamina
         character:RemoveEffect(characterEffectPrefabs.Stamina_Regen.Name)
-        character:AddEffect(characterEffectPrefabs.Roll_Stamina_Drain)
+        character:AddEffect(effects.Roll_Stamina_Drain)
         
         -- Change the animation
         local rollAnimation = character.animations.rollAnimation
@@ -78,7 +120,7 @@ local rollAction = actionModule.new({
         rollVelocity.MaxForce = 1300
         rollVelocity.RelativeTo = Enum.ActuatorRelativeTo.Attachment0
         rollVelocity.LineDirection = character.humanoidRootPart.CFrame.LookVector
-        rollVelocity.LineVelocity = character.characterStats.rollVelocity
+        rollVelocity.LineVelocity = stats.rollVelocity
 
         local animationEnded = false
         local connection
@@ -121,17 +163,13 @@ local rollAction = actionModule.new({
 
         -- Stop the movement being relative to the camera
         player:AddEffect(playerEffectPrefabs.Disable_Movement_Relative_To_Camera)
-
-        -- Wait for the animation to finish
-        task.wait(player.animations.rollAnimation.length)
-
-        -- Allow the movement being relative to the camera
-        player:RemoveEffect(playerEffectPrefabs.Disable_Movement_Relative_To_Camera.Name)
     end,
 
     -- The function performed on the PLAYER when the action is finished
     ["ActionEndFunction_PLAYER"] = function(player)
 
+        -- Allow the movement being relative to the camera
+        player:RemoveEffect(playerEffectPrefabs.Disable_Movement_Relative_To_Camera.Name)
     end,
 })
 
@@ -172,7 +210,7 @@ local backstepAction = actionModule.new({
          
          -- Drain the stamina
          character:RemoveEffect(characterEffectPrefabs.Stamina_Regen.Name)
-         character:AddEffect(characterEffectPrefabs.Roll_Stamina_Drain)
+         character:AddEffect(effects.Roll_Stamina_Drain)
 
         -- Change the animation
         local rollAnimation = character.animations.backstepAnimation
@@ -185,7 +223,7 @@ local backstepAction = actionModule.new({
         rollVelocity.MaxForce = 1000
         rollVelocity.RelativeTo = Enum.ActuatorRelativeTo.Attachment0
         rollVelocity.LineDirection = character.humanoidRootPart.CFrame.LookVector
-        rollVelocity.LineVelocity = -character.characterStats.backStepVelocity
+        rollVelocity.LineVelocity = -stats.backStepVelocity
 
         local animationEnded = false
         local connection
@@ -228,17 +266,13 @@ local backstepAction = actionModule.new({
 
         -- Stop the movement being relative to the camera
         player:AddEffect(playerEffectPrefabs.Disable_Movement_Relative_To_Camera)
-
-        -- Wait for the animation to finish
-        task.wait(player.animations.backstepAnimation.length)
-
-        -- Allow the movement being relative to the camera
-        player:RemoveEffect(playerEffectPrefabs.Disable_Movement_Relative_To_Camera.Name)
     end,
 
     -- The function performed on the PLAYER when the action is finished
     ["ActionEndFunction_PLAYER"] = function(player)
 
+        -- Allow the movement being relative to the camera
+        player:RemoveEffect(playerEffectPrefabs.Disable_Movement_Relative_To_Camera.Name)
     end,
 })
 

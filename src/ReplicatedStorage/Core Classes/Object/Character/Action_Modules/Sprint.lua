@@ -14,7 +14,192 @@ local module = {}
 
 module.Name = "Sprint Module"
 
--- The roll action
+-- Sprint effects
+local effects = {
+
+    -- || CHARACTER EFFECTS ||
+
+    ["Sprint_Walkspeed"] = {
+
+		-- The name of the effect
+		["Name"] = "Sprint_Walkspeed",
+
+		-- The priority of the effect (the lower the number the sooner it is called)
+		["Priority"] = 10,
+
+		-- The data the effect will modify (must be within the 'Stats' module script of character)
+		["DataToModify"] = "currentWalkSpeed",
+
+		-- The amount of times the effect will be called (0 lasts forever until manually removed, 1 calls the effect once)
+		["EffectTickAmount"] = 0,
+
+		-- The time in between the effect being called in seconds (will not be used if the EffectTickAmount is 1), will call effect once when 0
+		["TimeBetweenEffectTick"] = 0,
+
+		-- The function performed on the DataToModify (takes the DataToModify as an argument)
+		["EffectFunction"] = function(input)
+
+			return 20
+		end,
+
+		-- || OPTIONAL VARIABLES ||
+
+		-- Whether or not the effect resets the DataToModify value when finished (default is false)
+		["ResetDataWhenDone"] = true,
+	},
+	
+	["Sprint_Character_Tilt"] = {
+
+		-- The name of the effect
+		["Name"] = "Sprint_Character_Tilt",
+
+		-- The priority of the effect (the lower the number the sooner it is called)
+		["Priority"] = 10,
+
+		-- The data the effect will modify (must be within the 'Stats' module script of character)
+		["DataToModify"] = "maxTiltAngle",
+
+		-- The amount of times the effect will be called (0 lasts forever until manually removed, 1 calls the effect once)
+		["EffectTickAmount"] = 0,
+
+		-- The time in between the effect being called in seconds (will not be used if the EffectTickAmount is 1), will call effect once when 0
+		["TimeBetweenEffectTick"] = 0,
+
+		-- The function performed on the DataToModify (takes the DataToModify as an argument)
+		["EffectFunction"] = function(input)
+
+			return 30
+		end,
+
+		-- || OPTIONAL VARIABLES ||
+
+		-- Whether or not the effect resets the DataToModify value when finished (default is false)
+		["ResetDataWhenDone"] = true,
+	},
+	
+	["Sprint_Stamina_Drain"] = {
+
+		-- The name of the effect
+		["Name"] = "Sprint_Stamina_Drain",
+
+		-- The priority of the effect (the lower the number the sooner it is called)
+		["Priority"] = 10,
+
+		-- The data the effect will modify (must be within the 'Stats' module script of character)
+		["DataToModify"] = "currentStamina",
+
+		-- The amount of times the effect will be called (0 lasts forever until manually removed, 1 calls the effect once)
+		["EffectTickAmount"] = 0,
+
+		-- The time in between the effect being called in seconds (will not be used if the EffectTickAmount is 1), will call effect once when 0
+		["TimeBetweenEffectTick"] = 0.1,
+
+		-- The function performed on the DataToModify (takes the DataToModify as an argument)
+		["EffectFunction"] = function(input)
+
+			return input - 0.5
+		end,
+
+		-- || OPTIONAL VARIABLES ||
+		
+		-- Whether or not the effects can stack
+		["Can_Stack"] = false,
+
+		-- Whether or not the effect resets the DataToModify value when finished (default is false)
+		["ResetDataWhenDone"] = false,
+	},
+
+    -- || PLAYER EFFECTS ||
+
+	["Sprint_Camera_FOV"] = {
+
+		-- The name of the effect
+		["Name"] = "Sprint_Camera_FOV",
+
+		-- The priority of the effect (the lower the number the sooner it is called)
+		["Priority"] = 10,
+
+		-- The data the effect will modify (must be within the 'Stats' module script of character)
+		["DataToModify"] = "fieldOfView",
+
+		-- The amount of times the effect will be called (0 lasts forever until manually removed, 1 calls the effect once)
+		["EffectTickAmount"] = 0,
+
+		-- The time in between the effect being called in seconds (will not be used if the EffectTickAmount is 1), will call effect once when 0
+		["TimeBetweenEffectTick"] = 0,
+
+		-- The function performed on the DataToModify (takes the DataToModify as an argument)
+		["EffectFunction"] = function(input)
+
+			return 65
+		end,
+
+		-- || OPTIONAL VARIABLES ||
+
+		-- Whether or not the effect resets the DataToModify value when finished (default is false)
+		["ResetDataWhenDone"] = true,
+	},
+
+    ["Sprint_Camera_Sway_Amount"] = {
+
+		-- The name of the effect
+		["Name"] = "Sprint_Camera_Sway",
+
+		-- The priority of the effect (the lower the number the sooner it is called)
+		["Priority"] = 10,
+
+		-- The data the effect will modify (must be within the 'Stats' module script of character)
+		["DataToModify"] = "cameraSwayAmount",
+
+		-- The amount of times the effect will be called (0 lasts forever until manually removed, 1 calls the effect once)
+		["EffectTickAmount"] = 0,
+
+		-- The time in between the effect being called in seconds (will not be used if the EffectTickAmount is 1), will call effect once when 0
+		["TimeBetweenEffectTick"] = 0,
+
+		-- The function performed on the DataToModify (takes the DataToModify as an argument)
+		["EffectFunction"] = function(input)
+
+			return Vector2.new(1, 1.5)
+		end,
+
+		-- || OPTIONAL VARIABLES ||
+
+		-- Whether or not the effect resets the DataToModify value when finished (default is false)
+		["ResetDataWhenDone"] = true,
+	},
+
+    ["Sprint_Camera_Sway_Speed"] = {
+
+		-- The name of the effect
+		["Name"] = "Sprint_Camera_Sway_Speed",
+
+		-- The priority of the effect (the lower the number the sooner it is called)
+		["Priority"] = 10,
+
+		-- The data the effect will modify (must be within the 'Stats' module script of character)
+		["DataToModify"] = "cameraSwaySpeed",
+
+		-- The amount of times the effect will be called (0 lasts forever until manually removed, 1 calls the effect once)
+		["EffectTickAmount"] = 0,
+
+		-- The time in between the effect being called in seconds (will not be used if the EffectTickAmount is 1), will call effect once when 0
+		["TimeBetweenEffectTick"] = 0,
+
+		-- The function performed on the DataToModify (takes the DataToModify as an argument)
+		["EffectFunction"] = function(input)
+
+			return Vector2.new(10, 10)
+		end,
+
+		-- || OPTIONAL VARIABLES ||
+
+		-- Whether or not the effect resets the DataToModify value when finished (default is false)
+		["ResetDataWhenDone"] = true,
+	},
+}
+
+-- The sprint action
 local sprintAction = actionModule.new({
 
     -- || REQUIRED VARIABLES ||
@@ -35,6 +220,7 @@ local sprintAction = actionModule.new({
 
     -- Variables that must be a certain value for the action to trigger
     ["Prerequisites"] = {
+        ["isMovingRef"] = {true, Enum.ActionPrerequisiteOperator.Equals},
         ["characterStateRef"] = {Enum.CharacterState.Default, Enum.ActionPrerequisiteOperator.Equals},
         ["currentStamina"] = {0, Enum.ActionPrerequisiteOperator.GreaterThan},
     },
@@ -49,11 +235,11 @@ local sprintAction = actionModule.new({
         
         -- Drain the stamina
         character:RemoveEffect(characterEffectPrefabs.Stamina_Regen.Name)
-        character:AddEffect(characterEffectPrefabs.Sprint_Stamina_Drain)
+        character:AddEffect(effects.Sprint_Stamina_Drain)
         
         -- Apply the effect to the character
-        character:AddEffect(characterEffectPrefabs.Sprint_Walkspeed)
-        character:AddEffect(characterEffectPrefabs.Sprint_Character_Tilt)
+        character:AddEffect(effects.Sprint_Walkspeed)
+        character:AddEffect(effects.Sprint_Character_Tilt)
         character:AddEffect(characterEffectPrefabs.Disable_Climbing)
     end,
 
@@ -73,11 +259,11 @@ local sprintAction = actionModule.new({
         character.footstepHandler:SyncSteps(character.coreAnimations.Walking)
 
         -- Regen the stamina
-        character:RemoveEffect(characterEffectPrefabs.Sprint_Stamina_Drain.Name)
+        character:RemoveEffect(effects.Sprint_Stamina_Drain.Name)
         
         -- Remove the effect from the character
-        character:RemoveEffect(characterEffectPrefabs.Sprint_Walkspeed.Name)
-        character:RemoveEffect(characterEffectPrefabs.Sprint_Character_Tilt.Name)
+        character:RemoveEffect(effects.Sprint_Walkspeed.Name)
+        character:RemoveEffect(effects.Sprint_Character_Tilt.Name)
         character:RemoveEffect(characterEffectPrefabs.Disable_Climbing.Name)
     end,
 
@@ -85,11 +271,11 @@ local sprintAction = actionModule.new({
     ["ActionBeginFunction_PLAYER"] = function(player)
 
         -- Increase the fov
-        player:AddEffect(playerEffectPrefabs.Sprint_Camera_FOV)
+        player:AddEffect(effects.Sprint_Camera_FOV)
 
         -- Change the camera sway
-        player:AddEffect(playerEffectPrefabs.Sprint_Camera_Sway_Speed)
-        player:AddEffect(playerEffectPrefabs.Sprint_Camera_Sway_Amount)
+        player:AddEffect(effects.Sprint_Camera_Sway_Speed)
+        player:AddEffect(effects.Sprint_Camera_Sway_Amount)
 
         -- Stop the movement being relative to the camera
         player:AddEffect(playerEffectPrefabs.Disable_Movement_Relative_To_Camera)
@@ -99,11 +285,11 @@ local sprintAction = actionModule.new({
     ["ActionEndFunction_PLAYER"] = function(player)
 
         -- Reset the FOV
-        player:RemoveEffect(playerEffectPrefabs.Sprint_Camera_FOV.Name)
+        player:RemoveEffect(effects.Sprint_Camera_FOV.Name)
 
         -- Reset the camera sway
-        player:RemoveEffect(playerEffectPrefabs.Sprint_Camera_Sway_Speed.Name)
-        player:RemoveEffect(playerEffectPrefabs.Sprint_Camera_Sway_Amount.Name)
+        player:RemoveEffect(effects.Sprint_Camera_Sway_Speed.Name)
+        player:RemoveEffect(effects.Sprint_Camera_Sway_Amount.Name)
 
         -- Allow the movement being relative to the camera
         player:RemoveEffect(playerEffectPrefabs.Disable_Movement_Relative_To_Camera.Name)

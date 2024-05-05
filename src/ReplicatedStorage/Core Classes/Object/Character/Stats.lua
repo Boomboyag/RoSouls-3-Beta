@@ -39,11 +39,8 @@ function characterStats.new(newCharacter)
 	self.staminaRegenRate = 1
 	self.staminaRegenDelay = 0.5
 	
-	-- || ROLL AND BACKSTEP ||
-	self.rollVelocity = 40
-	self.backStepVelocity = 30
-	
-	-- || WALK SPEED ||
+	-- || WALK SPEED & MOVEMENT ||
+	self.isMovingRef = false
 	self.currentWalkSpeed = newCharacter.walkSpeed or 9
 	
 	-- || ANIMATION ||
@@ -62,8 +59,6 @@ function characterStats.new(newCharacter)
 	self.autoRotate = true
 	self.canJump = true
 	self.canClimb = true
-	self.canSprint = true
-	self.canRoll = true
 	self.canStrafe = true
 	self.canAddEffects = true
 	self.canTilt = true
