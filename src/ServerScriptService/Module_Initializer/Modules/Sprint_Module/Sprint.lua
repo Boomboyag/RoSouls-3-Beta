@@ -3,11 +3,12 @@ local replicatedStorage = game:GetService("ReplicatedStorage")
 
 -- Required folders
 local coreFolder = replicatedStorage:WaitForChild("Core Classes")
+local characterFolder = replicatedStorage["Core Classes"].Object.Character
 
 -- Required scripts
-local actionModule = require(script.Parent.Parent:WaitForChild("Character_Actions"))
-local characterEffectPrefabs = require(replicatedStorage["Core Classes"].Object.Character.Character_Effects.Effect_Prefabs)
-local playerEffectPrefabs = require(replicatedStorage["Core Classes"].Object.Character.Player.Player_Effect_Prefabs)
+local actionModule = require(characterFolder:WaitForChild("Character_Actions"))
+local characterEffectPrefabs = require(characterFolder.Character_Effects.Effect_Prefabs)
+local playerEffectPrefabs = require(characterFolder.Player.Player_Effect_Prefabs)
 local Enum = require(coreFolder:WaitForChild("Enum"))
 
 local module = {}
