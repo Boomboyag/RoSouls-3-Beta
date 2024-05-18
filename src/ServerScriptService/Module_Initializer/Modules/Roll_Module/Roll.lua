@@ -4,12 +4,18 @@ local replicatedStorage = game:GetService("ReplicatedStorage")
 -- Required folders
 local coreFolder = replicatedStorage:WaitForChild("Core Classes")
 local characterFolder = replicatedStorage["Core Classes"].Object.Character
+local remoteFolder = replicatedStorage:WaitForChild("Remote")
+local bindableFolder = replicatedStorage:WaitForChild("Bindable")
 
 -- Required scripts
 local actionModule = require(characterFolder:WaitForChild("Character_Actions"))
 local characterEffectPrefabs = require(characterFolder.Character_Effects.Effect_Prefabs)
 local playerEffectPrefabs = require(characterFolder.Player.Player_Effect_Prefabs)
 local Enum = require(coreFolder:WaitForChild("Enum"))
+
+-- Required events
+local remoteEvent = remoteFolder:WaitForChild("Roll_Remote")
+local bindableEvent = bindableFolder:WaitForChild("Roll_Bindable")
 
 local module = {}
 
@@ -100,6 +106,11 @@ local rollAction = actionModule.new({
         -- Drain the stamina
         character:RemoveEffect(characterEffectPrefabs.Stamina_Regen.Name)
         character:AddEffect(effects.Roll_Stamina_Drain)
+
+        -- Add the forcefield
+        if character.onServer then
+            bindableEvent:Fire(character.model)
+        end
         
         -- Change the animation
         local rollAnimation = character.animations.rollAnimation
@@ -162,6 +173,8 @@ local rollAction = actionModule.new({
 
     -- The function performed on the PLAYER when the action begins
     ["ActionBeginFunction_PLAYER"] = function(player)
+
+        remoteEvent:FireServer()
 
         -- Stop the movement being relative to the camera
         player:AddEffect(playerEffectPrefabs.Disable_Movement_Relative_To_Camera)
