@@ -98,6 +98,10 @@ local rollAction = actionModule.new({
 
         -- Disable actions
         character:AddEffect(characterEffectPrefabs.Disable_Actions)
+
+        
+		-- Stop the character from climbing
+		character:AddEffect(characterEffectPrefabs.Disable_Climbing)
         
         -- Lock the character
         character.characterState = Enum.CharacterState.Locked
@@ -164,6 +168,9 @@ local rollAction = actionModule.new({
         -- Allow the player to use actions again
         character:RemoveEffect(characterEffectPrefabs.Disable_Actions.Name)
         character.characterStats.currentAction = nil
+
+        -- Allow the character to climb
+		character:RemoveEffect(characterEffectPrefabs.Disable_Climbing.Name)
     end,
 
     -- The function performed on the character when the action is finished
