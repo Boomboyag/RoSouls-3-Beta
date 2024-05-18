@@ -377,6 +377,10 @@ function character.new(newCharacter)
 	self.CharacterStateChanged = Instance.new("BindableEvent")
 	self.CharacterHumanoidStateChanged = Instance.new("BindableEvent")
 	self.CharacterStatChanged = Instance.new("BindableEvent")
+
+	-- Health & Stamina
+	self.HealthChanged = Instance.new("BindableEvent")
+	self.StaminaChanged = Instance.new("BindableEvent")
 	
 	-- Effects and actions
 	self.EffectAdded = Instance.new("BindableEvent")
