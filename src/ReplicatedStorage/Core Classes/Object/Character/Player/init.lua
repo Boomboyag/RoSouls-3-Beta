@@ -183,8 +183,8 @@ function player.new(newPlayerTable)
 	self.defaultPlayerStats.cameraSubject = self.cameraBlock
 
 	-- What the camera is looking at
-	self.playerStats.cameraTarget = self.cameraBlock
-	self.defaultPlayerStats.cameraTarget = self.cameraBlock
+	self.playerStats.cameraTarget = nil
+	self.defaultPlayerStats.cameraTarget = nil
 	
 	-- Camera handler
 	self.cameraHandler = cameraHandler.new(self)
@@ -207,9 +207,6 @@ function player.new(newPlayerTable)
 	
 	-- The input update
 	runService:BindToRenderStep("Input Update", Enum.RenderPriority.Input.Value, function(deltaTime)
-
-		-- Update the camera
-		self.cameraHandler:MoveCameraWithMouse()
 
 		-- Move the player
 		self:Move()

@@ -4,6 +4,10 @@ local pathfindingService = game:GetService("PathfindingService")
 local chatService = game:GetService("Chat")
 local replicatedStorage = game:GetService("ReplicatedStorage")
 local tweenService = game:GetService("TweenService")
+local players = game:GetService("Players")
+
+-- The player
+local localPlayer = players.LocalPlayer
 
 -- Required folders
 local coreFolder = replicatedStorage:WaitForChild("Core Classes")
@@ -372,6 +376,28 @@ local statsChangedFunctions = {
         return newValue
     end,
 
+    -- The lock on type
+    ["cameraLockOnType"] = function(player, oldValue, newValue, startup)
+
+        -- Create the pcall
+        local success, response = pcall(function()
+
+            -- Check if this is being fired for the first time or if the values are the same
+		    if (not oldValue and not startup) or (oldValue == newValue) then return end
+
+            -- End the old value
+            if oldValue then oldValue.StateEndedFunction(player) end
+
+            -- Fire the related function
+            if newValue then newValue.StateBeganFunction(player) end
+        end)
+
+        -- Check if not a success
+        if not success then
+            warn(response)
+        end
+    end,
+
     -- || MOUSE SETTINGS ||
 
     -- The type of cursor being shown (if any)
@@ -384,7 +410,7 @@ local statsChangedFunctions = {
 		    if (not oldValue and not startup) or (oldValue == newValue) then return end
 
             -- Fire the related function
-            if newValue then newValue:StateBeganFunction(player) end
+            if newValue then newValue.StateBeganFunction(player) end
         end)
 
         -- Check if not a success
@@ -401,6 +427,17 @@ local statsChangedFunctions = {
 
             -- Check if this is being fired for the first time or if the values are the same
 		    if (oldValue == nil and not startup) or (oldValue == newValue) or newValue == nil then return end
+
+            -- Create the boolean
+            if not localPlayer:FindFirstChild("Mouse_Moves_Cam") then
+                local boolean = Instance.new("BoolValue")
+                boolean.Name = "Mouse_Moves_Cam"
+                boolean.Parent = localPlayer
+            end
+
+            -- Update the boolean
+            local boolean = localPlayer:FindFirstChild("Mouse_Moves_Cam")
+            boolean.Value = newValue
 
             -- Change the camera handler to reflect the new value
             player.cameraHandler.mouseMovesCamera = newValue

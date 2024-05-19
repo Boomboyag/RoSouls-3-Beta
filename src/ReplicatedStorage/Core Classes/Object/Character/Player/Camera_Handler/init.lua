@@ -24,7 +24,6 @@ function cameraHandler.new(player)
 
 	-- The mouse
 	self.mouse = player.mouse
-	self.lastMousePosition = Vector2.new(self.mouse.X, self.mouse.Y)
 
 	-- The camera's mouse sensitivity
 	self.mouseSensitivity = player.playerStats.mouseSensitivity
@@ -80,28 +79,6 @@ function cameraHandler.new(player)
 end
 
 -- || CAMERA CONTROL ||
-
--- Move the camera via the mouse
-function cameraHandler:MoveCameraWithMouse()
-
-	-- Make sure we can move the camera
-	if not self.mouseMovesCamera then return end
-	
-	-- Retrieves the current mouse position.
-	local currentMousePosition = Vector2.new(self.mouse.X, self.mouse.Y)
-	
-	-- Calculates the change in mouse position multiplied by the sensitivity.
-	local cameraDelta = (currentMousePosition - self.lastMousePosition) * self.mouseSensitivity
-	
-	-- Updates the last mouse position for the next frame.
-	self.lastMousePosition = currentMousePosition
-	
-	-- Creates a rotation vector based on the mouse movement.
-	local cameraRotation = Vector3.new(-cameraDelta.Y, -cameraDelta.X, 0)
-	
-	-- Updates the camera's CFrame (position and rotation) by applying the rotation calculated from mouse movement.
-	self.camera.CFrame = self.camera.CFrame * CFrame.Angles(math.rad(cameraRotation.X), math.rad(cameraRotation.Y), 0)
-end
 
 -- Make character look in camera direction
 function cameraHandler:LookInCameraDirection()
@@ -200,7 +177,7 @@ function cameraHandler:Update(deltaTime)
 	self:CameraSway()
 
 	-- Update the look at
-	self:LookAt()
+	if self.cameraTarget then self:LookAt() end
 	
 	-- Check if we want the camera to be delayed
 	if self.cameraFollowsTarget then
