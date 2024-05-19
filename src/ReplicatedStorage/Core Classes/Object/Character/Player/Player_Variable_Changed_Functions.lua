@@ -189,7 +189,7 @@ local statsChangedFunctions = {
     end,
 
     -- What the camera block is following
-    ["cameraFollow"] = function(player, oldValue, newValue, startup)
+    ["cameraBlockFollow"] = function(player, oldValue, newValue, startup)
 
         -- Create the pcall
         local success, response = pcall(function()
@@ -198,7 +198,7 @@ local statsChangedFunctions = {
 		    if (oldValue == nil and not startup) or (oldValue == newValue) or newValue == nil then return end
 
             -- Change the camera handler to reflect the new value
-            player.cameraHandler.cameraFollow = newValue
+            player.cameraHandler.cameraBlockFollow = newValue
         end)
 
         -- Check if not a success

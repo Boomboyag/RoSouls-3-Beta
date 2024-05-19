@@ -56,7 +56,7 @@ function cameraHandler.new(player)
 	self.cameraBodyPosition.MaxForce = Vector3.new(math.huge, math.huge, math.huge)
 	
 	-- What the camera is 'following'
-	self.cameraFollow = player.playerStats.cameraFollow
+	self.cameraBlockFollow = player.playerStats.cameraBlockFollow
 
 	-- || CAMERA SWAY ||
 
@@ -143,7 +143,7 @@ function cameraHandler:SmoothCamera()
 	end
 
 	-- Assign the position of the camera part
-	self.cameraBodyPosition.Position = self.cameraFollow.CFrame:ToWorldSpace(CFrame.new(self.appliedCameraOffset)).Position
+	self.cameraBodyPosition.Position = self.cameraBlockFollow.CFrame:ToWorldSpace(CFrame.new(self.appliedCameraOffset)).Position
 
 	-- Tween the camera part over time
 	self.cameraBodyPosition.P = 1000 * self.cameraStiffness

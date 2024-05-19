@@ -177,8 +177,8 @@ function player.new(newPlayerTable)
 	self.mouse = self.player:GetMouse()
 
 	-- Camera settings
-	self.playerStats.cameraFollow = self.humanoidRootPart
-	self.defaultPlayerStats.cameraFollow = self.humanoidRootPart
+	self.playerStats.cameraBlockFollow = self.humanoidRootPart
+	self.defaultPlayerStats.cameraBlockFollow = self.humanoidRootPart
 	self.playerStats.cameraSubject = self.cameraBlock
 	self.defaultPlayerStats.cameraSubject = self.cameraBlock
 	

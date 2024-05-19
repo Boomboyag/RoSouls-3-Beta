@@ -8,6 +8,7 @@ local characterFolder = coreFolder:WaitForChild("Object"):WaitForChild("Characte
 -- Required scripts
 local cameraTypes = require(coreFolder:WaitForChild("Enum").CameraType)
 local cursorTypes = require(coreFolder:WaitForChild("Enum").CursorType)
+local lockOnTypes = require(coreFolder:WaitForChild("Enum").LockOnType)
 
 -- Class creation
 local playerStats = {}
@@ -21,6 +22,7 @@ function playerStats.new(newPlayerTable, player)
 
 	-- The camera state
 	self.cameraType = cameraTypes.Default
+	self.cameraLockOnType = lockOnTypes.None
 
 	-- Whether or not the camera is in first person
 	self.firstPersonCamera = false
@@ -42,7 +44,7 @@ function playerStats.new(newPlayerTable, player)
 	self.fieldOfView = 70
 	self.fieldOfViewEffectsAllowed = true
 	
-	self.cameraFollow = nil
+	self.cameraBlockFollow = nil
 	self.cameraSubject = nil
 
 	-- The amount and speed of the camera sway on both axes
