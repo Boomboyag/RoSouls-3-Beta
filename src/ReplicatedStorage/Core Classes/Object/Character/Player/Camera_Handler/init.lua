@@ -152,6 +152,20 @@ function cameraHandler:SmoothCamera()
 	self.cameraBodyPosition.P = 1000 * self.cameraStiffness
 end
 
+-- || CAMERA LOOK AT ||
+
+function cameraHandler:LookAt()
+	
+	-- Make sure the target exists
+	if not self.cameraTarget then
+		warn("Camera target is not found!")
+		return
+	end
+
+	-- Make the camera look at the desired object
+	self.camera.CFrame = CFrame.lookAt(self.camera.CFrame.Position, self.cameraTarget.CFrame.Position)
+end
+
 -- || CAMERA SHAKE & SWAY ||
 
 -- Update the camera's idle sway
@@ -184,6 +198,9 @@ function cameraHandler:Update(deltaTime)
 
 	-- Update the sway
 	self:CameraSway()
+
+	-- Update the look at
+	self:LookAt()
 	
 	-- Check if we want the camera to be delayed
 	if self.cameraFollowsTarget then
