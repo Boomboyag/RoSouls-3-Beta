@@ -19,8 +19,8 @@ function module:Init()
     module_.Parent = moduleFolder
 
     -- Add the module to the character
-    --local playerMod = actionModule:Clone()
-    --playerMod.Parent = playerFolder
+    local playerMod = actionModule:Clone()
+    playerMod.Parent = playerFolder
 end
 
 return module
