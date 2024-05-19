@@ -176,11 +176,15 @@ function player.new(newPlayerTable)
 	-- The mouse
 	self.mouse = self.player:GetMouse()
 
-	-- Camera settings
+	-- Camera & camera block settings
 	self.playerStats.cameraBlockFollow = self.humanoidRootPart
 	self.defaultPlayerStats.cameraBlockFollow = self.humanoidRootPart
 	self.playerStats.cameraSubject = self.cameraBlock
 	self.defaultPlayerStats.cameraSubject = self.cameraBlock
+
+	-- What the camera is looking at
+	self.playerStats.cameraTarget = self.cameraBlock
+	self.defaultPlayerStats.cameraTarget = self.cameraBlock
 	
 	-- Camera handler
 	self.cameraHandler = cameraHandler.new(self)

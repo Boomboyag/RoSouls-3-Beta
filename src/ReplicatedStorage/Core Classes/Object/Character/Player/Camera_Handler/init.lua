@@ -58,6 +58,9 @@ function cameraHandler.new(player)
 	-- What the camera is 'following'
 	self.cameraBlockFollow = player.playerStats.cameraBlockFollow
 
+	-- What the camera is looking at
+	self.cameraTarget = player.playerStats.cameraTarget
+
 	-- || CAMERA SWAY ||
 
 	-- The amount and speed of the camera sway on both axes

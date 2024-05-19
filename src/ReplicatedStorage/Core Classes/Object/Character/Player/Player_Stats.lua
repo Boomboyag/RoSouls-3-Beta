@@ -47,6 +47,8 @@ function playerStats.new(newPlayerTable, player)
 	self.cameraBlockFollow = nil
 	self.cameraSubject = nil
 
+	self.cameraTarget = nil
+
 	-- The amount and speed of the camera sway on both axes
 	self.cameraSwayAmount = Vector2.new(0.35, 0.35)
 	self.cameraSwaySpeed = Vector2.new(0.7, 0.7)
