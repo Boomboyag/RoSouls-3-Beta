@@ -410,30 +410,37 @@ function footstepHandler:Step(foot)
 		-- Check if we want to emit the particle
 		if foot and self.particlesEnabled then
 
-			-- Get the color of the ground
-			local particleColor = instance == workspace.Terrain and workspace.Terrain:GetMaterialColor(material) or instance.Color
-
-			-- A function to make a color darker
-			local function MakeDarker(color)
-				local H, S, V = color:ToHSV()
-				
-				V = math.clamp(V - 0.1, 0, 1)
-				
-				return Color3.fromHSV(H, S, V)
-			end
-
-			particleColor = MakeDarker(particleColor)
-			
-			-- Set the particle color and emit
-			if foot == "Left" then
-				self.leftParticle.Color = ColorSequence.new(particleColor)
-				self.leftParticle:Emit()
-			else
-				self.rightParticle.Color = ColorSequence.new(particleColor)
-				self.rightParticle:Emit()
-			end
+			-- Emit the particle
+			self:EmitParticle(foot, instance, material)
 		end
     end
+end
+
+-- The particle function
+function footstepHandler:EmitParticle(foot, instance, material)
+	
+	-- Get the color of the ground
+	local particleColor = instance == workspace.Terrain and workspace.Terrain:GetMaterialColor(material) or instance.Color
+
+	-- A function to make a color darker
+	local function MakeDarker(color)
+		local H, S, V = color:ToHSV()
+		
+		V = math.clamp(V - 0.1, 0, 1)
+		
+		return Color3.fromHSV(H, S, V)
+	end
+
+	particleColor = MakeDarker(particleColor)
+	
+	-- Set the particle color and emit
+	if foot == "Left" then
+		self.leftParticle.Color = ColorSequence.new(particleColor)
+		self.leftParticle:Emit()
+	else
+		self.rightParticle.Color = ColorSequence.new(particleColor)
+		self.rightParticle:Emit()
+	end
 end
 
 -- Check if the character is grounded
