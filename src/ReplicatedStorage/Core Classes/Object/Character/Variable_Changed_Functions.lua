@@ -263,7 +263,7 @@ local statsChangedFunctions = {
 			end
 
 			-- Fire the event
-			chatService.HealthChanged:Fire(oldValue, newValue)
+			character.HealthChanged:Fire(oldValue, newValue)
 			character.CharacterStatChanged:Fire("currentHealth", oldValue, newValue)
 		end) 
 

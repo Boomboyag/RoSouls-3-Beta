@@ -67,7 +67,10 @@ function playerProxy.new(newPlayer)
 		HumanoidStateChanged = self.HumanoidStateChanged,
 		
 		EffectAdded = self.EffectAdded,
-		EffectRemoved = self.EffectRemoved
+		EffectRemoved = self.EffectRemoved,
+
+		StaminaChanged = self.StaminaChanged,
+		HealthChanged = self.HealthChanged
 	}
 end
 
