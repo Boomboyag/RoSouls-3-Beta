@@ -1,6 +1,7 @@
 -- Get the required services
 local players = game:GetService("Players")
 local userInputService = game:GetService("UserInputService")
+local contextActionService = game:GetService("ContextActionService")
 local replicatedStorage = game:GetService("ReplicatedStorage")
 
 -- Get the required folders
@@ -24,6 +25,7 @@ player.CharacterAdded:Connect(function(character)
 	-- Wait for the humanoid root part to appear
 	character:WaitForChild("HumanoidRootPart")
 	characterHandler = require(playerHandler).new(charTable)
+
 end)
 
 player.CharacterRemoving:Connect(function()
@@ -54,7 +56,7 @@ end)
 userInputService.InputEnded:Connect(function(input, gameProcessed)
 
 	-- Return if it's part of something else
-	if gameProcessed or not characterHandler then return end
+	if not characterHandler then return end
 	
 	-- Check if we want to roll
 	if (input.KeyCode == Enum.KeyCode.F or input.KeyCode == Enum.KeyCode.ButtonY) then
@@ -76,4 +78,8 @@ userInputService.InputEnded:Connect(function(input, gameProcessed)
 		characterHandler:Sprint(false, false)
 	end
 	
+	if input.KeyCode == Enum.KeyCode.X or input.KeyCode == Enum.KeyCode.ButtonR3 then
+		characterHandler:Lock_On()
+	end
 end)
+

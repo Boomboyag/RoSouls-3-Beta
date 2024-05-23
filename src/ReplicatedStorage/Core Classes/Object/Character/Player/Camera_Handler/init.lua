@@ -1,3 +1,6 @@
+-- Required services
+local tweenService = game:GetService("TweenService")
+
 -- Required scripts
 local cameraShaker = require(script:WaitForChild("CameraShaker"))
 
@@ -59,6 +62,7 @@ function cameraHandler.new(player)
 
 	-- What the camera is looking at
 	self.cameraTarget = player.playerStats.cameraTarget
+	self.cameraTween = nil
 
 	-- || CAMERA SWAY ||
 
@@ -135,12 +139,19 @@ function cameraHandler:LookAt()
 	
 	-- Make sure the target exists
 	if not self.cameraTarget then
-		warn("Camera target is not found!")
+
+		-- Remove the camera tween
+		if self.cameraTween then 
+			self.cameraTween:Pause() 
+			self.cameraTween = nil
+		end
 		return
 	end
 
 	-- Make the camera look at the desired object
-	self.camera.CFrame = CFrame.lookAt(self.camera.CFrame.Position, self.cameraTarget.CFrame.Position)
+	self.cameraTween = tweenService:Create(self.camera, TweenInfo.new(0.1), {CFrame = CFrame.lookAt(self.camera.CFrame.Position, self.cameraTarget.CFrame.Position)})
+	self.cameraTween:Play()
+	--self.camera.CFrame = CFrame.lookAt(self.camera.CFrame.Position, self.cameraTarget.CFrame.Position)
 end
 
 -- || CAMERA SHAKE & SWAY ||
@@ -177,7 +188,7 @@ function cameraHandler:Update(deltaTime)
 	self:CameraSway()
 
 	-- Update the look at
-	if self.cameraTarget then self:LookAt() end
+	self:LookAt()
 	
 	-- Check if we want the camera to be delayed
 	if self.cameraFollowsTarget then

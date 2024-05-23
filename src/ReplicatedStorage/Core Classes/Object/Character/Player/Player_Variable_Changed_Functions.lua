@@ -179,12 +179,13 @@ local statsChangedFunctions = {
         local success, response = pcall(function()
 
             -- Check if this is being fired for the first time or if the values are the same
-		    if (oldValue == nil and not startup) or (oldValue == newValue) then return end
+		    if (oldValue == newValue) then return end
 
-            -- Check if we want to return to the default target
-            if not newValue then
-                newValue = player.defaultPlayerStats.cameraTarget
-            end
+            -- Reset the lock on enum
+            if not newValue then player.playerStats.cameraLockOnType.StateEndedFunction(player) end
+
+            -- Call the lock on enum
+            if newValue then player.playerStats.cameraLockOnType.StateBeganFunction(player) end
 
             -- Change the camera handler to reflect the new value
             player.cameraHandler.cameraTarget = newValue
@@ -194,6 +195,8 @@ local statsChangedFunctions = {
         if not success then
             warn(response)
         end
+
+        return newValue
     end,
 
     -- Whether or not the camera block follows the current target
@@ -383,7 +386,10 @@ local statsChangedFunctions = {
         local success, response = pcall(function()
 
             -- Check if this is being fired for the first time or if the values are the same
-		    if (not oldValue and not startup) or (oldValue == newValue) then return end
+		    if (not oldValue) or (oldValue == newValue) then return end
+
+            -- Make sure the camera is looking at a target
+            if not player.playerStats.cameraTarget then return end
 
             -- End the old value
             if oldValue then oldValue.StateEndedFunction(player) end

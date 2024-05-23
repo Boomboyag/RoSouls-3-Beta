@@ -213,7 +213,7 @@ function player.new(newPlayerTable)
 	end)
 	
 	-- The graphics update
-	runService:BindToRenderStep("Camera Update", Enum.RenderPriority.Camera.Value, function(deltaTime)
+	runService:BindToRenderStep("Camera Update", Enum.RenderPriority.Camera.Value + 1, function(deltaTime)
 		
 		-- Update the camera
 		self.cameraHandler:Update(deltaTime)

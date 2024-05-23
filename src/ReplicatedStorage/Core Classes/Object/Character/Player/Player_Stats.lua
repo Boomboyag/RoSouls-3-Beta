@@ -22,7 +22,7 @@ function playerStats.new(newPlayerTable, player)
 
 	-- The camera state
 	self.cameraType = cameraTypes.Default
-	self.cameraLockOnType = lockOnTypes.None
+	self.cameraLockOnType = lockOnTypes.Full
 
 	-- Whether or not the camera is in first person
 	self.firstPersonCamera = false

@@ -362,7 +362,18 @@ function character.new(newCharacter)
 		
 		-- Find the stat
 		if self[statName] then stat = self[statName] 
-		elseif self.characterStats[statName] then stat = self.characterStats[statName] end
+		else
+
+			-- Loop through all effect tables
+			for i, v in self.validEffectTables do
+				
+				-- Check if the given table has the value
+				if v[statName] then 
+					stat = v[statName] 
+					break
+				end
+			end
+		end
 		
 		-- Return the stat
 		return stat
@@ -1132,7 +1143,7 @@ function character:CheckGround()
 end
 
 -- See if the character can see an object
-function character:CheckSight(newModel)
+function character:CheckSight(newModel, excluded, angle, distance)
 
 	-- Find the required angles
 	local distanceToObject = (self.head.Position - newModel.PrimaryPart.Position)
@@ -1142,7 +1153,7 @@ function character:CheckSight(newModel)
 	local angle = math.deg(distanceToObject.Unit:Dot(lookAngle))
 
 	-- Check if it is within the view angle
-	if angle < self.viewAngle and distanceToObject.Magnitude < self.viewDistance then 
+	if angle < (self.viewAngle or angle or 180) and distanceToObject.Magnitude < (self.viewDistance or distance or 50) then 
 
 		-- Create the raycast
 		local rayOrigin = self.head.Position
@@ -1150,7 +1161,7 @@ function character:CheckSight(newModel)
 
 		-- Create the raycast parameters
 		local raycastParams = RaycastParams.new()
-		raycastParams.FilterDescendantsInstances = {self.model}
+		raycastParams.FilterDescendantsInstances = excluded and {self.model, excluded} or {self.model}
 		raycastParams.FilterType = Enum.RaycastFilterType.Exclude
 		raycastParams.IgnoreWater = true
 

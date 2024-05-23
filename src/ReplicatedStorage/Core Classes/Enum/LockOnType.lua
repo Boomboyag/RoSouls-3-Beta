@@ -77,6 +77,7 @@ lockOnType.None = {
      -- Called when changed to
      StateBeganFunction = function(player)
          
+        player.playerStats.cameraTarget = nil
      end,
  
      -- Called when changed from

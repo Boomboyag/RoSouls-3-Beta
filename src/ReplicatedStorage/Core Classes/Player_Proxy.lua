@@ -37,6 +37,11 @@ function playerProxy.new(newPlayer)
 		self:Roll(forceRoll)
 	end
 
+	-- The lock on function
+	local Lock_On = function(targetDirection)
+		self:Lock_On(targetDirection)
+	end
+
 	-- The unlock / lock mouse function
 	local ChangeMouseLock = function(newPlayer)
 		
@@ -55,6 +60,7 @@ function playerProxy.new(newPlayer)
 		Crouch = Crouch,
 		Sprint = Sprint,
 		Roll = Roll,
+		Lock_On = Lock_On,
 		Destroy = Destroy,
 
 		ChangeMouseLock = ChangeMouseLock,

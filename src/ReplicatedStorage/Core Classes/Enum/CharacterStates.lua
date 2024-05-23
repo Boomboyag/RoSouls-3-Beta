@@ -12,6 +12,7 @@ local playerEffectPrefabs = require(playerModule:WaitForChild("Player_Effect_Pre
 
 local movementType = require(script.Parent.MovementType)
 local controlType = require(script.Parent.ControlType)
+local cameraLockOnTypes = require(script.Parent.LockOnType)
 
 local states = {
 
@@ -37,6 +38,7 @@ local states = {
 		-- Function called when the state begins on the client
 		StateBeganFunctionPlayer = function(player)
 			
+			player.playerStats.cameraLockOnType = cameraLockOnTypes.Full
 		end,
 		
 		-- Function called when the state ends on the client
@@ -241,6 +243,7 @@ local states = {
 
 			-- Stop the camera block from following the player
 			player.playerStats.cameraFollowsTarget = false
+			player.playerStats.cameraLockOnType = cameraLockOnTypes.None
 		end,
 		
 		-- Function called when the state ends on the client
