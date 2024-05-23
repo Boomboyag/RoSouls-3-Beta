@@ -17,7 +17,7 @@ module.Name = "Lock On Module"
 function module.FindTarget(self, targetTag, minAngle, maxAngle, minDist, maxDist, excluded, angleMoreImportant, targetAngle, respectLineOfSight) : Part
     
     -- Set the default values
-    local rootPos = self.humanoidRootPart.CFrame
+    local cameraFrame = self.camera.CFrame
 	local currentDistance = maxDist
 	local currentAngle = math.huge
 	local currentTarget = nil
@@ -46,7 +46,7 @@ function module.FindTarget(self, targetTag, minAngle, maxAngle, minDist, maxDist
 		end
 
 		-- Get the angle between the target and the player
-		local targetPosition = rootPos:ToObjectSpace(enemy.PrimaryPart.CFrame)
+		local targetPosition = cameraFrame:ToObjectSpace(enemy.PrimaryPart.CFrame)
 		local angle = module.findDirection(Vector3.zero, targetPosition)	
 
 		-- Check if the angle is within bounds
