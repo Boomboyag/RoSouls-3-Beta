@@ -1,5 +1,7 @@
 local operators = {
 	
+	Name = "ActionPrerequisiteOperator",
+
 	Equals = {
 
 		1, 

@@ -1,5 +1,7 @@
 local movementType = {
 
+	Name = "MovementType",
+
 	-- The default movement type
 	Default = {
 

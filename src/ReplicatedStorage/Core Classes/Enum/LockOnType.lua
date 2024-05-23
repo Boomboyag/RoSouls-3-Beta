@@ -12,6 +12,9 @@ local playerEffectPrefabs = require(playerModule:WaitForChild("Player_Effect_Pre
 
 local lockOnType = {}
 
+-- The enum name
+lockOnType.Name = "LockOnType"
+
 -- Full lock on
 lockOnType.Full = {
 

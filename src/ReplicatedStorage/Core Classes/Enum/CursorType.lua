@@ -2,6 +2,8 @@
 local userInputService = game:GetService("UserInputService")
 
 local customCursorType = {
+
+	Name = "CustomCursorType",
 	
 	Unlocked = {
 

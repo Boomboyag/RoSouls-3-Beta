@@ -1,4 +1,6 @@
 local actionType = {
+
+	Name = "ActionType",
 	
 	Movement = {
 		1,

@@ -1,4 +1,6 @@
 local cameraType = {
+
+	Name = "CustomCameraType",
 	
 	Default = {
 		

@@ -16,6 +16,8 @@ local cameraLockOnTypes = require(script.Parent.LockOnType)
 
 local states = {
 
+	Name = "CharacterState",
+
     -- The default state
 	Default = {
 		

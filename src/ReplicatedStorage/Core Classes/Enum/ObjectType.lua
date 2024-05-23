@@ -1,4 +1,5 @@
 local objectType = {
+	Name = "ObjectType",
 	Humanoid = {1, Name = "Humanoid"},
 	Tool = {2, Name = "Tool"},
 	Interactable = {3, Name = "Interactable"},
