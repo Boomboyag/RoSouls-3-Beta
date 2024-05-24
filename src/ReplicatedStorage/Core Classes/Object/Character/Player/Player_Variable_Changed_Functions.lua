@@ -185,7 +185,7 @@ local statsChangedFunctions = {
             if not newValue then player.playerStats.cameraLockOnType.StateEndedFunction(player) end
 
             -- Call the lock on enum
-            if newValue then player.playerStats.cameraLockOnType.StateBeganFunction(player) end
+            if newValue and not oldValue then player.playerStats.cameraLockOnType.StateBeganFunction(player) end
 
             -- Change the camera handler to reflect the new value
             player.cameraHandler.cameraTarget = newValue

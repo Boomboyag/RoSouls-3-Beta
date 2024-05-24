@@ -38,8 +38,8 @@ function playerProxy.new(newPlayer)
 	end
 
 	-- The lock on function
-	local Lock_On = function(targetDirection)
-		self:Lock_On(targetDirection)
+	local Lock_On = function(newPlayer, targetDirection)
+		self:Lock_On(nil, nil, targetDirection)
 	end
 
 	-- The unlock / lock mouse function

@@ -52,6 +52,27 @@ userInputService.InputBegan:Connect(function(input, gameProcessed)
 	end
 end)
 
+-- Input changed
+userInputService.InputChanged:Connect(function(input, gameProcessedEvent)
+
+	-- Return if it's part of something else
+	if not characterHandler then return end
+	
+	if input.KeyCode == Enum.KeyCode.Thumbstick2 then
+		
+		-- Change the lock on
+		if math.abs(input.Position.Magnitude) > 0.5 then 
+			characterHandler:Lock_On(input.Position) 
+		end
+	end
+
+	if input.UserInputType == Enum.UserInputType.MouseMovement then
+		
+		local delta = input.Delta * Vector3.new(0.02, -0.02, 0)
+		characterHandler:Lock_On(delta) 
+	end
+end)
+
 -- The end of an input
 userInputService.InputEnded:Connect(function(input, gameProcessed)
 
@@ -78,7 +99,7 @@ userInputService.InputEnded:Connect(function(input, gameProcessed)
 		characterHandler:Sprint(false, false)
 	end
 	
-	if input.KeyCode == Enum.KeyCode.X or input.KeyCode == Enum.KeyCode.ButtonR3 then
+	if input.KeyCode == Enum.KeyCode.X or input.KeyCode == Enum.KeyCode.ButtonR3 or input.UserInputType == Enum.UserInputType.MouseButton3 then
 		characterHandler:Lock_On()
 	end
 end)
