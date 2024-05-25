@@ -135,7 +135,7 @@ end
 
 -- || CAMERA LOOK AT ||
 
-function cameraHandler:LookAt()
+function cameraHandler:LookAt(deltaTime)
 	
 	-- Make sure the target exists
 	if not self.cameraTarget then
@@ -149,8 +149,9 @@ function cameraHandler:LookAt()
 	end
 
 	-- Make the camera look at the desired object
-	self.cameraTween = tweenService:Create(self.camera, TweenInfo.new(0.1), {CFrame = CFrame.lookAt(self.camera.CFrame.Position, self.cameraTarget.CFrame.Position)})
-	self.cameraTween:Play()
+	self.camera.CFrame = self.camera.CFrame:Lerp(CFrame.lookAt(self.camera.CFrame.Position, self.cameraTarget.CFrame.Position), 6.5 * deltaTime)
+	--self.cameraTween = tweenService:Create(self.camera, TweenInfo.new(0.1), {CFrame = CFrame.lookAt(self.camera.CFrame.Position, self.cameraTarget.CFrame.Position)})
+	--self.cameraTween:Play()
 	--self.camera.CFrame = CFrame.lookAt(self.camera.CFrame.Position, self.cameraTarget.CFrame.Position)
 end
 
@@ -188,7 +189,7 @@ function cameraHandler:Update(deltaTime)
 	self:CameraSway()
 
 	-- Update the look at
-	self:LookAt()
+	self:LookAt(deltaTime)
 	
 	-- Check if we want the camera to be delayed
 	if self.cameraFollowsTarget then
