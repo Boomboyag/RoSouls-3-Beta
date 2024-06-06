@@ -13,20 +13,17 @@ local playerHandler = core:WaitForChild("Player_Proxy")
 -- The player
 local characterHandler
 local player = players.LocalPlayer
+local character = player.Character or player.CharacterAdded:Wait()
 
-player.CharacterAdded:Connect(function(character)
-	
-	-- The character's info
-	local charTable = {
-		['model'] = character,
-		['position'] = Vector3.new(20, 10, 0),
-	}
-	
-	-- Wait for the humanoid root part to appear
-	character:WaitForChild("HumanoidRootPart")
-	characterHandler = require(playerHandler).new(charTable)
+-- The character's info
+local charTable = {
+	['model'] = character,
+	['position'] = Vector3.new(20, 10, 0),
+}
 
-end)
+-- Wait for the humanoid root part to appear
+character:WaitForChild("HumanoidRootPart")
+characterHandler = require(playerHandler).new(charTable)
 
 player.CharacterRemoving:Connect(function()
 	
@@ -103,4 +100,3 @@ userInputService.InputEnded:Connect(function(input, gameProcessed)
 		characterHandler:Lock_On()
 	end
 end)
-

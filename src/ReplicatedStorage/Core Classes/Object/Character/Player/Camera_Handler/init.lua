@@ -1,6 +1,3 @@
--- Required services
-local tweenService = game:GetService("TweenService")
-
 -- Required scripts
 local cameraShaker = require(script:WaitForChild("CameraShaker"))
 
@@ -90,9 +87,88 @@ function cameraHandler:LookInCameraDirection()
 	-- The CFrame
 	local camFrame = Vector3.new(self.camera.CFrame.LookVector.X, 0, self.camera.CFrame.LookVector.Z).Unit
 	local newCFrame = CFrame.new(self.humanoidRootPart.CFrame.Position, self.humanoidRootPart.CFrame.Position + camFrame) 
+	
+	if self.cameraTarget then
+		
+		newCFrame = CFrame.lookAt(self.humanoidRootPart.CFrame.Position * Vector3.new(1, 0, 1), self.cameraTarget.CFrame.Position * Vector3.new(1, 0, 1))
+	end
 
 	-- Make the humanoid look in the direction via the orientation attachment
 	self.rootOrientation.CFrame = newCFrame
+end
+
+-- Apply the given camera offset
+function cameraHandler:ApplyOffset(deltaTime)
+    
+    -- Initialize or update the blending factor
+    if not self.blendingFactor then
+        self.blendingFactor = 0
+    end
+
+    -- Target blending factor when a cameraTarget is assigned
+    local targetBlendingFactor = self.cameraTarget and 1 or 0
+
+    -- Smoothly increase or decrease the blending factor over time
+    local blendSpeed = 5
+    self.blendingFactor = self.blendingFactor + (targetBlendingFactor - self.blendingFactor) * blendSpeed * deltaTime
+	--self.blendingFactor = (self.cameraTarget and distance < 7) and 1 or 0
+
+    -- Apply an easing function for smoother transitions
+    local function easeInOutQuad(t)
+        return t < 0.5 and 2 * t * t or -1 + (4 - 2 * t) * t
+    end
+
+    local smoothedBlendingFactor = easeInOutQuad(self.blendingFactor)
+
+    -- Calculate the blended offset
+    local offset = self.cameraOffset * Vector3.new(1, 0, 1)
+    local yOffsetOnly = Vector3.new(0, offset.Y, 0)
+    local blendedOffset = offset:Lerp(yOffsetOnly, smoothedBlendingFactor)
+
+    -- Apply the blended offset
+    local newFrame = self:UpdateCollision(self.camera.CFrame * CFrame.new(blendedOffset))
+    self.camera.CFrame = newFrame
+end
+
+-- || CAMERA COLLISION ||
+
+-- Find the best camera position while factoring in collisions
+function cameraHandler:UpdateCollision(targetFrame, tableToIgnore)
+
+    local baseFrame = targetFrame
+    tableToIgnore = tableToIgnore or {}
+
+    -- Create the raycast
+    local raycastParams = RaycastParams.new()
+    table.insert(tableToIgnore, self.humanoidRootPart.Parent)
+    raycastParams.FilterDescendantsInstances = tableToIgnore
+    raycastParams.FilterType = Enum.RaycastFilterType.Exclude
+    raycastParams.IgnoreWater = true
+
+    -- Define the starting position and the direction of the ray
+    local start = self.cameraBlock and self.cameraBlock.CFrame.Position or self.humanoidRootPart.CFrame.Position
+    local direction = (targetFrame.Position - start)
+
+    -- Perform the raycast
+    local raycastResult = workspace:Raycast(start, direction, raycastParams)
+    
+    -- Check if there is anything in the way
+    if raycastResult then
+
+        local instance = raycastResult.Instance
+        local hitPos = raycastResult.Position * 0.99 
+        targetFrame = (start - self.camera.CFrame.Position).Unit
+        targetFrame = (self.camera.CFrame - (self.camera.CFrame.Position - hitPos)) + targetFrame
+
+        -- Make sure the object is not a humanoid
+        if instance.Parent:FindFirstChild("Humanoid") and instance.Parent ~= game.Workspace then
+
+            table.insert(tableToIgnore, instance.Parent)
+            targetFrame = self:UpdateCollision(baseFrame, tableToIgnore)
+        end
+    end
+    
+    return targetFrame
 end
 
 -- || CAMERA SMOOTHING ||
@@ -127,7 +203,7 @@ function cameraHandler:SmoothCamera()
 	end
 
 	-- Assign the position of the camera part
-	self.cameraBodyPosition.Position = self.cameraBlockFollow.CFrame:ToWorldSpace(CFrame.new(self.appliedCameraOffset)).Position
+	self.cameraBodyPosition.Position = self.cameraBlockFollow.CFrame:ToWorldSpace(CFrame.new(self.cameraOffset * Vector3.new(0, 1, 0))).Position
 
 	-- Tween the camera part over time
 	self.cameraBodyPosition.P = 1000 * self.cameraStiffness
@@ -139,20 +215,26 @@ function cameraHandler:LookAt(deltaTime)
 	
 	-- Make sure the target exists
 	if not self.cameraTarget then
-
-		-- Remove the camera tween
-		if self.cameraTween then 
-			self.cameraTween:Pause() 
-			self.cameraTween = nil
-		end
 		return
 	end
 
-	-- Make the camera look at the desired object
-	self.camera.CFrame = self.camera.CFrame:Lerp(CFrame.lookAt(self.camera.CFrame.Position, self.cameraTarget.CFrame.Position), 6.5 * deltaTime)
-	--self.cameraTween = tweenService:Create(self.camera, TweenInfo.new(0.1), {CFrame = CFrame.lookAt(self.camera.CFrame.Position, self.cameraTarget.CFrame.Position)})
-	--self.cameraTween:Play()
-	--self.camera.CFrame = CFrame.lookAt(self.camera.CFrame.Position, self.cameraTarget.CFrame.Position)
+	-- Calculate the target CFrame
+	local targetCFrame = CFrame.lookAt(self.camera.CFrame.Position, self.cameraTarget.CFrame.Position)
+
+	-- Interpolate between the current and target CFrame
+	local lerpFactor = 8.0 * deltaTime -- Further reduced lerp factor for smoother movement
+	local currentCFrame = self.camera.CFrame
+	local newCFrame = currentCFrame:Lerp(targetCFrame, lerpFactor)
+
+	-- Extract orientation and clamp X axis rotation
+	local RX, RY, RZ = newCFrame:ToOrientation() -- These values are in radians.
+	local clampedRX = math.clamp(RX, math.rad(-80), math.rad(80)) -- Clamp X axis rotation in radians
+
+	-- Reconstruct the new CFrame with the clamped X axis rotation
+	newCFrame = CFrame.new(newCFrame.Position) * CFrame.fromOrientation(clampedRX, RY, RZ)
+
+	-- Set the new camera CFrame
+	self.camera.CFrame = newCFrame
 end
 
 -- || CAMERA SHAKE & SWAY ||
@@ -171,7 +253,7 @@ function cameraHandler:CameraSway()
     local sway = Vector3.new(swayX, swayY, 0)
 
 	-- Calculate the applied camera offset
-    self.appliedCameraOffset = self.cameraOffset + self.cameraOffset:lerp(sway, .25)
+    self.camera.CFrame *= CFrame.new(Vector3.new(0, 0, 0):Lerp(sway, 0.1))
 end
 
 -- Shake the camera
@@ -188,8 +270,11 @@ function cameraHandler:Update(deltaTime)
 	-- Update the sway
 	self:CameraSway()
 
-	-- Update the look at
-	self:LookAt(deltaTime)
+	-- Apply the offset
+	self:ApplyOffset(deltaTime)
+
+	-- Update the look at (now done in heartbeat)
+	--self:LookAt(deltaTime)
 	
 	-- Check if we want the camera to be delayed
 	if self.cameraFollowsTarget then

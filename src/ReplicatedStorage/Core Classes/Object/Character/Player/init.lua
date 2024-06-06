@@ -226,6 +226,12 @@ function player.new(newPlayerTable)
 		userInputService.MouseBehavior = self.playerStats.cursorType.MouseBehavior
 	end)
 
+	-- Heartbeat
+	runService.Heartbeat:Connect(function(deltaTime)
+		
+		self.cameraHandler:LookAt(deltaTime)
+	end)
+
 	-- || CONNECTIONS ||
 
 	-- The player's current action was changed
