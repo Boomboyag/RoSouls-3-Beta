@@ -527,15 +527,13 @@ function player:Destroy()
 	self.cameraHandler.shakeModule:Stop()
 	
 	-- Disconnect all connections
-	self.renderSteppedConnection:Disconnect()
-	self.heartbeatConnection:Disconnect()
 	runService:UnbindFromRenderStep("Final Update")
 	runService:UnbindFromRenderStep("After Final Update")
 	runService:UnbindFromRenderStep("Input Update")
 	runService:UnbindFromRenderStep("Camera Update")
 
-	-- Remove the metatable
-	setmetatable(self, nil)
+	-- Call the parent class method
+	character.Destroy(self)
 end
 
 return player

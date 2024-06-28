@@ -1203,8 +1203,8 @@ function character:Destroy()
 	self.heartbeatConnection:Disconnect()
 	runService:UnbindFromRenderStep("Final Update")
 	
-	-- Remove the metatable
-	setmetatable(self, nil)
+	-- Call the parent class method
+	object.Destroy(self)
 end
 
 return character
