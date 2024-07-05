@@ -62,7 +62,7 @@ function characterStats.new(newCharacter)
 	self.canStrafe = true
 	self.canAddEffects = true
 	self.canTilt = true
-	self.footstepsEnabled = false -- CHANGE TO TRUE UPON RELEASE
+	self.footstepsEnabled = (newCharacter.footstepsEnabled == false) or true
 
 	-- Set the metatable and return
 	setmetatable(self, characterStats)

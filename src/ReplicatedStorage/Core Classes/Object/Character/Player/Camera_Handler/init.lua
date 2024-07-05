@@ -133,40 +133,43 @@ end
 -- || CAMERA COLLISION ||
 
 -- Find the best camera position while factoring in collisions
-function cameraHandler:UpdateCollision(targetFrame, tableToIgnore)
+function cameraHandler:UpdateCollision(targetFrame, ignoreList)
 
-    local baseFrame = targetFrame
-    tableToIgnore = tableToIgnore or {}
+    local originalTargetFrame = targetFrame
+    ignoreList = ignoreList or {}
 
-    -- Create the raycast
+    -- Create the Raycast parameters
     local raycastParams = RaycastParams.new()
-    table.insert(tableToIgnore, self.humanoidRootPart.Parent)
-    raycastParams.FilterDescendantsInstances = tableToIgnore
+    table.insert(ignoreList, self.humanoidRootPart.Parent)
+    raycastParams.FilterDescendantsInstances = ignoreList
     raycastParams.FilterType = Enum.RaycastFilterType.Exclude
     raycastParams.IgnoreWater = true
 
     -- Define the starting position and the direction of the ray
-    local start = self.cameraBlock and self.cameraBlock.CFrame.Position or self.humanoidRootPart.CFrame.Position
-    local direction = (targetFrame.Position - start)
+    local startPosition = self.cameraBlock and self.cameraBlock.CFrame.Position or self.humanoidRootPart.CFrame.Position
+    local direction = (targetFrame.Position - startPosition)
 
-    -- Perform the raycast
-    local raycastResult = workspace:Raycast(start, direction, raycastParams)
+    -- Perform the Raycast
+    local raycastResult = workspace:Raycast(startPosition, direction, raycastParams)
     
     -- Check if there is anything in the way
     if raycastResult then
 
-        local instance = raycastResult.Instance
-        local hitPos = raycastResult.Position * 0.99 
-        targetFrame = (start - self.camera.CFrame.Position).Unit
-        targetFrame = (self.camera.CFrame - (self.camera.CFrame.Position - hitPos)) + targetFrame
+		-- Get the instance and the position of the result
+        local hitInstance = raycastResult.Instance
+        local hitPosition = raycastResult.Position
+		local hitNormal = raycastResult.Normal
+        
+        -- Adjust the targetFrame based on the collision
+        local offset = (startPosition - self.camera.CFrame.Position).Unit
+        targetFrame = (self.camera.CFrame - (self.camera.CFrame.Position - hitPosition)) + offset
 
         -- Make sure the object is not a humanoid
-        if instance.Parent:FindFirstChild("Humanoid") and instance.Parent ~= game.Workspace then
-
-            table.insert(tableToIgnore, instance.Parent)
-            targetFrame = self:UpdateCollision(baseFrame, tableToIgnore)
+        if hitInstance.Parent:FindFirstChild("Humanoid") and hitInstance.Parent ~= game.Workspace then
+            table.insert(ignoreList, hitInstance.Parent)
+            targetFrame = self:UpdateCollision(originalTargetFrame, ignoreList)
         end
-    end
+	end
     
     return targetFrame
 end

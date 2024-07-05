@@ -341,8 +341,15 @@ function footstepHandler.new(humanoidRootPart)
 
 	-- Get the particle emitter
 	if self.particlesEnabled then
+
 		self.leftParticle = self.leftParticle.ParticleEmitter
 		self.rightParticle = self.rightParticle.ParticleEmitter
+
+		-- Set the particle transparency
+		local particleTransparency = NumberSequence.new(0.8, 1.1)
+		
+		self.leftParticle.Transparency = particleTransparency
+		self.rightParticle.Transparency = particleTransparency
 	end
 
     -- || SETTINGS ||
@@ -426,7 +433,7 @@ function footstepHandler:EmitParticle(foot, instance, material)
 	local function MakeDarker(color)
 		local H, S, V = color:ToHSV()
 		
-		V = math.clamp(V - 0.1, 0, 1)
+		V = math.clamp(V - 0.05, 0, 1)
 		
 		return Color3.fromHSV(H, S, V)
 	end
