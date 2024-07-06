@@ -96,9 +96,9 @@ local rollAction = actionModule.new({
         local movementVector = character:GetWorldMoveDirection()
         local newCFrame = CFrame.new(character.humanoidRootPart.CFrame.Position, character.humanoidRootPart.CFrame.Position + movementVector) 
 
-        -- Disable actions
+        -- Disable actions & footsteps
         character:AddEffect(characterEffectPrefabs.Disable_Actions)
-
+        character:AddEffect(characterEffectPrefabs.Disable_Footsteps)
         
 		-- Stop the character from climbing
 		character:AddEffect(characterEffectPrefabs.Disable_Climbing)
@@ -169,6 +169,9 @@ local rollAction = actionModule.new({
         character:RemoveEffect(characterEffectPrefabs.Disable_Actions.Name)
         character.characterStats.currentAction = nil
 
+        -- Allow for footstep fx to be enabled once again
+        character:RemoveEffect(characterEffectPrefabs.Disable_Footsteps.Name)
+
         -- Allow the character to climb
 		character:RemoveEffect(characterEffectPrefabs.Disable_Climbing.Name)
     end,
@@ -223,9 +226,10 @@ local backstepAction = actionModule.new({
     -- The function performed on the character when the action begins
     ["ActionBeginFunction"] = function(character)
 
-         -- Disable actions
+         -- Disable actions & footstep fx
          character:AddEffect(characterEffectPrefabs.Disable_Actions)
-        
+         character:AddEffect(characterEffectPrefabs.Disable_Footsteps)
+
          -- Lock the character
          character.characterState = Enum.CharacterState.Locked
          character:AddEffect(characterEffectPrefabs.Disable_Auto_Rotate)
@@ -275,6 +279,9 @@ local backstepAction = actionModule.new({
          -- Allow the player to use actions again
          character:RemoveEffect(characterEffectPrefabs.Disable_Actions.Name)
          character.characterStats.currentAction = nil
+
+         -- Allow for footstep fx to be enabled once again
+        character:RemoveEffect(characterEffectPrefabs.Disable_Footsteps.Name)
     end,
 
     -- The function performed on the character when the action is finished
