@@ -25,6 +25,7 @@ function object.new(newObject)
 	-- Create the model
 	self.model = newObject.cloneObject and newObject.model:Clone() or newObject.model
 	self.model.Parent = newObject.modelParent or workspace
+	self.size = self.model:GetBoundingBox()
 	
 	-- Change the model name
 	if self.model.Name ~= self.name then

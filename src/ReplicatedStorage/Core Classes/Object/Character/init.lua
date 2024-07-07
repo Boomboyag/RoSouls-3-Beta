@@ -810,7 +810,8 @@ function character:SortEffects(effectsToSort)
 		return a.value < b.value
 	end)
 
-	return array
+	local weakTable = {__mode = "kv"}
+	return setmetatable(array, weakTable)
 end
 
 -- Apply all effects (or ones modifying a certain piece of data)

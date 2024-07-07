@@ -195,7 +195,7 @@ function player.new(newPlayerTable)
 	self.debugEnabled = false
 
 	-- Make sure the user is in studio
-	if runService:IsStudio() then
+	if runService:IsStudio() or true then
 		
 		-- Let the script know the debug menu is enabled
 		self.debugEnabled = true
@@ -299,7 +299,7 @@ function player:DebugMenu()
 		-- Create a window
 		local windowSize = iris.State(Vector2.new(400, 500))
 		local windowPosition = iris.State(Vector2.new(0, 0))
-		iris.Window({"DEBUG WINDOW"}, {position = windowPosition, size = windowSize, isUncollapsed = false})
+		iris.Window({"DEBUG WINDOW ('U' to unlock mouse)"}, {position = windowPosition, size = windowSize, isUncollapsed = false})
 
 			-- Character stats
 			iris.CollapsingHeader({"Character Stats"}, {isUncollapsed = true})
