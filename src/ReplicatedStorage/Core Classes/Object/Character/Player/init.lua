@@ -212,7 +212,7 @@ function player.new(newPlayerTable)
 		self:Move()
 	end)
 	
-	-- The graphics update
+	-- The camera update
 	runService:BindToRenderStep("Camera Update", Enum.RenderPriority.Camera.Value + 1, function(deltaTime)
 		
 		-- Update the camera
