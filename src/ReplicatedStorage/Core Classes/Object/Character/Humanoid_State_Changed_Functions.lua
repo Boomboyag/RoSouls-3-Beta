@@ -11,13 +11,6 @@ local characterFolder = coreFolder:WaitForChild("Object"):WaitForChild("Characte
 -- Required scripts
 local object = require(coreFolder:WaitForChild("Object"))
 local characterStates = require(coreFolder:WaitForChild("Enum").CharacterStates)
-local characterStatsSheet = require(characterFolder:WaitForChild("Stats"))
-local animationModule = require(characterFolder:WaitForChild("Animations"))
-local rootMotionModule = require(characterFolder:WaitForChild("Animations"):WaitForChild("RootMotion"))
-local effectModule = require(characterFolder:WaitForChild("Character_Effects"))
-local effectPrefabs = require(characterFolder:WaitForChild("Character_Effects"):WaitForChild("Effect_Prefabs"))
-local actionModule = require(characterFolder:WaitForChild("Character_Actions"))
-local actionPrefabs = require(characterFolder:WaitForChild("Character_Actions"):WaitForChild("Action_Prefabs"))
 
 local humanoidStateChangedFunctions = {
 
