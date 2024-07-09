@@ -1110,8 +1110,11 @@ function character:CheckFall(newTick)
 		self.fallAnimationSpeed = math.clamp(1 / timeFalling, 0.3, 1.25)
 		self.characterStats.currentAction = self.actionPrefabs["Landed"]
 
+		-- Calculate the damage
+		local damage = (timeFalling / 2) * self.humanoid.maxHealth
+
 		-- Take damage
-		self:TakeDamage(10)
+		self:TakeDamage(damage)
 	end
 end
 
