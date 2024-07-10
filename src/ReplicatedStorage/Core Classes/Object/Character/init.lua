@@ -1098,6 +1098,9 @@ end
 -- Reaction animation to damage
 function character:DamageReaction(damageAmount)
 
+	-- Make sure the character has taken enough damage to warrent a reaction
+	if damageAmount < 5 then return end
+
 	-- Play a light stun
 	self.characterStats.currentAction = self.actionPrefabs["Light Stun"]
 end
