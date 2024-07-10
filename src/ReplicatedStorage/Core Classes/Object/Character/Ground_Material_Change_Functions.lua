@@ -21,12 +21,14 @@ local groundMaterialChangedFunctions = {
             ["MaterialEntered"] = function(character)
                 
                 character:AddEffect(characterEffectPrefabs.Slow_Walkspeed)
+                character:AddEffect(characterEffectPrefabs.Movement_Effects_Core_Animation_Speed)
             end,
 
             -- Character began stepping on the material
             ["MaterialLeft"] = function(character)
                 
                 character:RemoveEffect(characterEffectPrefabs.Slow_Walkspeed.Name)
+                character:RemoveEffect(characterEffectPrefabs.Movement_Effects_Core_Animation_Speed.Name)
             end,
         }
     }

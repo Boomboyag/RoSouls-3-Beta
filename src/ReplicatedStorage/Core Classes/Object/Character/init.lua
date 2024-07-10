@@ -942,11 +942,20 @@ function character:ChangeCoreAnimation(newAnimation : AnimationTrack, oldValue :
 			oldValue:Stop(transitionTime or 0.1)
 		end
 
+		-- Get the speed of the animation
+		local speed = 1
+		if self.characterStats.coreAnimationInfluencedByCharacterMovement then
+			
+			local characterSpeed = self.characterStats.currentWalkSpeed
+			speed = (self.characterStats.currentWalkSpeed / self.defaultCharacterStats.currentWalkSpeed) * characterSpeed
+		end
+
 		-- Assign the track and set priority
 		newAnimation.Priority = Enum.AnimationPriority.Core
 
 		-- Play the animation
 		newAnimation:Play(transitionTime or 0.1)
+		newAnimation:AdjustSpeed(speed)
 	end
 end
 
