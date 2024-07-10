@@ -233,7 +233,7 @@ function character.new(newCharacter)
 	self.fallAnimationSpeed = 1
 
 	-- Ground variables
-	self.groundCheckInterval = 0.5
+	self.groundCheckInterval = 0.1
 	self.groundCounter = 0
 	
 	-- || ACTIONS ||

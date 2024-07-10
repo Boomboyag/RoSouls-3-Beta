@@ -575,8 +575,8 @@ local statsChangedFunctions = {
 				local characterType = character.characterType.Name
 
 				-- Call the functions
-				if materialTable and materialTable[characterType] then materialTable[characterType]["MaterialEntered"](character) end
-				if oldMaterialTable and oldMaterialTable[characterType] then oldMaterialTable[characterType]["MaterialLeft"](character) end
+				if materialTable and materialTable[characterType] then materialTable[characterType].MaterialEntered(character) end
+				if oldMaterialTable and oldMaterialTable[characterType] then oldMaterialTable[characterType].MaterialLeft(character) end
 			end
 
 			-- Fire the event

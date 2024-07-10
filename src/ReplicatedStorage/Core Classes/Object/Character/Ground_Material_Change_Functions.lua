@@ -8,22 +8,25 @@ local replicatedStorage = game:GetService("ReplicatedStorage")
 local coreFolder = replicatedStorage:WaitForChild("Core Classes")
 local characterFolder = coreFolder:WaitForChild("Object"):WaitForChild("Character")
 
+-- Required scripts
+local characterEffectPrefabs = require(characterFolder:WaitForChild("Character_Effects"):WaitForChild("Effect_Prefabs"))
+
 local groundMaterialChangedFunctions = {
 
-    ["Grass"] = {
+    ["Ice"] = {
 
         ["Default"] = {
 
             -- Character began stepping on the material
             ["MaterialEntered"] = function(character)
                 
-                
+                character:AddEffect(characterEffectPrefabs.Slow_Walkspeed)
             end,
 
             -- Character began stepping on the material
             ["MaterialLeft"] = function(character)
                 
-                
+                character:RemoveEffect(characterEffectPrefabs.Slow_Walkspeed.Name)
             end,
         }
     }

@@ -134,7 +134,7 @@ local effectTable = {
 		["Name"] = "Slow_Walkspeed",
 
 		-- The priority of the effect (the lower the number the sooner it is called)
-		["Priority"] = 11,
+		["Priority"] = 12,
 
 		-- The data the effect will modify (must be within the 'Stats' module script of character)
 		["DataToModify"] = "currentWalkSpeed",
@@ -148,7 +148,7 @@ local effectTable = {
 		-- The function performed on the DataToModify (takes the DataToModify as an argument)
 		["EffectFunction"] = function(input)
 
-			return 3
+			return input / 2
 		end,
 
 		-- || OPTIONAL VARIABLES ||
