@@ -209,6 +209,7 @@ local states = {
 			character:AddEffect(characterEffectPrefabs.Disable_State_Change)
 			character:AddEffect(characterEffectPrefabs.Disable_Actions)
 			character:AddEffect(characterEffectPrefabs.Disable_Actions)
+			character:AddEffect(characterEffectPrefabs.Action_Animation_Speed_Normal)
 			character.characterStats.canAddEffects = false
 
 			-- Play the death animation if grounded
@@ -219,7 +220,7 @@ local states = {
 
 				-- Play the death animation
 				local deathAnimation = character.coreAnimations.Death
-				character:ChangeActionAnimation(deathAnimation, 0.1, Enum.AnimationPriority.Action4, false, 1)
+				character:ChangeActionAnimation(deathAnimation, 0.1, Enum.AnimationPriority.Action4, false)
 
 				-- Unanchor the character after the animation playes
 				coroutine.wrap(function()
