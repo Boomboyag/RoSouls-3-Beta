@@ -270,6 +270,7 @@ local backstepAction = actionModule.new({
          character:AddEffect(effects.Roll_Stamina_Drain)
 
         -- Change the animation
+        character:AddEffect(effects.Roll_Animation_Speed)
         local rollAnimation = character.animations.backstepAnimation
         character:ChangeActionAnimation(rollAnimation, 0.1, Enum.AnimationPriority.Action, false, 1)
 
@@ -301,6 +302,8 @@ local backstepAction = actionModule.new({
          -- Unlock the character
          character.characterState = Enum.CharacterState.Default
          character:RemoveEffect(characterEffectPrefabs.Disable_Auto_Rotate.Name)
+
+         character:RemoveEffect(effects.Roll_Animation_Speed.Name)
  
          -- Destroy the roll velocity
          rollVelocity:Destroy()
