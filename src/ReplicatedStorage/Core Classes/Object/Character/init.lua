@@ -181,6 +181,9 @@ function character.new(newCharacter)
 	end
 
 	-- || CHARACTER MODEL ||
+
+	-- The type of character this is
+	self.characterType = Enum.CharacterType.Default
 	
 	-- Where the character is located on the client / server boundary
 	self.onClient = game:GetService("RunService"):IsClient()
@@ -228,6 +231,10 @@ function character.new(newCharacter)
 	self.fallTime = 0
 	self.fallDistance = 0
 	self.fallAnimationSpeed = 1
+
+	-- Ground variables
+	self.groundCheckInterval = 0.5
+	self.groundCounter = 0
 	
 	-- || ACTIONS ||
 	
@@ -476,16 +483,38 @@ function character.new(newCharacter)
 	self.heartbeatConnection = runService.Heartbeat:Connect(function(deltaTime)
 		
 		local currentTick = tick()
+
+		-- Applies current effects
+		coroutine.wrap(function()
 		
-		-- Make sure the character is alive and enough time has passed to apply the effects
-		if self.alive and (currentTick - self.previousEffectTick >= self.effectTick) then
+			-- Make sure the character is alive and enough time has passed to apply the effects
+			if self.alive and (currentTick - self.previousEffectTick >= self.effectTick) then
 			
-			-- Update the effect tick
-			self.previousEffectTick = currentTick
+				-- Update the effect tick
+				self.previousEffectTick = currentTick
 			
-			-- Apply all effects
-			self:ApplyEffects(nil, false)
-		end
+				-- Apply all effects
+				self:ApplyEffects(nil, false)
+			end
+		end)()
+
+		-- Applies effects based on ground material
+		coroutine.wrap(function()
+
+			-- Check if enough time has elapsed
+			if (currentTick - self.groundCounter) >= self.groundCheckInterval then
+
+				-- Reset the counter
+	    		self.groundCounter = currentTick
+	    		
+				-- Get the ground material
+				local grounded, material = self:CheckGround()
+
+				-- Change the variable if the material is different
+				local materialName = not grounded and "None" or material.Name
+				if materialName ~= self.characterStats.currentGroundMaterial then self.characterStats.currentGroundMaterial = materialName end
+    		end
+		end)()
 	end)
 	
 	-- The final update
@@ -1119,7 +1148,7 @@ function character:CheckFall(newTick)
 end
 
 -- Check if the character is grounded
-function character:CheckGround()
+function character:CheckGround() : (boolean, Enum.Material)
 	
 	-- The raycast origin and direction
 	local origin = self.humanoidRootPart.CFrame.Position

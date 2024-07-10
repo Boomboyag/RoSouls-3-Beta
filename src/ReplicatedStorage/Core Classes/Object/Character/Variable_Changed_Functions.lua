@@ -10,15 +10,9 @@ local coreFolder = replicatedStorage:WaitForChild("Core Classes")
 local characterFolder = coreFolder:WaitForChild("Object"):WaitForChild("Character")
 
 -- Required scripts
-local object = require(coreFolder:WaitForChild("Object"))
 local characterStates = require(coreFolder:WaitForChild("Enum").CharacterStates)
-local characterStatsSheet = require(characterFolder:WaitForChild("Stats"))
-local animationModule = require(characterFolder:WaitForChild("Animations"))
-local rootMotionModule = require(characterFolder:WaitForChild("Animations"):WaitForChild("RootMotion"))
-local effectModule = require(characterFolder:WaitForChild("Character_Effects"))
 local effectPrefabs = require(characterFolder:WaitForChild("Character_Effects"):WaitForChild("Effect_Prefabs"))
-local actionModule = require(characterFolder:WaitForChild("Character_Actions"))
-local actionPrefabs = require(characterFolder:WaitForChild("Character_Actions"):WaitForChild("Action_Prefabs"))
+local groundMaterialFunctions = require(characterFolder:WaitForChild("Ground_Material_Change_Functions"))
 
 local statsChangedFunctions = {
 	
@@ -249,6 +243,20 @@ local statsChangedFunctions = {
 
 			-- Check if this is being fired for the first time
 			if not oldValue and not startup then return end
+
+			-- Check if we changed the health locally
+			local humanoidHealth = character.humanoid.Health
+			if newValue ~= humanoidHealth then
+				
+				-- Make sure the player lost health
+				if newValue < humanoidHealth then
+					
+					-- Take the damage
+					character:TakeDamage(humanoidHealth - newValue)
+				else
+					newValue = humanoidHealth
+				end
+			end
 
 			-- Check if the character is dead
 			if newValue <= 0 then
@@ -522,6 +530,7 @@ local statsChangedFunctions = {
 		end
 	end,	
 	
+	-- Whether or not the core animation is influenced by character movement
 	["coreAnimationInfluencedByCharacterMovement"] = function(character, oldValue, newValue, startup)
 
 		local success, response = pcall(function()
@@ -547,6 +556,37 @@ local statsChangedFunctions = {
 			warn(response)
 		end
 	end,	
+
+	-- || GROUND ||
+
+	-- The current ground material
+	["currentGroundMaterial"] = function(character, oldValue, newValue, startup)
+
+		local success, response = pcall(function()
+
+			-- Check if this is being fired for the first time
+			if oldValue == nil and not startup then return end
+
+			if oldValue and newValue ~= oldValue then
+
+				-- Get the related tables
+				local materialTable = groundMaterialFunctions[newValue]
+				local oldMaterialTable = groundMaterialFunctions[oldValue]
+				local characterType = character.characterType.Name
+
+				-- Call the functions
+				if materialTable and materialTable[characterType] then materialTable[characterType]["MaterialEntered"](character) end
+				if oldMaterialTable and oldMaterialTable[characterType] then oldMaterialTable[characterType]["MaterialLeft"](character) end
+			end
+
+			-- Fire the event
+			character.CharacterStatChanged:Fire("currentGroundMaterial", oldValue, newValue)
+		end) 
+
+		if not success then
+			warn(response)
+		end
+	end,
 }
 
 return statsChangedFunctions

@@ -64,6 +64,9 @@ function characterStats.new(newCharacter)
 	self.canTilt = true
 	self.footstepsEnabled = (newCharacter.footstepsEnabled == false) or true
 
+	-- || MISC ||
+	self.currentGroundMaterial = "None"
+
 	-- Set the metatable and return
 	setmetatable(self, characterStats)
 	return self
