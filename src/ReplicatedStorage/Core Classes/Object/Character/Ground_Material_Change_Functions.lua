@@ -1,7 +1,4 @@
 -- Required services
-local runService = game:GetService("RunService")
-local pathfindingService = game:GetService("PathfindingService")
-local chatService = game:GetService("Chat")
 local replicatedStorage = game:GetService("ReplicatedStorage")
 
 -- Required folders
