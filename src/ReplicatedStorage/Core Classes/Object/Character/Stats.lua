@@ -44,7 +44,7 @@ function characterStats.new(newCharacter)
 	self.currentWalkSpeed = newCharacter.walkSpeed or 9
 	
 	-- || ANIMATION ||
-	self.actionAnimationInfluencedByCharacterMovement = false
+	self.actionAnimationSpeed = 1
 	self.currentActionAnimation = nil
 	self.coreAnimationInfluencedByCharacterMovement = false
 	self.currentCoreAnimation = nil

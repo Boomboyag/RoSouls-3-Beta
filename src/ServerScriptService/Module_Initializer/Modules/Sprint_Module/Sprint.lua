@@ -110,6 +110,35 @@ local effects = {
 		["ResetDataWhenDone"] = false,
 	},
 
+	["Sprint_Animation_Speed"] = {
+		
+		-- The name of the effect
+		["Name"] = "Sprint_Animation_Speed",
+
+		-- The priority of the effect (the lower the number the sooner it is called)
+		["Priority"] = 9,
+
+		-- The data the effect will modify (must be within the 'Stats' module script of character)
+		["DataToModify"] = "actionAnimationSpeed",
+
+		-- The amount of times the effect will be called (0 lasts forever until manually removed, 1 calls the effect once)
+		["EffectTickAmount"] = 0,
+
+		-- The time in between the effect being called in seconds (will not be used if the EffectTickAmount is 1), will call effect once when 0
+		["TimeBetweenEffectTick"] = 0,
+
+		-- The function performed on the DataToModify (takes the DataToModify as an argument)
+		["EffectFunction"] = function(input)
+
+			return 0.8
+		end,
+
+		-- || OPTIONAL VARIABLES ||
+
+		-- Whether or not the effect resets the DataToModify value when finished (default is false)
+		["ResetDataWhenDone"] = true,
+	},
+
     -- || PLAYER EFFECTS ||
 
 	["Sprint_Camera_FOV"] = {
@@ -231,7 +260,8 @@ local sprintAction = actionModule.new({
 
         -- Change the animation
         local sprintAnimation = character.animations.sprintAnimation
-        character:ChangeActionAnimation(sprintAnimation, 0.2, Enum.AnimationPriority.Action, true, 0.8)
+		character:AddEffect(effects.Sprint_Animation_Speed)
+        character:ChangeActionAnimation(sprintAnimation, 0.2, Enum.AnimationPriority.Action, true)
         character.footstepHandler:SyncSteps(sprintAnimation)
         
         -- Drain the stamina
@@ -258,6 +288,7 @@ local sprintAction = actionModule.new({
             character:ChangeActionAnimation(nil, 0.1)
         end
         character.footstepHandler:SyncSteps(character.coreAnimations.Walking)
+		character:RemoveEffect(effects.Sprint_Animation_Speed.Name)
 
         -- Regen the stamina
         character:RemoveEffect(effects.Sprint_Stamina_Drain.Name)

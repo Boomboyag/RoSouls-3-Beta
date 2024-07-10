@@ -557,6 +557,25 @@ local statsChangedFunctions = {
 		end
 	end,	
 
+	-- Whether or not the core animation is influenced by character movement
+	["actionAnimationSpeed"] = function(character, oldValue, newValue, startup)
+
+		local success, response = pcall(function()
+
+			if startup then return end
+
+			-- Change the speed
+			character:ChangeActionAnimationSpeed(newValue)
+
+			-- Fire the event
+			character.CharacterStatChanged:Fire("actionAnimationSpeedMultiplier", oldValue, newValue)
+		end) 
+
+		if not success then
+			warn(response)
+		end
+	end,	
+
 	-- || GROUND ||
 
 	-- The current ground material

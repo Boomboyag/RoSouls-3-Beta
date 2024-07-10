@@ -24,6 +24,7 @@ local groundMaterialChangedFunctions = {
                 -- Slow the character
                 character:AddEffect(characterEffectPrefabs.Slow_Walkspeed)
                 character:AddEffect(characterEffectPrefabs.Movement_Effects_Core_Animation_Speed)
+                character:AddEffect(characterEffectPrefabs.Action_Animation_Speed_Halved)
             end,
 
             -- Character began stepping on the material
@@ -32,6 +33,7 @@ local groundMaterialChangedFunctions = {
                 -- Reset the character speed
                 character:RemoveEffect(characterEffectPrefabs.Slow_Walkspeed.Name)
                 character:RemoveEffect(characterEffectPrefabs.Movement_Effects_Core_Animation_Speed.Name)
+                character:RemoveEffect(characterEffectPrefabs.Action_Animation_Speed_Halved.Name)
             end,
         }
     },

@@ -942,20 +942,11 @@ function character:ChangeCoreAnimation(newAnimation : AnimationTrack, oldValue :
 			oldValue:Stop(transitionTime or 0.1)
 		end
 
-		-- Get the speed of the animation
-		local speed = 1
-		if self.characterStats.coreAnimationInfluencedByCharacterMovement then
-			
-			local characterSpeed = self.characterStats.currentWalkSpeed
-			speed = (self.characterStats.currentWalkSpeed / self.defaultCharacterStats.currentWalkSpeed) * characterSpeed
-		end
-
 		-- Assign the track and set priority
 		newAnimation.Priority = Enum.AnimationPriority.Core
 
 		-- Play the animation
 		newAnimation:Play(transitionTime or 0.1)
-		newAnimation:AdjustSpeed(speed)
 	end
 end
 
@@ -988,7 +979,7 @@ function character:ChangeCoreAnimationSpeed(characterSpeed, reset)
 end
 
 -- Change the current action animation (if any) being played
-function character:ChangeActionAnimation(newAnimation, transitionTime : number, animationPriority : Enum.AnimationPriority, loop : boolean, speed : number)
+function character:ChangeActionAnimation(newAnimation, transitionTime : number, animationPriority : Enum.AnimationPriority, loop : boolean)
 
 	-- Check if we can change the animation
 	local canChange = false
@@ -1023,12 +1014,26 @@ function character:ChangeActionAnimation(newAnimation, transitionTime : number, 
 
 		-- Play the animation
 		self.characterStats.currentActionAnimation:Play(transitionTime)
-		self.characterStats.currentActionAnimation:AdjustSpeed(speed or 1)
+		self.characterStats.currentActionAnimation:AdjustSpeed(self.characterStats.actionAnimationSpeed)
 		
 		-- Bind the stopped event
 		self.ActionAnimationStoppedSignal = self.characterStats.currentActionAnimation.Stopped:Connect(function()
 			self.ActionAnimationStopped:Fire()
 		end)
+	end
+end
+
+-- Change the speed of the current core animation
+function character:ChangeActionAnimationSpeed(characterSpeed)
+	
+	-- Make sure the animation exists
+	if not self.characterStats.currentActionAnimation then return end
+	
+	-- Make sure the speed is different from the current speed
+	if characterSpeed ~= self.characterStats.currentActionAnimation.Speed then
+
+		-- Change the speed to reflect the change
+		self.characterStats.currentActionAnimation:AdjustSpeed(characterSpeed)
 	end
 end
 
