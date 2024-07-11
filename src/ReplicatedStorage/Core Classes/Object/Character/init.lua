@@ -690,7 +690,7 @@ function character:AddEffect(effect)
 	self.effects[effectClone.name] = effectClone
 
 	-- Apply all associated effects
-	self:ApplyEffects(effectClone.dataToModify, true, effectClone.effectTickAmount < 1 and nil or {effectClone.name})
+	self:ApplyEffects(effectClone.dataToModify, true, effectClone.timeBetweenEffectTick > 0 and {effectClone.name} or nil)
 	
 	-- Fire the event
 	self.EffectAdded:Fire(effectClone)

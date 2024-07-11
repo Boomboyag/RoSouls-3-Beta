@@ -59,7 +59,7 @@ local effects = {
     ["Roll_Animation_Speed"] = {
 		
 		-- The name of the effect
-		["Name"] = "Sprint_Animation_Speed",
+		["Name"] = "Roll_Animation_Speed",
 
 		-- The priority of the effect (the lower the number the sooner it is called)
 		["Priority"] = 11,
@@ -75,7 +75,7 @@ local effects = {
 
 		-- The function performed on the DataToModify (takes the DataToModify as an argument)
 		["EffectFunction"] = function(input)
-
+            
 			return 1
 		end,
 
@@ -184,7 +184,6 @@ local rollAction = actionModule.new({
             rollVelocity.LineVelocity *= 0.8
 
         until animationEnded
-        character:RemoveEffect(effects.Roll_Animation_Speed.Name)
         
         -- Unlock the character
         character.characterState = Enum.CharacterState.Default
@@ -195,6 +194,8 @@ local rollAction = actionModule.new({
         rollVelocity:Destroy()
 
         task.wait(0.1)
+
+        character:RemoveEffect(effects.Roll_Animation_Speed.Name)
         
         -- Allow the player to use actions again
         character:RemoveEffect(characterEffectPrefabs.Disable_Actions.Name)
