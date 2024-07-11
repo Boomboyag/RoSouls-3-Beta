@@ -298,30 +298,31 @@ local statsChangedFunctions = {
 			end
 
 			-- Check if the player has reached their maximum
-			if newValue > character.characterStats.maxStamina then
+			if newValue >= character.characterStats.maxStamina then
 
 				newValue = 100
 
 				-- Remove any stamina regen
 				character:RemoveEffect(effectPrefabs.Stamina_Regen.Name)
+			else
+
+				-- Check if we can regenerate stamina
+				coroutine.wrap(function()
+
+					if not oldValue then return end
+
+					-- Check if the stamina is being drained
+					if oldValue < newValue then return end
+
+					task.wait(character.characterStats.staminaRegenDelay)
+
+					if character.characterStats.currentStamina == newValue then
+
+						-- Add the stamina regen
+						character:AddEffect(character.effectPrefabs.Stamina_Regen)
+					end
+				end)()
 			end
-
-			-- Check if we can regenerate stamina
-			coroutine.wrap(function()
-
-				if not oldValue then return end
-
-				-- Check if the stamina is being drained
-				if oldValue < newValue then return end
-
-				task.wait(character.characterStats.staminaRegenDelay)
-
-				if character.characterStats.currentStamina == newValue then
-
-					-- Add the stamina regen
-					character:AddEffect(character.effectPrefabs.Stamina_Regen)
-				end
-			end)()
 
 			-- Fire the event
 			character.StaminaChanged:Fire(oldValue, newValue)
