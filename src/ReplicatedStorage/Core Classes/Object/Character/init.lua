@@ -979,7 +979,7 @@ function character:ChangeCoreAnimationSpeed(characterSpeed, reset)
 end
 
 -- Change the current action animation (if any) being played
-function character:ChangeActionAnimation(newAnimation, transitionTime : number, animationPriority : Enum.AnimationPriority, loop : boolean)
+function character:ChangeActionAnimation(newAnimation : AnimationTrack, transitionTime : number, animationPriority : Enum.AnimationPriority, loop : boolean)
 
 	-- Check if we can change the animation
 	local canChange = false
