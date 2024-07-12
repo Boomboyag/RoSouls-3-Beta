@@ -33,7 +33,7 @@ end
 character.__tostring = function(character)
 
 	-- Return the name of the object
-	return character.name
+	return tostring(character.name or "Character")
 end
 setmetatable(character, object)
 

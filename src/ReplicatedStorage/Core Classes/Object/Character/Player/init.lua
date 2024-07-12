@@ -37,7 +37,7 @@ end
 player.__tostring = function(player)
 
 	-- Return the name of the object
-	return player.name
+	return tostring(player.name or "Player")
 end
 setmetatable(player, character)
 

@@ -9,7 +9,7 @@ end
 object.__tostring = function(object)
 	
 	-- Return the name of the object
-	return object.name
+	return tostring(object.name or "Object")
 end
 
 -- Class constructor
