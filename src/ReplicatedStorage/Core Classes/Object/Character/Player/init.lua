@@ -31,7 +31,9 @@ local iris = require(script:WaitForChild("Iris")).Init()
 
 -- Class creation
 local player = {}
-player.__index = player
+player.__index = function(_, key)
+	return player[key]
+end
 player.__tostring = function(player)
 
 	-- Return the name of the object

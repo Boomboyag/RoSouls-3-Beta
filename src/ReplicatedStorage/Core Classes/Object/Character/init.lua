@@ -27,7 +27,9 @@ local afterStatChangedFunctions = require(script:WaitForChild("After_Variable_Ch
 
 -- Class creation
 local character = {}
-character.__index = character
+character.__index = function(_, key)
+	return character[key]
+end
 character.__tostring = function(character)
 
 	-- Return the name of the object

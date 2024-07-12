@@ -3,7 +3,9 @@ local objectsTypes = require(script.Parent:WaitForChild("Enum").ObjectType)
 
 -- Create the class
 local object = {}
-object.__index = object
+object.__index = function(_, key)
+	return object[key]
+end
 object.__tostring = function(object)
 	
 	-- Return the name of the object
