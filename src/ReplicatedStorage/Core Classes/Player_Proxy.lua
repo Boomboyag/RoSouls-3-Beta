@@ -1,26 +1,14 @@
--- Required services
-local pathfindingService = game:GetService("PathfindingService")
-local chatService = game:GetService("Chat")
-
 -- Required scripts
 local player = require(script.Parent:WaitForChild("Object").Character.Player)
 
 -- Class creation
 local playerProxy = {}
-playerProxy.__index = playerProxy
-playerProxy.__tostring = function(playerProxy)
-
-	-- Return the name of the object
-	return playerProxy.name
-end
-setmetatable(playerProxy, player)
 
 -- Class constructor
 function playerProxy.new(newPlayer)
 
 	-- Inherit the object class
-	local self = setmetatable({}, playerProxy)
-	self = player.new(newPlayer)
+	local self = player.new(newPlayer)
 	
 	-- The crouch function
 	local Crouch = function(newPlayer, wantToCrouch, oppositeOfCurrent)
