@@ -279,6 +279,9 @@ function character.new(newCharacter)
 		},
 	}
 
+	-- Tracked animations
+	self.trackedAnimations = {}
+
 	-- Stop all current animations 
 	if self.animator then
 		local animTracks = self.animator:GetPlayingAnimationTracks()
@@ -983,12 +986,15 @@ end
 -- Change the current action animation (if any) being played
 function character:ChangeActionAnimation(newAnimation : AnimationTrack, transitionTime : number, animationPriority : Enum.AnimationPriority, loop : boolean)
 
+	-- A short simplification
+	local characterStats = self.characterStats
+
 	-- Check if we can change the animation
 	local canChange = false
-	if newAnimation == self.characterStats.currentActionAnimation then
+	if newAnimation == characterStats.currentActionAnimation then
 		
 		if newAnimation == nil then return end
-		canChange = not self.characterStats.currentActionAnimation.IsPlaying
+		canChange = not characterStats.currentActionAnimation.IsPlaying
 	else
 		canChange = true
 	end
@@ -996,11 +1002,11 @@ function character:ChangeActionAnimation(newAnimation : AnimationTrack, transiti
 	-- Switch animation		
 	if canChange then
 
-		if (self.characterStats.currentActionAnimation ~= nil) then
+		if (characterStats.currentActionAnimation ~= nil) then
 			
 			-- Stop the current animation
-			self.characterStats.currentActionAnimation:Stop(transitionTime)
-			self.characterStats.currentActionAnimation = nil
+			characterStats.currentActionAnimation:Stop(transitionTime)
+			characterStats.currentActionAnimation = nil
 			
 			-- Unbind the current stopped event
 			self.ActionAnimationStoppedSignal:Disconnect()
@@ -1010,16 +1016,19 @@ function character:ChangeActionAnimation(newAnimation : AnimationTrack, transiti
 		if not newAnimation then return end
 
 		-- Assign the track and set priority
-		self.characterStats.currentActionAnimation = newAnimation
-		self.characterStats.currentActionAnimation.Looped = loop or false
-		self.characterStats.currentActionAnimation.Priority = animationPriority or Enum.AnimationPriority.Action
+		characterStats.currentActionAnimation = newAnimation
+		characterStats.currentActionAnimation.Looped = loop or false
+		characterStats.currentActionAnimation.Priority = animationPriority or Enum.AnimationPriority.Action
+
+		-- Track the animation
+		self:TrackAnimation(characterStats.currentActionAnimation)
 
 		-- Play the animation
-		self.characterStats.currentActionAnimation:Play(transitionTime)
-		self.characterStats.currentActionAnimation:AdjustSpeed(self.characterStats.actionAnimationSpeed)
+		characterStats.currentActionAnimation:Play(transitionTime)
+		characterStats.currentActionAnimation:AdjustSpeed(self.characterStats.actionAnimationSpeed)
 		
 		-- Bind the stopped event
-		self.ActionAnimationStoppedSignal = self.characterStats.currentActionAnimation.Stopped:Connect(function()
+		self.ActionAnimationStoppedSignal = characterStats.currentActionAnimation.Stopped:Connect(function()
 			self.ActionAnimationStopped:Fire()
 		end)
 	end
@@ -1037,6 +1046,27 @@ function character:ChangeActionAnimationSpeed(characterSpeed)
 		-- Change the speed to reflect the change
 		self.characterStats.currentActionAnimation:AdjustSpeed(characterSpeed)
 	end
+end
+
+-- Track a given animation
+function character:TrackAnimation(anim : AnimationTrack)
+	
+	-- Make sure we were provided an animation
+	if not anim or not anim:IsA("AnimationTrack") then
+		print("Not a valid animation track: ", anim)
+		return
+	end
+
+	-- Check if the animation is already being tracked
+	if self.trackedAnimations[anim.Name] then
+		--print("Already being tracked")
+		return
+	end
+
+	-- Put it in the tracking table
+	self.trackedAnimations[anim.Name] = anim
+
+	-- Track the animation
 end
 
 -- Change the tilt of the character
