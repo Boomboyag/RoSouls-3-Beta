@@ -951,6 +951,9 @@ function character:ChangeCoreAnimation(newAnimation : AnimationTrack, oldValue :
 		-- Assign the track and set priority
 		newAnimation.Priority = Enum.AnimationPriority.Core
 
+		-- Track the animation
+		self:TrackAnimation(newAnimation)
+
 		-- Play the animation
 		newAnimation:Play(transitionTime or 0.1)
 	end
