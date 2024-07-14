@@ -1184,6 +1184,39 @@ function character:TakeDamage(damageAmount, ignoreForceField)
 	end
 end
 
+-- || SOUNDS ||
+
+-- Play a sound
+function character:SpawnSound(id : string, volume : number, attachment : string)
+
+	-- Make sure the volume is a number
+	if type(volume) == "string" then
+		volume = tonumber(volume) or 1
+	end
+	
+	-- Set default values if not provided
+	volume = volume or 1
+	attachment = attachment or "HumanoidRootPart"
+	
+	-- Find the attachment
+	attachment = self.model:FindFirstDescendant(attachment) or self.humanoidRootPart
+
+	-- Make sure the ID was provided
+	if not id then return end
+
+	-- Spawn the sound object
+	local sound = Instance.new("Sound")
+	sound.Parent = attachment
+	sound.SoundId = id
+
+	-- Destory the sound after it stops
+	sound.Stopped:Connect(function()
+		
+		task.wait(0.1)
+		sound:Destroy()
+	end)
+end
+
 -- || MISCELLANEOUS ||
 
 -- Fired when the humanoid state changes
