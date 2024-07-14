@@ -1,4 +1,5 @@
 -- Required services
+local httpService = game:GetService("HttpService")
 local runService = game:GetService("RunService")
 local pathfindingService = game:GetService("PathfindingService")
 local chatService = game:GetService("Chat")
@@ -1058,15 +1059,41 @@ function character:TrackAnimation(anim : AnimationTrack)
 	end
 
 	-- Check if the animation is already being tracked
-	if self.trackedAnimations[anim.Name] then
-		--print("Already being tracked")
-		return
-	end
+	if self.trackedAnimations[anim.Animation.AnimationId] then return end
 
 	-- Put it in the tracking table
-	self.trackedAnimations[anim.Name] = anim
+	self.trackedAnimations[anim.Animation.AnimationId] = anim
 
-	-- Track the animation
+	-- Wait for the animation to call any functions
+	anim:GetMarkerReachedSignal("Call_Function"):Connect(function(paramString)
+
+		-- Wrap in a pcall to avoid errors
+		local success, errorMessage = pcall(function()
+
+				-- Decrypt the provided parameter
+			local functionTable = httpService:JSONDecode(paramString)
+
+			-- Get the desired function and parameters
+			local func = tostring(functionTable["Function"])
+			local parameters = unpack(functionTable["Parameters"])
+
+			-- Check if the provided function is valid
+			if self[func] then
+
+				-- Call the function and pass the parameters
+				self[func](parameters)
+			end
+		end)
+
+		-- Let the user know there was an error
+		if not success and errorMessage then
+
+			warn("\n")
+			warn("Error calling function in animation: " .. anim.Name .. " (" .. anim.Animation.AnimationId .. ")")
+			warn(errorMessage)
+			warn("\n")
+		end
+	end)
 end
 
 -- Change the tilt of the character
@@ -1225,17 +1252,17 @@ function character:CheckGround() : (boolean, Enum.Material)
 end
 
 -- See if the character can see an object
-function character:CheckSight(newModel, excluded, angle, distance)
+function character:CheckSight(newModel, excluded, angle, distance) : boolean
 
 	-- Find the required angles
 	local distanceToObject = (self.head.Position - newModel.PrimaryPart.Position)
 	local lookAngle = self.head.CFrame.LookVector
 
 	-- Get the dot product
-	local angle = math.deg(distanceToObject.Unit:Dot(lookAngle))
+	local angleToTarget = math.deg(distanceToObject.Unit:Dot(lookAngle))
 
 	-- Check if it is within the view angle
-	if angle < (self.viewAngle or angle or 180) and distanceToObject.Magnitude < (self.viewDistance or distance or 50) then 
+	if angleToTarget < (self.viewAngle or angle or 180) and distanceToObject.Magnitude < (self.viewDistance or distance or 50) then 
 
 		-- Create the raycast
 		local rayOrigin = self.head.Position
@@ -1265,10 +1292,10 @@ function character:CheckSight(newModel, excluded, angle, distance)
 end
 
 -- Make the character speak
-function character:Talk(text : string, color, talkPoint)
+function character:Talk(text : string, color : Enum.ChatColor, talkPoint)
 
 	-- Set the talk part
-	local talkPart = talkPoint or self.model:FindFirstChild("Head")
+	local talkPart = talkPoint or self.head
 
 	if talkPart then
 
