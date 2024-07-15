@@ -1151,20 +1151,15 @@ function character:AddAction(name, action)
 		table.insert(self.defaultValues, action.stats)
 	end
 	
+	-- Call the init function
+	if action.Init then
+		action:Init()
+	end
+
 	-- Add the given action
 	self:AddFunction(name, action.CallFunction)
 	print("Injected the " .. action.Name)
 	action = nil
-end
-
--- Reaction animation to damage
-function character:DamageReaction(damageAmount)
-
-	-- Make sure the character has taken enough damage to warrent a reaction
-	if damageAmount < 5 then return end
-
-	-- Play a light stun
-	self.characterStats.currentAction = self.actionPrefabs["Light Stun"]
 end
 
 -- || HEALTH ||
@@ -1184,6 +1179,16 @@ function character:TakeDamage(damageAmount, ignoreForceField)
 	end
 end
 
+-- Reaction animation to damage
+function character:DamageReaction(damageAmount)
+
+	-- Make sure the character has taken enough damage to warrent a reaction
+	if damageAmount < 5 then return end
+
+	-- Play a light stun
+	self.characterStats.currentAction = self.actionPrefabs["Light Stun"]
+end
+
 -- || SOUNDS ||
 
 -- Play a sound
@@ -1199,7 +1204,7 @@ function character:SpawnSound(id : string, volume : number, attachment : string)
 	attachment = attachment or "HumanoidRootPart"
 	
 	-- Find the attachment
-	attachment = self.model:FindFirstDescendant(attachment) or self.humanoidRootPart
+	attachment = attachment and self.model:FindFirstChild(attachment, true) or self.humanoidRootPart
 
 	-- Make sure the ID was provided
 	if not id then return end
@@ -1208,6 +1213,9 @@ function character:SpawnSound(id : string, volume : number, attachment : string)
 	local sound = Instance.new("Sound")
 	sound.Parent = attachment
 	sound.SoundId = id
+
+	-- Play the sound
+	sound:Play()
 
 	-- Destory the sound after it stops
 	sound.Stopped:Connect(function()
