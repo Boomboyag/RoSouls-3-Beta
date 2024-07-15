@@ -230,7 +230,7 @@ function module:CallFunction(foot : string)
         return
     end
 
-    local grounded, material = self:CheckGround()
+    local grounded, material, instance = self:CheckGround()
 
     -- Make sure we are grounded
     if not grounded then return end
@@ -238,6 +238,22 @@ function module:CallFunction(foot : string)
     -- Find and play the desired sound
     local soundID = module:GetRandomSound(module:GetTableFromMaterial(material))
     self:SpawnSound(soundID, stats.volume)
+
+    -- A function to make a color darker
+	local function MakeDarker(color)
+		local H, S, V = color:ToHSV()
+		
+		V = math.clamp(V - 0.05, 0, 1)
+		
+		return Color3.fromHSV(H, S, V)
+	end
+
+    -- Get the color of the ground
+	local particleColor = instance == workspace.Terrain and workspace.Terrain:GetMaterialColor(material) or instance.Color
+    particleColor = MakeDarker(particleColor or Color3.new(1, 1, 1))
+
+    -- Emit the particle
+    self:SpawnVFX("Footstep_Particle", foot == "Left" and "LeftFootAttachment" or "RightFootAttachment")
 
     return 0
 end
