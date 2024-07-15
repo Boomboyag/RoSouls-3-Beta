@@ -956,7 +956,7 @@ function character:ChangeCoreAnimation(newAnimation : AnimationTrack, oldValue :
 		self:TrackAnimation(newAnimation)
 
 		-- Play the animation
-		newAnimation:Play(transitionTime or 0.1)
+		newAnimation:Play(transitionTime or 0.1, 1, self.characterStats.coreAnimationSpeed)
 	end
 end
 
@@ -978,7 +978,7 @@ function character:CoreAnimationSpeedReflectMovementSpeed(characterSpeed, reset)
 	local newSpeed = (self.characterStats.currentWalkSpeed / self.defaultCharacterStats.currentWalkSpeed) * characterSpeed
 
 	-- Adjust the speed
-	characterSpeed = newSpeed
+	characterSpeed = newSpeed * self.characterStats.coreAnimationSpeed
 	
 	-- Make sure the speed is different from the current speed
 	if characterSpeed ~= self.characterStats.currentCoreAnimation.Speed then

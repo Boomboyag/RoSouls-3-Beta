@@ -558,7 +558,26 @@ local statsChangedFunctions = {
 		end
 	end,	
 
-	-- Whether or not the core animation is influenced by character movement
+	-- The current core animation speed multiplier
+	["coreAnimationSpeed"] = function(character, oldValue, newValue, startup)
+
+		local success, response = pcall(function()
+
+			if startup then return end
+
+			-- Change the speed
+			character.characterStats.currentCoreAnimation:AdjustSpeed(newValue)
+
+			-- Fire the event
+			character.CharacterStatChanged:Fire("coreAnimationSpeed", oldValue, newValue)
+		end) 
+
+		if not success then
+			warn(response)
+		end
+	end,	
+
+	-- The current action animation speed multiplier
 	["actionAnimationSpeed"] = function(character, oldValue, newValue, startup)
 
 		local success, response = pcall(function()
@@ -569,7 +588,7 @@ local statsChangedFunctions = {
 			character:ChangeActionAnimationSpeed(newValue)
 
 			-- Fire the event
-			character.CharacterStatChanged:Fire("actionAnimationSpeedMultiplier", oldValue, newValue)
+			character.CharacterStatChanged:Fire("actionAnimationSpeed", oldValue, newValue)
 		end) 
 
 		if not success then

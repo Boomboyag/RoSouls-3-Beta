@@ -46,8 +46,11 @@ function characterStats.new(newCharacter)
 	-- || ANIMATION ||
 	self.actionAnimationSpeed = 1
 	self.currentActionAnimation = nil
+
+	self.coreAnimationSpeed = 1
 	self.coreAnimationInfluencedByCharacterMovement = false
 	self.currentCoreAnimation = nil
+
 	self.maxTiltAngle = newCharacter.maxTiltAngle or 10
 	self.rootMotionEnabled = false
 	
