@@ -1,5 +1,5 @@
 -- Required services
-local httpService = game:GetService("HttpService")
+local debris = game:GetService("Debris")
 local runService = game:GetService("RunService")
 local pathfindingService = game:GetService("PathfindingService")
 local chatService = game:GetService("Chat")
@@ -1073,29 +1073,43 @@ function character:TrackAnimation(anim : AnimationTrack)
 
 		-- Wrap in a pcall to avoid errors
 		local success, errorMessage = pcall(function()
+			
+			-- Make sure the provided parameter was valid
+			if not paramString or string.len(paramString) <= 1 then return end
 
-				-- Decrypt the provided parameter
-			local functionTable = httpService:JSONDecode(paramString)
+			-- Decrypt the provided parameter
+			local splitString: table = string.split(string.gsub(paramString, " ", ""), ",")
 
 			-- Get the desired function and parameters
-			local func = tostring(functionTable["Function"])
-			local parameters = unpack(functionTable["Parameters"])
+			local func = tostring(splitString[1])
+			table.remove(splitString, 1)
 
-			-- Check if the provided function is valid
-			if self[func] then
+			-- Turn all strings into numbers
+			for _, v in pairs(splitString) do
+				if tonumber(v) then v = tonumber(v) end
+			end
 
-				-- Call the function and pass the parameters
-				self[func](parameters)
+			-- Wrap in a pcall to avoid errors
+			local success, errorMessage = pcall(function()
+
+				print("A")
+
+				-- Check if the provided function is valid and call it with the provided parameters
+				if self[func] then self[func](self, table.unpack(splitString)) end
+			end)
+
+			-- Let the user know there was an error
+			if not success and errorMessage then
+
+				warn("\n")
+				warn("Error calling function " .. func .. " in animation: " .. anim.Name .. " (" .. anim.Animation.AnimationId .. ")")
+				warn(errorMessage)
 			end
 		end)
 
 		-- Let the user know there was an error
 		if not success and errorMessage then
-
-			warn("\n")
-			warn("Error calling function in animation: " .. anim.Name .. " (" .. anim.Animation.AnimationId .. ")")
 			warn(errorMessage)
-			warn("\n")
 		end
 	end)
 end
@@ -1236,7 +1250,10 @@ function character:SpawnVFX(name : string, attachment : string, color : ColorSeq
 	attachment = attachment and self.model:FindFirstChild(attachment, true) or self.rootJoint
 
 	-- Find the particle in the VFX folder
-	local particle = vfxFolder:FindFirstChild(name, true)
+	local particle : ParticleEmitter = vfxFolder:FindFirstChild(name, true)
+	if not particle then return end
+	particle = particle:Clone()
+	particle.Parent = attachment
 
 	-- Set the default length if not provided
 	local length = args[1] or 0
@@ -1250,24 +1267,21 @@ function character:SpawnVFX(name : string, attachment : string, color : ColorSeq
 
 		local ticks = 0
 		
-		-- Wrap in a coroutine
-		coroutine.wrap(function()
-			
-			-- Fire the particle a certain amount of times
-			while ticks <= length do
+		-- Fire the particle a certain amount of times
+		while ticks <= length do
 				
-				-- Emit the particles
-				particle:Emit()
-				task.wait(tickLength)
-				ticks += 1
-			end
-
-		end)()
+			-- Emit the particles
+			particle:Emit()
+			task.wait(tickLength)
+			ticks += 1
+		end
 	else
 
 		-- Emit once
 		particle:Emit()
 	end
+
+	debris:AddItem(particle, particle.Lifetime.Max)
 end
 
 -- || MISCELLANEOUS ||

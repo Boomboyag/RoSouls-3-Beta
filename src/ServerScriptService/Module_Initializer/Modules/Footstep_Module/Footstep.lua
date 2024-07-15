@@ -250,10 +250,10 @@ function module:CallFunction(foot : string)
 
     -- Get the color of the ground
 	local particleColor = instance == workspace.Terrain and workspace.Terrain:GetMaterialColor(material) or instance.Color
-    particleColor = MakeDarker(particleColor or Color3.new(1, 1, 1))
+    particleColor = ColorSequence.new(MakeDarker(particleColor or Color3.new(1, 1, 1)))
 
     -- Emit the particle
-    self:SpawnVFX("Footstep_Particle", foot == "Left" and "LeftFootAttachment" or "RightFootAttachment")
+    self:SpawnVFX("Footstep_Particle", foot == "Left" and "LeftStep" or "RightStep", particleColor)
 
     return 0
 end
