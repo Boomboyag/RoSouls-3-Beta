@@ -1092,8 +1092,6 @@ function character:TrackAnimation(anim : AnimationTrack)
 			-- Wrap in a pcall to avoid errors
 			local success, errorMessage = pcall(function()
 
-				print("A")
-
 				-- Check if the provided function is valid and call it with the provided parameters
 				if self[func] then self[func](self, table.unpack(splitString)) end
 			end)
