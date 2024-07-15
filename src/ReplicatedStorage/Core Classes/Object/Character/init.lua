@@ -7,6 +7,7 @@ local replicatedStorage = game:GetService("ReplicatedStorage")
 
 -- Required folders
 local coreFolder = replicatedStorage:WaitForChild("Core Classes")
+local vfxFolder = replicatedStorage:WaitForChild("VFX")
 
 -- Required scripts
 local object = require(script.Parent)
@@ -1189,7 +1190,7 @@ function character:DamageReaction(damageAmount)
 	self.characterStats.currentAction = self.actionPrefabs["Light Stun"]
 end
 
--- || SOUNDS ||
+-- || SFX ||
 
 -- Play a sound
 function character:SpawnSound(id : string, volume : number, attachment : string)
@@ -1223,6 +1224,50 @@ function character:SpawnSound(id : string, volume : number, attachment : string)
 		task.wait(0.1)
 		sound:Destroy()
 	end)
+end
+
+-- Spawn a VFX element
+function character:SpawnVFX(name : string, attachment : string, color : ColorSequence, ...)
+
+	-- Get any additional arguments
+	local args = {...}
+	
+	-- Find the attachment
+	attachment = attachment and self.model:FindFirstChild(attachment, true) or self.rootJoint
+
+	-- Find the particle in the VFX folder
+	local particle = vfxFolder:FindFirstChild(name, true)
+
+	-- Set the default length if not provided
+	local length = args[1] or 0
+	local tickLength = args[2] or 0.1
+
+	-- Change the color (if desired)
+	particle.Color = color or particle.Color
+	
+	-- Emit the particle
+	if length > 0 then
+
+		local ticks = 0
+		
+		-- Wrap in a coroutine
+		coroutine.wrap(function()
+			
+			-- Fire the particle a certain amount of times
+			while ticks <= length do
+				
+				-- Emit the particles
+				particle:Emit()
+				task.wait(tickLength)
+				ticks += 1
+			end
+
+		end)()
+	else
+
+		-- Emit once
+		particle:Emit()
+	end
 end
 
 -- || MISCELLANEOUS ||
