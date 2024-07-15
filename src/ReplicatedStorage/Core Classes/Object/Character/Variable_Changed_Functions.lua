@@ -168,7 +168,7 @@ local statsChangedFunctions = {
 			if character.characterStats.coreAnimationInfluencedByCharacterMovement then
 
 				-- Change the speed of the character's current core animation
-				character:ChangeCoreAnimationSpeed(newValue.Magnitude)
+				character:CoreAnimationSpeedReflectMovementSpeed(newValue.Magnitude)
 			end
 		end) 
 
@@ -542,11 +542,11 @@ local statsChangedFunctions = {
 			if newValue == true then
 				
 				-- Change the speed
-				character:ChangeCoreAnimationSpeed(character.movementDirection.Magnitude)
+				character:CoreAnimationSpeedReflectMovementSpeed(character.movementDirection.Magnitude)
 			else
 				
 				-- Reset the speed
-				character:ChangeCoreAnimationSpeed(nil, true)
+				character:CoreAnimationSpeedReflectMovementSpeed(nil, true)
 			end
 
 			-- Fire the event

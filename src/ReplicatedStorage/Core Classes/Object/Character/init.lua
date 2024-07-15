@@ -961,7 +961,7 @@ function character:ChangeCoreAnimation(newAnimation : AnimationTrack, oldValue :
 end
 
 -- Change the speed of the current core animation
-function character:ChangeCoreAnimationSpeed(characterSpeed, reset)
+function character:CoreAnimationSpeedReflectMovementSpeed(characterSpeed, reset)
 	
 	-- Make sure the animation exists
 	if not self.characterStats.currentCoreAnimation then return end
