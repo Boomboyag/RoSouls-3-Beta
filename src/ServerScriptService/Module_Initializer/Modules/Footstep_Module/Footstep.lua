@@ -333,6 +333,7 @@ module.stats = {
 local stats = module.stats
 local materialMap = module.MaterialMap
 local ids = module.SoundIds
+local lastSound = nil
 
 -- The init function
 function module:Init()
@@ -394,6 +395,10 @@ function module:CallFunction(foot : string)
 
     -- Find and play the desired sound
     local soundID = module:GetRandomSound(module:GetTableFromMaterial(material))
+	repeat
+		soundID = module:GetRandomSound(module:GetTableFromMaterial(material))
+	until soundID ~= lastSound
+	lastSound = soundID
     self:SpawnSound(soundID, stats.volume)
 
     -- A function to make a color darker
