@@ -265,7 +265,6 @@ local sprintAction = actionModule.new({
         local sprintAnimation = character.animations.sprintAnimation
 		character:AddEffect(effects.Sprint_Animation_Speed)
         character:ChangeActionAnimation(sprintAnimation, 0.2, Enum.AnimationPriority.Action, true)
-        character.footstepHandler:SyncSteps(sprintAnimation)
         
         -- Drain the stamina
         character:RemoveEffect(characterEffectPrefabs.Stamina_Regen.Name)
@@ -290,7 +289,6 @@ local sprintAction = actionModule.new({
             -- Quickly stop the animation
             character:ChangeActionAnimation(nil, 0.1)
         end
-        character.footstepHandler:SyncSteps(character.coreAnimations.Walking)
 		character:RemoveEffect(effects.Sprint_Animation_Speed.Name)
 
 		-- Start the current core animation

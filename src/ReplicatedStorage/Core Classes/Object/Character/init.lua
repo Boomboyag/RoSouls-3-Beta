@@ -18,7 +18,6 @@ local rootMotionModule = require(script:WaitForChild("Animations"):WaitForChild(
 local effectModule = require(script:WaitForChild("Character_Effects"))
 local actionModule = require(script:WaitForChild("Character_Actions"))
 local actionPrefabs = require(script:WaitForChild("Character_Actions"):WaitForChild("Action_Prefabs"))
-local footstepModule = require(script:WaitForChild("Footstep_Handler"))
 
 -- Humanoid state changed table
 local humanoidStateChangedFunctions = require(script:WaitForChild("Humanoid_State_Changed_Functions"))
@@ -295,11 +294,6 @@ function character.new(newCharacter)
 
 	-- Character tilt
 	self.tilt = CFrame.new()
-
-	-- || SOUNDS ||
-
-	self.footstepHandler = footstepModule.new(self.humanoidRootPart)
-	self.footstepHandler:SyncSteps(self.coreAnimations.Walking)
 
 	-- || HEALTH ||
 
@@ -1232,7 +1226,7 @@ function character:SpawnSound(id : string, volume : number, attachment : string)
 	sound:Play()
 
 	-- Destory the sound after it stops
-	debris:AddItem(sound, sound.TimeLength)
+	debris:AddItem(sound, sound.TimeLength == 0 and 1 or sound.TimeLength)
 end
 
 -- Spawn a VFX element

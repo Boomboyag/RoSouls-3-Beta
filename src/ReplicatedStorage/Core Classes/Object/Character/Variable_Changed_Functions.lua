@@ -498,9 +498,6 @@ local statsChangedFunctions = {
 			-- Check if this is being fired for the first time
 			if oldValue == nil and not startup then return end
 
-			-- Set the humanoid variable
-			character.footstepHandler.enabled = newValue
-
 			-- Fire the event
 			character.CharacterStatChanged:Fire("footstepsEnabled", oldValue, newValue)
 		end) 
