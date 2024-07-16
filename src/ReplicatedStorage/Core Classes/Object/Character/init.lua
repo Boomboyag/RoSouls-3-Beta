@@ -1224,6 +1224,7 @@ function character:SpawnSound(id : string, volume : number, attachment : string)
 
 	-- Spawn the sound object
 	local sound = Instance.new("Sound")
+	sound.Volume = volume
 	sound.Parent = attachment
 	sound.SoundId = id
 
