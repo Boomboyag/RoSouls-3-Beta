@@ -1231,11 +1231,7 @@ function character:SpawnSound(id : string, volume : number, attachment : string)
 	sound:Play()
 
 	-- Destory the sound after it stops
-	sound.Stopped:Connect(function()
-		
-		task.wait(0.1)
-		sound:Destroy()
-	end)
+	debris:AddItem(sound, sound.TimeLength)
 end
 
 -- Spawn a VFX element

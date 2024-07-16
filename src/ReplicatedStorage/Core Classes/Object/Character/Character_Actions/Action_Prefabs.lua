@@ -3,6 +3,7 @@ local replicatedStorage = game:GetService("ReplicatedStorage")
 
 -- Required folders
 local coreFolder = replicatedStorage:WaitForChild("Core Classes")
+local vfx = replicatedStorage:WaitForChild("VFX")
 
 -- Required scripts
 local characterEffectPrefabs = require(script.Parent.Parent:WaitForChild("Character_Effects").Effect_Prefabs)
@@ -95,6 +96,9 @@ local effectTable = {
 
 			-- Get the animation folder
 			local stunAnims = character.animations.stunAnimations["Light"]
+
+			-- Blood vfx
+			character:SpawnVFX("Blood", "HumanoidRootPart")
 
 			-- Get a random stun animation
 			local randomStun = stunAnims[math.random(#stunAnims)]
