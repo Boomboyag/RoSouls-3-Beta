@@ -10,7 +10,7 @@ local playerFolder = moduleFolder.Parent.Player.Required_Action_Modules
 local actionModule = script:WaitForChild("Footstep")
 
 -- The footstep particle
-local particle = script:WaitForChild("Footstep_Particle")
+--local particle = script:WaitForChild("Footstep_Particle")
 
 local module = {}
 
@@ -18,7 +18,7 @@ local module = {}
 function module:Init()
 
     -- Put the VFX in the correct folder
-    particle.Parent = replicatedStorage:WaitForChild("VFX")
+    --particle.Parent = replicatedStorage:WaitForChild("VFX")
     
     -- Clone the module for other scripts to use
     local module_ = actionModule:Clone()

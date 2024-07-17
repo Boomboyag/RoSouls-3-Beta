@@ -381,7 +381,7 @@ function module:GetRandomSound(table) : string
 end
 
 -- The function to be called
-function module:CallFunction(foot : string)
+function module:CallFunction(foot : string, footstepParent)
 
     -- Make sure we can step
     if not self.characterStats.footstepsEnabled or not foot then
@@ -399,7 +399,7 @@ function module:CallFunction(foot : string)
 		soundID = module:GetRandomSound(module:GetTableFromMaterial(material))
 	until soundID ~= lastSound
 	lastSound = soundID
-    self:SpawnSound(soundID, stats.volume)
+    self:SpawnSound(soundID, stats.volume, nil, footstepParent)
 
     -- A function to make a color darker
 	local function MakeDarker(color)
@@ -415,7 +415,7 @@ function module:CallFunction(foot : string)
     particleColor = ColorSequence.new(MakeDarker(particleColor or Color3.new(1, 1, 1)))
 
     -- Emit the particle
-    self:SpawnVFX("Footstep_Particle", foot == "Left" and "LeftStep" or "RightStep", particleColor)
+    self:SpawnVFX("Footstep_Particle", foot == "Left" and "LeftStep" or "RightStep", footstepParent, particleColor)
 
     return 0
 end

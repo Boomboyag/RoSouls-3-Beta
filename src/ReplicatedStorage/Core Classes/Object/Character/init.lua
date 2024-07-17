@@ -1212,7 +1212,7 @@ function character:SpawnSound(id : string, volume : number, attachment : string,
 	attachmentParent = attachmentParent or self.model
 	
 	-- Find the attachment
-	attachment = attachment and attachmentParent:FindFirstChild(attachment, true) or self.humanoidRootPart
+	attachment = attachment and attachmentParent:FindFirstChild(attachment, true) or attachmentParent
 
 	-- Make sure the ID was provided
 	if not id then return end
@@ -1238,7 +1238,7 @@ function character:SpawnVFX(name : string, attachment : string, attachmentParent
 	
 	-- Find the attachment
 	attachmentParent = attachmentParent or self.model
-	attachment = attachment and attachmentParent:FindFirstChild(attachment, true) or self.rootJoint
+	attachment = attachment and attachmentParent:FindFirstChild(attachment, true) or attachmentParent:FindFirstChild("RootAttachment", true)
 
 	-- Find the particle in the VFX folder
 	local particle : ParticleEmitter = vfxFolder:FindFirstChild(name, true)
