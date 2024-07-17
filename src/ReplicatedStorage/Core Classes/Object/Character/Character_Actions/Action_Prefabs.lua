@@ -97,9 +97,6 @@ local effectTable = {
 			-- Get the animation folder
 			local stunAnims = character.animations.stunAnimations["Light"]
 
-			-- Blood vfx
-			character:SpawnVFX("Blood", "HumanoidRootPart")
-
 			-- Get a random stun animation
 			local randomStun = stunAnims[math.random(#stunAnims)]
 			character:ChangeActionAnimation(randomStun, 0.1, Enum.AnimationPriority.Action, false, 1)

@@ -1104,9 +1104,10 @@ function character:GetFunctionFromAnimationEvent(paramString : string) : (string
 	local func = tostring(splitString[1])
 	table.remove(splitString, 1)
 
-	-- Turn all strings into numbers
+	-- Get the value from the parameter string
 	for _, v in pairs(splitString) do
 		if tonumber(v) then v = tonumber(v) end
+		if v == "nil" then v = nil end
 	end
 
 	return func, splitString
@@ -1236,15 +1237,23 @@ function character:SpawnSound(id : string, volume : number, attachment : string,
 	debris:AddItem(sound, sound.TimeLength == 0 and 1 or sound.TimeLength)
 end
 
--- Spawn a VFX element
-function character:SpawnVFX(name : string, attachment : string, attachmentParent : Instance, color : ColorSequence, ...)
+-- Spawn a VFX element a certain number of times
+function character:SpawnVFX(name : string, timesToEmit : number, timeBetweenEmits : number, color : ColorSequence, attachment : string, parent : Instance)
+	
+	-- Emit the particle
+	for i = 1, timesToEmit, 1 do
+		
+		self:VFX(name, color, attachment, self.model, parent or nil)
+		task.wait(timeBetweenEmits)
+	end
+end
 
-	-- Get any additional arguments
-	local args = {...}
+-- Spawn and emit a vfx instance
+function character:VFX(name : string, color : ColorSequence, attachment : string, attachmentParent : Instance)
 	
 	-- Find the attachment
-	attachmentParent = attachmentParent or self.model
-	attachment = attachment and attachmentParent:FindFirstChild(attachment, true) or attachmentParent:FindFirstChild("RootAttachment", true)
+	local attachmentParent = attachmentParent or self.model
+	attachment = attachment and attachmentParent:FindFirstChild(attachment, true) or attachmentParent:FindFirstChild("HumanoidRootPart", true)
 
 	-- Find the particle in the VFX folder
 	local particle : ParticleEmitter = vfxFolder:FindFirstChild(name, true)
@@ -1252,32 +1261,10 @@ function character:SpawnVFX(name : string, attachment : string, attachmentParent
 	particle = particle:Clone()
 	particle.Parent = attachment
 
-	-- Set the default length if not provided
-	local length = args[1] or 0
-	local tickLength = args[2] or 0.1
-
 	-- Change the color (if desired)
 	particle.Color = color or particle.Color
-	
-	-- Emit the particle
-	if length > 0 then
 
-		local ticks = 0
-		
-		-- Fire the particle a certain amount of times
-		while ticks <= length do
-				
-			-- Emit the particles
-			particle:Emit()
-			task.wait(tickLength)
-			ticks += 1
-		end
-	else
-
-		-- Emit once
-		particle:Emit()
-	end
-
+	particle:Emit()
 	debris:AddItem(particle, particle.Lifetime.Max)
 end
 
