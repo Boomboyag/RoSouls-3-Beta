@@ -1199,7 +1199,7 @@ end
 -- || SFX ||
 
 -- Play a sound
-function character:SpawnSound(id : string, volume : number, attachment : string)
+function character:SpawnSound(id : string, volume : number, attachment : string, attachmentParent : Instance)
 
 	-- Make sure the volume is a number
 	if type(volume) == "string" then
@@ -1209,9 +1209,10 @@ function character:SpawnSound(id : string, volume : number, attachment : string)
 	-- Set default values if not provided
 	volume = volume or 1
 	attachment = attachment or "HumanoidRootPart"
+	attachmentParent = attachmentParent or self.model
 	
 	-- Find the attachment
-	attachment = attachment and self.model:FindFirstChild(attachment, true) or self.humanoidRootPart
+	attachment = attachment and attachmentParent:FindFirstChild(attachment, true) or self.humanoidRootPart
 
 	-- Make sure the ID was provided
 	if not id then return end
@@ -1230,13 +1231,14 @@ function character:SpawnSound(id : string, volume : number, attachment : string)
 end
 
 -- Spawn a VFX element
-function character:SpawnVFX(name : string, attachment : string, color : ColorSequence, ...)
+function character:SpawnVFX(name : string, attachment : string, attachmentParent : Instance, color : ColorSequence, ...)
 
 	-- Get any additional arguments
 	local args = {...}
 	
 	-- Find the attachment
-	attachment = attachment and self.model:FindFirstChild(attachment, true) or self.rootJoint
+	attachmentParent = attachmentParent or self.model
+	attachment = attachment and attachmentParent:FindFirstChild(attachment, true) or self.rootJoint
 
 	-- Find the particle in the VFX folder
 	local particle : ParticleEmitter = vfxFolder:FindFirstChild(name, true)
