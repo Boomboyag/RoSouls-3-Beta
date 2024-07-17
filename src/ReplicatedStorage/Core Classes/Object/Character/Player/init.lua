@@ -276,6 +276,8 @@ function player.new(newPlayerTable)
 	return newPlayer
 end
 
+-- || CONTROLS ||
+
 -- Unlock or lock the mouse
 function player:ChangeMouseLock()
 	
@@ -290,6 +292,8 @@ function player:ChangeMouseLock()
 		self.playerStats.mouseMovesCamera = true
 	end
 end
+
+-- || DEBUG MENU ||
 
 function player:DebugMenu()
 	
@@ -518,6 +522,8 @@ function player:DebugMenu()
 		iris.End()
 	end)
 end
+
+-- || MISCELLANEOUS ||
 
 -- Destroy the player
 function player:Destroy()
