@@ -415,7 +415,7 @@ function module:CallFunction(foot : string, footstepParent)
     particleColor = ColorSequence.new(MakeDarker(particleColor or Color3.new(1, 1, 1)))
 
     -- Emit the particle
-    self:SpawnVFX("Footstep_Particle", 1, 0, particleColor, foot == "Left" and "LeftStep" or "RightStep")
+    self:SpawnVFX("Footstep_Particle", 1, 0, foot == "Left" and "LeftStep" or "RightStep", particleColor)
 
     return 0
 end

@@ -1238,7 +1238,7 @@ function character:SpawnSound(id : string, volume : number, attachment : string,
 end
 
 -- Spawn a VFX element a certain number of times
-function character:SpawnVFX(name : string, timesToEmit : number, timeBetweenEmits : number, color : ColorSequence, attachment : string, parent : Instance)
+function character:SpawnVFX(name : string, timesToEmit : number, timeBetweenEmits : number, attachment : string, color : ColorSequence, parent : Instance)
 	
 	-- Emit the particle
 	for i = 1, timesToEmit, 1 do
