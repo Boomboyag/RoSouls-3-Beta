@@ -1316,10 +1316,10 @@ function character:CheckFall(newTick)
 end
 
 -- Check if the character is grounded
-function character:CheckGround() : (boolean, Enum.Material, Instance)
+function character:CheckGround(origin : Vector3) : (boolean, Enum.Material, Instance)
 	
 	-- The raycast origin and direction
-	local origin = self.humanoidRootPart.CFrame.Position
+	local origin = origin or self.humanoidRootPart.CFrame.Position
 	local direction = Vector3.new(0, -4, 0)
 
 	-- The raycast parameters
