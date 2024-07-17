@@ -1065,29 +1065,16 @@ function character:TrackAnimation(anim : AnimationTrack)
 	-- Wait for the animation to call any functions
 	anim:GetMarkerReachedSignal("Call_Function"):Connect(function(paramString)
 
-		-- Wrap in a pcall to avoid errors
-		local success, errorMessage = pcall(function()
+		-- Wrap in a pcall
+		local _, errorMessage = pcall(function()
 			
-			-- Make sure the provided parameter was valid
-			if not paramString or string.len(paramString) <= 1 then return end
-
-			-- Decrypt the provided parameter
-			local splitString: table = string.split(string.gsub(paramString, " ", ""), ",")
-
-			-- Get the desired function and parameters
-			local func = tostring(splitString[1])
-			table.remove(splitString, 1)
-
-			-- Turn all strings into numbers
-			for _, v in pairs(splitString) do
-				if tonumber(v) then v = tonumber(v) end
-			end
+			local func, parameters = self:GetFunctionFromAnimationEvent(paramString)
 
 			-- Wrap in a pcall to avoid errors
 			local success, errorMessage = pcall(function()
 
 				-- Check if the provided function is valid and call it with the provided parameters
-				if self[func] then self[func](self, table.unpack(splitString)) end
+				if self[func] then self[func](self, table.unpack(parameters)) end
 			end)
 
 			-- Let the user know there was an error
@@ -1096,14 +1083,33 @@ function character:TrackAnimation(anim : AnimationTrack)
 				warn("\n")
 				warn("Error calling function " .. func .. " in animation: " .. anim.Name .. " (" .. anim.Animation.AnimationId .. ")")
 				warn(errorMessage)
-			end
+			end	
 		end)
 
 		-- Let the user know there was an error
-		if not success and errorMessage then
-			warn(errorMessage)
-		end
+		if errorMessage then warn(errorMessage) end	
 	end)
+end
+
+-- Get function name and parameters from animation event
+function character:GetFunctionFromAnimationEvent(paramString : string) : (string, table)
+	
+	-- Make sure the provided parameter was valid
+	if not paramString or string.len(paramString) <= 1 then return end
+
+	-- Decrypt the provided parameter
+	local splitString: table = string.split(string.gsub(paramString, " ", ""), ",")
+
+	-- Get the desired function and parameters
+	local func = tostring(splitString[1])
+	table.remove(splitString, 1)
+
+	-- Turn all strings into numbers
+	for _, v in pairs(splitString) do
+		if tonumber(v) then v = tonumber(v) end
+	end
+
+	return func, splitString
 end
 
 -- Change the tilt of the character
