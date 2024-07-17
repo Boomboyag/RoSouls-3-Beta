@@ -24,11 +24,4 @@ function module:Init()
     end
 end
 
--- The function to be called
-function module:CallFunction()
-
-    warn("Internal function, not meant to be called")
-    return 0
-end
-
 return module

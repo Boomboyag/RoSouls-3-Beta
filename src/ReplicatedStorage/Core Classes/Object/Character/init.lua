@@ -1170,7 +1170,7 @@ function character:AddAction(name, action)
 	end
 
 	-- Add the given action
-	self:AddFunction(name, action.CallFunction)
+	if action.CallFunction then self:AddFunction(name, action.CallFunction) end
 	print("Injected the " .. action.Name)
 	action = nil
 end
