@@ -18,7 +18,7 @@ local characterEffectPrefabs = require(characterPath.Character_Effects.Effect_Pr
 local cameraHandler = require(script:WaitForChild("Camera_Handler"))
 
 -- Required actions
-local requiredActions = script:WaitForChild("Required_Action_Modules")
+local requiredModules = script:WaitForChild("Required_Modules")
 
 -- Humanoid state changed table
 local humanoidStateChangedFunctions = require(script:WaitForChild("Player_Humanoid_State_Changed_Functions"))
@@ -163,10 +163,10 @@ function player.new(newPlayerTable)
 	-- || ACTIONS ||
 
 	-- Get all the required action modules
-	for i, v in ipairs(requiredActions:GetChildren()) do
+	for i, v in ipairs(requiredModules:GetChildren()) do
 		
 		-- Add said modules to the player
-		self:AddAction(v.Name, v)
+		self:AddModule(v.Name, v)
 	end
 
 	-- || CAMERA ||

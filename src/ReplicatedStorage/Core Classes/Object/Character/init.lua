@@ -1151,7 +1151,7 @@ function character:CheckCurrentAction()
 end
 
 -- Add a new action to the character
-function character:AddAction(name, action)
+function character:AddModule(name, action)
 
 	-- Get the action table
 	action = require(action)

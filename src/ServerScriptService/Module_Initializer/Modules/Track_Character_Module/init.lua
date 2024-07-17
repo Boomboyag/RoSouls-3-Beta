@@ -3,8 +3,8 @@ local replicatedStorage = game:GetService("ReplicatedStorage")
 
 -- Required folders
 local coreFolder = replicatedStorage:WaitForChild("Core Classes")
-local moduleFolder = coreFolder:WaitForChild("Object").Character.Action_Modules
-local playerFolder = moduleFolder.Parent.Player.Required_Action_Modules
+local moduleFolder = coreFolder:WaitForChild("Object").Character.Modules
+local playerFolder = moduleFolder.Parent.Player.Required_Modules
 
 -- The action module
 local actionModule = script:WaitForChild("Track_Characters")
