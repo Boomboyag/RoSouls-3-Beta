@@ -34,12 +34,12 @@ function module:Init()
         
         -- Get the character
         local character = player.Character
-        collectionService:AddTag(character, "Charater")
+        collectionService:AddTag(character, "Character")
     end)
 
     -- Fired when the bindable event is fired
     bindableEvent.Event:Connect(function(character)
-        collectionService:AddTag(character, "Charater")
+        collectionService:AddTag(character, "Character")
     end)
 
     -- Get the remote folder

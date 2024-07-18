@@ -1167,7 +1167,7 @@ function character:AddModule(name, action)
 	
 	-- Call the init function
 	if action.Init then
-		action:Init()
+		action.Init(self)
 	end
 
 	-- Add the given action
@@ -1234,7 +1234,7 @@ function character:SpawnSound(id : string, volume : number, attachment : string,
 	sound:Play()
 
 	-- Destory the sound after it stops
-	debris:AddItem(sound, sound.TimeLength == 0 and 1 or sound.TimeLength)
+	debris:AddItem(sound, sound.TimeLength == 0 and 1 or sound.TimeLength + 1)
 end
 
 -- Spawn a VFX element a certain number of times
@@ -1243,7 +1243,7 @@ function character:SpawnVFX(name : string, timesToEmit : number, timeBetweenEmit
 	-- Emit the particle
 	for i = 1, timesToEmit, 1 do
 		
-		self:VFX(name, color, attachment, self.model, parent or nil)
+		self:VFX(name, color, attachment, parent or self.model)
 		task.wait(timeBetweenEmits)
 	end
 end
