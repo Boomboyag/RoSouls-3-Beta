@@ -282,6 +282,7 @@ function character.new(newCharacter)
 
 	-- Tracked animations
 	self.trackedAnimations = {}
+	self.savedAnimationEvents = {}
 
 	-- Stop all current animations 
 	if self.animator then
@@ -1093,6 +1094,11 @@ end
 
 -- Get function name and parameters from animation event
 function character:GetFunctionFromAnimationEvent(paramString : string) : (string, table)
+
+	-- Check if this value has already been provided
+	if self.savedAnimationEvents[paramString] then
+		return table.unpack(self.savedAnimationEvents[paramString])
+	end
 	
 	-- Make sure the provided parameter was valid
 	if not paramString or string.len(paramString) <= 1 then return end
@@ -1110,6 +1116,8 @@ function character:GetFunctionFromAnimationEvent(paramString : string) : (string
 		if v == "nil" then v = nil end
 	end
 
+	-- Save the value and return it
+	self.savedAnimationEvents[paramString] = {func, splitString}
 	return func, splitString
 end
 
