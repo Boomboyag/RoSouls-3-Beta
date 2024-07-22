@@ -36,6 +36,20 @@ local humanoidStateChangedFunctions = {
 		end
 	end,
 
+	-- The character is ragdolled
+	[Enum.HumanoidStateType.Ragdoll] = function(character)
+		
+		-- Change the current state
+		character.characterState = characterStates.Ragdoll
+	end,
+
+	-- The character is getting up
+	[Enum.HumanoidStateType.GettingUp] = function(character)
+		
+		-- Change the current state
+		character.characterState = characterStates.Default
+	end,
+
 	-- The chracter is falling
 	[Enum.HumanoidStateType.Freefall] = function(character)
 

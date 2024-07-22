@@ -124,10 +124,6 @@ local rollAction = actionModule.new({
         -- Get the character's movement vector
         local movementVector = character:GetWorldMoveDirection()
         local newCFrame = CFrame.new(character.humanoidRootPart.CFrame.Position, character.humanoidRootPart.CFrame.Position + movementVector) 
-
-        -- Disable actions & footsteps
-        character:AddEffect(characterEffectPrefabs.Disable_Actions)
-        character:AddEffect(characterEffectPrefabs.Disable_Footsteps)
         
 		-- Stop the character from climbing
 		character:AddEffect(characterEffectPrefabs.Disable_Climbing)
@@ -186,7 +182,7 @@ local rollAction = actionModule.new({
         until animationEnded
         
         -- Unlock the character
-        character.characterState = Enum.CharacterState.Default
+        character.characterState = character.characterState == Enum.CharacterState.Locked and Enum.CharacterState.Default or character.characterState
         character:RemoveEffect(characterEffectPrefabs.Disable_Auto_Rotate.Name)
 
         -- Destroy the roll velocity
@@ -198,11 +194,7 @@ local rollAction = actionModule.new({
         character:RemoveEffect(effects.Roll_Animation_Speed.Name)
         
         -- Allow the player to use actions again
-        character:RemoveEffect(characterEffectPrefabs.Disable_Actions.Name)
         character.characterStats.currentAction = nil
-
-        -- Allow for footstep fx to be enabled once again
-        character:RemoveEffect(characterEffectPrefabs.Disable_Footsteps.Name)
 
         -- Allow the character to climb
 		character:RemoveEffect(characterEffectPrefabs.Disable_Climbing.Name)

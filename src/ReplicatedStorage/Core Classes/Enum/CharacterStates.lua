@@ -272,9 +272,11 @@ local states = {
 
 			-- Apply the effects to the character
 			character:AddEffect(characterEffectPrefabs.Walkspeed_0)
+			character:AddEffect(characterEffectPrefabs.Core_Animation_Speed_Zero)
 			
 			-- Disable all other actions
 			character:AddEffect(characterEffectPrefabs.Disable_Actions)
+			character:AddEffect(characterEffectPrefabs.Disable_Footsteps)
 		end,
 
 		-- Function called when the state ends
@@ -285,9 +287,11 @@ local states = {
 
 			-- Remove the effect from the character
 			character:RemoveEffect(characterEffectPrefabs.Walkspeed_0.Name)
+			character:RemoveEffect(characterEffectPrefabs.Core_Animation_Speed_Zero.Name)
 			
 			-- Allow the player to use actions again
 			character:RemoveEffect(characterEffectPrefabs.Disable_Actions.Name)
+			character:RemoveEffect(characterEffectPrefabs.Disable_Footsteps.Name)
 		end,
 
 		-- Function called when the state begins on the client
@@ -299,7 +303,57 @@ local states = {
 		StateEndedFunctionPlayer = function(player)
 
 		end,
-	}
+	},
+
+	-- The Ragdoll state
+	Ragdoll = {
+		
+		-- State index
+		9, 
+
+		-- The name of the state
+		Name = "Ragdoll",
+
+		-- Function called when the state begins
+		StateBeganFunction = function(character)
+			
+			-- Lock the character in place
+			character:ChangeControlType(controlType.None, Vector3.zero)
+
+			-- Apply the effects to the character
+			character:AddEffect(characterEffectPrefabs.Walkspeed_0)
+			character:AddEffect(characterEffectPrefabs.Core_Animation_Speed_Zero)
+			
+			-- Disable all other actions
+			character:AddEffect(characterEffectPrefabs.Disable_Actions)
+			character:AddEffect(characterEffectPrefabs.Disable_Footsteps)
+		end,
+
+		-- Function called when the state ends
+		StateEndedFunction = function(character)
+			
+			-- Unlock the player
+			character:ChangeControlType(controlType.Full)
+
+			-- Remove the effect from the character
+			character:RemoveEffect(characterEffectPrefabs.Walkspeed_0.Name)
+			character:RemoveEffect(characterEffectPrefabs.Core_Animation_Speed_Zero.Name)
+			
+			-- Allow the player to use actions again
+			character:RemoveEffect(characterEffectPrefabs.Disable_Actions.Name)
+			character:RemoveEffect(characterEffectPrefabs.Disable_Footsteps.Name)
+		end,
+
+		-- Function called when the state begins on the client
+		StateBeganFunctionPlayer = function(player)
+			
+		end,
+		
+		-- Function called when the state ends on the client
+		StateEndedFunctionPlayer = function(player)
+
+		end,
+	},
 }
 
 return states

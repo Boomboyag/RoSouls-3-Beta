@@ -442,6 +442,14 @@ function player:DebugMenu()
 						end
 					iris.End()
 
+					-- RAGDOLL
+					local ragdoll = iris.Button({"Ragdoll"})
+					if ragdoll.clicked() then
+						self:Ragdoll()
+					end
+					if ragdoll.hovered() then
+						iris.Tooltip({"Will activate or deactivate the ragdoll"})
+					end
 				iris.End()
 			
 			-- Camera
