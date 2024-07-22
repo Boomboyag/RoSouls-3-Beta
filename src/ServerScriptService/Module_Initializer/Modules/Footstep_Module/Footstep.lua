@@ -355,7 +355,7 @@ function module:LoadSounds()
             contentProvider:PreloadAsync(v, function(assetId, assetFetchStatus)
 
                 -- Warn the user if the load failed
-                if assetFetchStatus == Enum.AssetFetchStatus.Failure then
+                if assetFetchStatus == Enum.AssetFetchStatus.Failure and not game:GetService("RunService"):IsStudio() then
                     warn("Failed to load Footstep ID(s): " .. assetId)
                 end
             end)
