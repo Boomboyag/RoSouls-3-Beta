@@ -1211,6 +1211,28 @@ function character:DamageReaction(damageAmount)
 	self.characterStats.currentAction = self.actionPrefabs["Light Stun"]
 end
 
+-- Death function
+function character:OnDeath()
+	
+	-- Play the death animation if grounded
+	if self:CheckGround() then
+				
+		-- Anchor the character
+		self.humanoidRootPart.Anchored = true
+
+		-- Play the death animation
+		local deathAnimation = self.coreAnimations.Death
+		self:ChangeActionAnimation(deathAnimation, 0.1, Enum.AnimationPriority.Action4, false)
+
+		-- Unanchor the character after the animation playes
+		coroutine.wrap(function()
+			task.wait(deathAnimation.Length - 0.5)
+			deathAnimation:AdjustSpeed(0)
+			self.humanoidRootPart.Anchored = false
+		end)()
+	end
+end
+
 -- || SFX ||
 
 -- Play a sound
