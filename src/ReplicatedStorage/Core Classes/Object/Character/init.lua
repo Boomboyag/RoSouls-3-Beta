@@ -1159,29 +1159,29 @@ function character:CheckCurrentAction()
 	end
 end
 
--- Add a new action to the character
-function character:AddModule(name, action)
+-- Add a new module to the character
+function character:AddModule(name, module)
 
-	-- Get the action table
-	action = require(action)
+	-- Get the module table
+	module = require(module)
 
-	-- Add the action stats
-	if action.stats then
+	-- Add the module stats
+	if module.stats then
 
 		-- Add the action stats to the effect table
-		table.insert(self.validEffectTables, action.stats)
-		table.insert(self.defaultValues, action.stats)
+		table.insert(self.validEffectTables, module.stats)
+		table.insert(self.defaultValues, module.stats)
 	end
 	
 	-- Call the init function
-	if action.Init then
-		action.Init(self)
+	if module.Init then
+		module.Init(self)
 	end
 
-	-- Add the given action
-	if action.CallFunction then self:AddFunction(name, action.CallFunction) end
-	print("Injected the " .. action.Name)
-	action = nil
+	-- Add the given module
+	if module.CallFunction then self:AddFunction(name, module.CallFunction) end
+	print("Injected the " .. module.Name)
+	module = nil
 end
 
 -- || HEALTH ||
