@@ -322,6 +322,11 @@ function character.new(newCharacter)
 	-- Effect prefabs specific to the character
 	self.effectPrefabs = require(script:WaitForChild("Character_Effects"):WaitForChild("Effect_Prefabs"))
 
+	-- || MODULES ||
+
+	-- Table of current modules
+	self.modules = {}
+
 	-- || MOVEMENT ||
 
 	-- Set the character's walkspeed
@@ -1165,6 +1170,9 @@ function character:AddModule(name, module)
 	-- Get the module table
 	module = require(module)
 
+	-- Make sure the module hasn't already been added
+	if self.modules[module.Name] then return end
+
 	-- Add the module stats
 	if module.stats then
 
@@ -1181,6 +1189,7 @@ function character:AddModule(name, module)
 	-- Add the given module
 	if module.CallFunction then self:AddFunction(name, module.CallFunction) end
 	print("Injected the " .. module.Name)
+	table.insert(self.modules, module.Name)
 	module = nil
 end
 
