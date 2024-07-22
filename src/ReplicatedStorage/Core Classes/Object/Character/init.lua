@@ -8,6 +8,7 @@ local replicatedStorage = game:GetService("ReplicatedStorage")
 -- Required folders
 local coreFolder = replicatedStorage:WaitForChild("Core Classes")
 local vfxFolder = replicatedStorage:WaitForChild("VFX")
+local moduleFolder = script:WaitForChild("Modules")
 
 -- Required scripts
 local object = require(script.Parent)
@@ -1171,7 +1172,20 @@ function character:AddModule(name, module)
 	module = require(module)
 
 	-- Make sure the module hasn't already been added
-	if self.modules[module.Name] then return end
+	if table.find(self.modules, module.Name) then
+		warn("The module \'" .. module.Name .. "\' has already been added")
+		return 
+	end
+
+	-- Check for any requirements
+	if module.requiredModules then
+		
+		-- Add any required modules
+		for i, v in pairs(module.requiredModules) do
+			local reqMod = moduleFolder:FindFirstChild(v)
+			if reqMod then self:AddModule(v, reqMod) end
+		end
+	end
 
 	-- Add the module stats
 	if module.stats then

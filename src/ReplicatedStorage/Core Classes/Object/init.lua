@@ -55,7 +55,7 @@ end
 function object:AddFunction(name, func)
 
 	if self[name] ~= nil then
-		warn("The function " .. name .. " was overridden")
+		warn("The function " .. name .. " was overwritten")
 	end
 
 	self[name] = func

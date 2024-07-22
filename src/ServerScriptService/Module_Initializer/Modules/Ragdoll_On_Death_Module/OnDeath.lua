@@ -2,6 +2,8 @@ local module = {}
 
 module.Name = "Ragdoll on Death Module"
 
+module.requiredModules = {"Ragdoll"}
+
 -- The function to be called
 function module:CallFunction()
 
