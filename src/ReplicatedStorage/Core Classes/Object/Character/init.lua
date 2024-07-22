@@ -1298,22 +1298,7 @@ function character:VFX(name : string, color : ColorSequence, attachment : string
 	debris:AddItem(particle, particle.Lifetime.Max)
 end
 
--- || MISCELLANEOUS ||
-
--- Fired when the humanoid state changes
-function character:HumanoidStateChanged(oldState, newState)
-
-	newState = newState or self.humanoid:GetState()
-	
-	self.CharacterHumanoidStateChanged:Fire(oldState, newState)
-
-	-- Check if this state has a function attached to it
-	if humanoidStateChangedFunctions[newState] then
-
-		-- Call said function
-		humanoidStateChangedFunctions[newState](self)
-	end
-end
+-- || CHECKS ||
 
 -- See if anything needs to be done after a fall
 function character:CheckFall(newTick)
@@ -1406,6 +1391,23 @@ function character:CheckSight(newModel, excluded, angle, distance) : boolean
 	end
 
 	return false
+end
+
+-- || MISCELLANEOUS ||
+
+-- Fired when the humanoid state changes
+function character:HumanoidStateChanged(oldState, newState)
+
+	newState = newState or self.humanoid:GetState()
+	
+	self.CharacterHumanoidStateChanged:Fire(oldState, newState)
+
+	-- Check if this state has a function attached to it
+	if humanoidStateChangedFunctions[newState] then
+
+		-- Call said function
+		humanoidStateChangedFunctions[newState](self)
+	end
 end
 
 -- Make the character speak
