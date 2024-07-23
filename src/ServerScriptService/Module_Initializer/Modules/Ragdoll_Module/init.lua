@@ -59,8 +59,7 @@ function module:Init()
 
             -- Start the ragdoll
             module:ReplaceJoints(character)
-            module:Push(character.Torso)
-
+           
             -- Add the ragdoll tag
             collectionService:AddTag(character, "Ragdoll")
             return
@@ -189,11 +188,6 @@ function module:ResetJoints(character)
 			instance.Enabled = true;
 		end
 	end
-end
-
--- Push the character to make the ragdoll fall over
-function module:Push(torso)
-	torso:ApplyImpulse(torso.CFrame.LookVector * 100)
 end
 
 return module

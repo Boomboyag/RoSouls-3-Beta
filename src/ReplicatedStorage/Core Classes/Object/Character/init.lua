@@ -1321,6 +1321,13 @@ function character:VFX(name : string, color : ColorSequence, attachment : string
 	debris:AddItem(particle, particle.Lifetime.Max)
 end
 
+-- || PHYSICS ||
+
+-- Apply an impulse to an object
+function character:ApplyImpulse(objectToPush : Instance, amount : number)
+	objectToPush:ApplyImpulse(objectToPush.CFrame.LookVector * amount)
+end
+
 -- || CHECKS ||
 
 -- See if anything needs to be done after a fall
