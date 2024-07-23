@@ -1324,8 +1324,22 @@ end
 -- || PHYSICS ||
 
 -- Apply an impulse to an object
-function character:ApplyImpulse(objectToPush : Instance, amount : number)
-	objectToPush:ApplyImpulse(objectToPush.CFrame.LookVector * amount)
+function character:ApplyImpulse(objectToPush : Part, amount : number, direction : Vector3)
+
+	-- Get the direction relative to the part
+	if direction then
+		local newCFrame = CFrame.new(direction)
+		direction = CFrame.lookAt(objectToPush.CFrame.Position, objectToPush.CFrame:ToWorldSpace(newCFrame).Position).LookVector
+	end
+
+	-- Get the direction of the force and apply it
+	direction = direction and direction or objectToPush.CFrame.LookVector
+	objectToPush:ApplyImpulse(direction * amount * 5)
+end
+
+-- Aply an angular impulse to an object
+function character:ApplyAngularImpulse(objectToPush : Part, direction : Vector3)
+	objectToPush:ApplyAngularImpulse(direction)
 end
 
 -- || CHECKS ||
