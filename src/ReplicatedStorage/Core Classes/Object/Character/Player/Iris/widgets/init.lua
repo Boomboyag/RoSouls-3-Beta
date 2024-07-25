@@ -18,8 +18,6 @@ return function(Iris: Types.Internal)
         ALPHA_BACKGROUND_TEXTURE = "rbxasset://textures/meshPartFallback.png", -- used for color4 alpha
     }
 
-    widgets.GuiInset = widgets.GuiService:GetGuiInset()
-
     widgets.IS_STUDIO = widgets.RunService:IsStudio()
     function widgets.getTime()
         -- time() always returns 0 in the context of plugins
@@ -30,8 +28,23 @@ return function(Iris: Types.Internal)
         end
     end
 
+    function widgets.setGuiInset()
+        local inset = widgets.GuiService:GetGuiInset()
+
+        -- Inset is not guaranteed to be set upon initialization.
+        if inset.Magnitude > 0 then
+            widgets.GuiInset = inset
+        end
+
+        return inset
+    end
+
+    function widgets.getGuiInset()
+        return widgets.GuiInset or widgets.setGuiInset()
+    end
+
     function widgets.getMouseLocation(): Vector2
-        return widgets.UserInputService:GetMouseLocation() - widgets.GuiInset
+        return widgets.UserInputService:GetMouseLocation() - widgets.getGuiInset()
     end
 
     function widgets.findBestWindowPosForPopup(refPos: Vector2, size: Vector2, outerMin: Vector2, outerMax: Vector2): Vector2
@@ -60,7 +73,7 @@ return function(Iris: Types.Internal)
 
     function widgets.extend(superClass: Types.WidgetClass, subClass: Types.WidgetClass): Types.WidgetClass
         local newClass: Types.WidgetClass = table.clone(superClass)
-        for index: string, value: any in subClass do
+        for index: unknown, value: any in subClass do
             newClass[index] = value
         end
         return newClass

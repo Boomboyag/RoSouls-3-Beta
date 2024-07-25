@@ -115,6 +115,10 @@ return function(Iris: Types.Internal, widgets: Types.WidgetUtility)
             end
         end
 
+        if not lowestWidget then
+            return
+        end
+
         if lowestWidget.state.isUncollapsed.value == false then
             lowestWidget.state.isUncollapsed:set(true)
         end
@@ -462,7 +466,7 @@ return function(Iris: Types.Internal, widgets: Types.WidgetUtility)
             ChildContainer.VerticalScrollBarInset = Enum.ScrollBarInset.ScrollBar
 
             ChildContainer.ZIndex = thisWidget.ZIndex + 3
-            ChildContainer.LayoutOrder = thisWidget.ZIndex + 3
+            ChildContainer.LayoutOrder = thisWidget.ZIndex + 0xFFFF
             ChildContainer.ClipsDescendants = true
 
             widgets.UIPadding(ChildContainer, Iris._config.WindowPadding)
@@ -873,7 +877,7 @@ return function(Iris: Types.Internal, widgets: Types.WidgetUtility)
                 local callbackIndex: number = #Iris._postCycleCallbacks + 1
                 local desiredCycleTick: number = Iris._cycleTick + 1
                 Iris._postCycleCallbacks[callbackIndex] = function()
-                    if Iris._cycleTick == desiredCycleTick then
+                    if Iris._cycleTick >= desiredCycleTick then
                         ChildContainer.CanvasPosition = Vector2.new(0, stateScrollDistance)
                         Iris._postCycleCallbacks[callbackIndex] = nil
                     end

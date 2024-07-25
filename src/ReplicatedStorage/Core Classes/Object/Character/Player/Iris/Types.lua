@@ -56,7 +56,7 @@ export type State = {
 
     get: (self: State) -> any,
     set: (self: State, newValue: any) -> (),
-    onChange: (self: State, funcToConnect: (any) -> ()) -> (),
+    onChange: (self: State, funcToConnect: (any) -> ()) -> () -> (),
 }
 
 export type States = {
@@ -113,6 +113,7 @@ export type Widget = {
     state: States,
     lastCycleTick: number,
     trackedEvents: {},
+    isDirty: boolean,
 
     parentWidget: Widget,
     Instance: GuiObject,
@@ -219,7 +220,9 @@ export type WidgetUtility = {
         ALPHA_BACKGROUND_TEXTURE: string,
     },
 
-    GuiInset: Vector2,
+    GuiInset: Vector2?,
+    setGuiInset: () -> Vector2,
+    getGuiInset: () -> Vector2,
 
     findBestWindowPosForPopup: (refPos: Vector2, size: Vector2, outerMin: Vector2, outerMax: Vector2) -> Vector2,
     getScreenSizeForWindow: (thisWidget: Widget) -> Vector2,
@@ -459,7 +462,7 @@ export type Iris = {
 
     Init: (playerInstance: BasePlayerGui?, eventConnection: (RBXScriptConnection | () -> ())?) -> Iris,
     Shutdown: () -> (),
-    Connect: (self: Iris, callback: () -> ()) -> (),
+    Connect: (self: Iris, callback: () -> ()) -> () -> (),
     Append: (userInstance: GuiObject) -> (),
     ForceRefresh: () -> (),
 
