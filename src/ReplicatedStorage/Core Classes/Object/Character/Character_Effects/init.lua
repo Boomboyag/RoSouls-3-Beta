@@ -1,3 +1,12 @@
+-- Roblox services
+local replicatedStorage = game:GetService("ReplicatedStorage")
+
+-- Required folders
+local coreFolder = replicatedStorage:WaitForChild("Core Classes")
+
+-- Required scripts
+local types = require(coreFolder.Types)
+
 -- Class creation
 local effect = {}
 effect.__index = effect
@@ -60,49 +69,8 @@ local effectTableExample = {
 	["ResetDataWhenDone"] = false,
 }
 
--- The table passed when creating a new effect
-export type EffectTable = {
-
-	Name : string,
-	Priority : number,
-	DataToModify : string,
-
-	EffectTickAmount : number,
-	TimeBetweenEffectTick : number,
-
-	EffectFunction : (input : any) -> (),
-
-	CanStack : boolean,
-	ResetDataWhenDone : boolean,
-}
-
--- The effect itself
-export type Effect = {
-
-	name : string,
-	priority : number,
-	dataToModify : string,
-
-	effectTickAmount : number,
-	timeBetweenEffectTick : number,
-
-	effectFunction : (input : any) -> (),
-
-	canStack : boolean,
-	resetDataWhenDone : boolean,
-
-	canTerminate : boolean,
-	metTickAmount : boolean,
-	stopWhenTickAmountReached : boolean,
-	
-	previousTick : number,
-
-	ApplyEffect : (dataToChange : string, forceApply : boolean) -> (),
-	Clone : () -> (),
-}
-
 -- Class constructor
-function effect.new(newEffect : EffectTable)
+function effect.new(newEffect : types.EffectTable)
 	local self = {}
 	
 	-- || REQUIRED VARIABLES ||

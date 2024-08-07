@@ -13,34 +13,6 @@ local strafeAnimations = movementAnims:WaitForChild("Strafe")
 local actionAnimations = defaultAnims:WaitForChild("Actions")
 local stunAnimations = actionAnimations:WaitForChild("Stun")
 
-export type Animations = {
-	idleAnimation: AnimationTrack,
-	walkAnimation: AnimationTrack,
-	fallAnimation: AnimationTrack,
-  
-	strafeLeft: AnimationTrack,
-	strafeRight: AnimationTrack,
-  
-	jumpAnimation: AnimationTrack,
-	landAnimation: AnimationTrack,
-	sprintAnimation: AnimationTrack,
-	rollAnimation: AnimationTrack,
-	backstepAnimation: AnimationTrack,
-	climbAnimation: AnimationTrack,
-	deathAnimation: AnimationTrack,
-  
-	stunAnimations: {
-		
-		Light: {
-			[number]: AnimationTrack
-	  	},
-
-	  	Heavy: {
-			[number]: AnimationTrack
-	  	}
-	}
-}
-
 -- Class constructor
 function animations.new(humanoid, animationList)
 	local self = {}

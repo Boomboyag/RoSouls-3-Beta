@@ -19,6 +19,7 @@ local rootMotionModule = require(script:WaitForChild("Animations"):WaitForChild(
 local effectModule = require(script:WaitForChild("Character_Effects"))
 local actionModule = require(script:WaitForChild("Character_Actions"))
 local actionPrefabs = require(script:WaitForChild("Character_Actions"):WaitForChild("Action_Prefabs"))
+local types = require(coreFolder:WaitForChild("Types"))
 
 -- Humanoid state changed table
 local humanoidStateChangedFunctions = require(script:WaitForChild("Humanoid_State_Changed_Functions"))
@@ -39,101 +40,6 @@ character.__tostring = function(character)
 end
 setmetatable(character, object)
 
-export type Character = {
-
-    objectType: table,
-    characterType: table,
-
-    onClient: boolean,
-    onServer: boolean,
-
-    humanoid: Humanoid,
-    humanoidRootPart: BasePart,
-    head: BasePart,
-    torso: BasePart,
-    rootJoint: Motor6D,
-    rootC0: CFrame,
-    rootAttachment: Attachment,
-    rollAttatchment: Attachment,
-    rootOrientationAttachment: AlignOrientation,
-
-    characterState: table,
-    controlType: table,
-
-    characterStats: characterStatsSheet.CharacterStats,
-    defaultCharacterStats: characterStatsSheet.CharacterStats,
-
-    fallTime: number,
-    fallDistance: number,
-    fallAnimationSpeed: number,
-    groundCheckInterval: number,
-    groundCounter: number,
-
-    actionPrefabs: {[string]: actionModule.Action},
-
-    lastTransform: CFrame,
-    XZPlane: Vector3,
-
-    characterModelTilt: number,
-    animator: Animator?,
-    animations: animationModule.Animations,
-    coreAnimations: {
-        [string]: animationModule.Animations,
-        Strafing: {
-            Left: animationModule.Animations,
-            Right: animationModule.Animations
-        }
-    },
-    trackedAnimations: {animationModule.Animations},
-    savedAnimationEvents: {any},
-    tilt: CFrame,
-
-    alive: boolean,
-
-    validEffectTables: {characterStatsSheet.CharacterStats},
-    defaultValues: {characterStatsSheet.CharacterStats},
-    effects: {effectModule.Effect},
-    effectTick: number,
-    previousEffectTick: number,
-    effectPrefabs: {[string]: any},
-
-    modules: {any},
-
-    isMoving: boolean,
-    lockedMovementDirection: Vector3,
-    movementDirection: Vector3,
-    path: Path,
-
-    GetStat: BindableFunction,
-    FinishedPathfinding: BindableEvent,
-    StaminaDrained: BindableEvent,
-    CharacterDied: BindableEvent,
-    CharacterStateChanged: BindableEvent,
-    CharacterHumanoidStateChanged: BindableEvent,
-    CharacterStatChanged: BindableEvent,
-    HealthChanged: BindableEvent,
-    StaminaChanged: BindableEvent,
-    EffectAdded: BindableEvent,
-    EffectRemoved: BindableEvent,
-    NewAction: BindableEvent,
-    ActionAnimationStopped: BindableEvent,
-
-    DiedConnection: RBXScriptConnection,
-    RunningConnection: RBXScriptConnection,
-    JumpingConnection: RBXScriptConnection,
-    ClimbingConnection: RBXScriptConnection,
-    GettingUpConnection: RBXScriptConnection,
-    FreeFallingConnection: RBXScriptConnection,
-    FallingDownConnection: RBXScriptConnection,
-    SeatedConnection: RBXScriptConnection,
-    PlatformStandingConnection: RBXScriptConnection,
-    SwimmingConnection: RBXScriptConnection,
-    HumanoidStateChangedConnection: RBXScriptConnection,
-	
-    renderSteppedConnection: RBXScriptConnection,
-    heartbeatConnection: RBXScriptConnection
-}
-
 -- Class constructor
 function character.new(newCharacter)
 
@@ -143,7 +49,7 @@ function character.new(newCharacter)
 	setmetatable(newChar, character)
 
 	-- Create the proxy table to track changes made to variables
-	local self = setmetatable({}, {
+	local self : types.Character = setmetatable({}, {
 
 		__index = newChar,
 
@@ -198,7 +104,7 @@ function character.new(newCharacter)
 	end
 
 	-- Function to track the changes made to a table
-	local function TrackStats(tableToTrack, characterTable) : characterStatsSheet.CharacterStats
+	local function TrackStats(tableToTrack, characterTable) : types.CharacterStats
 
 		-- Create the proxy table
 		local proxy = {}
@@ -675,7 +581,7 @@ end
 
 -- Change the character's control type
 function character:ChangeControlType(newType, direction : Vector3)
-	local self : Character = self
+	local self : types.Character = self
 
 	-- Change the type
 	self.controlType = newType;
@@ -688,7 +594,7 @@ end
 
 -- Get the character's movement direction
 function character:GetWorldMoveDirection()
-	local self : Character = self
+	local self : types.Character = self
 
 	-- Check if we are locked on able to move
 	if (self.controlType == Enum.ControlType.Full) then
@@ -703,7 +609,7 @@ end
 
 -- Make the character walk to something
 function character:WalkTo(position : Vector3)
-	local self : Character = self
+	local self : types.Character = self
 
 	local waypoints
 	local nextWaypointIndex
@@ -766,7 +672,7 @@ end
 
 -- Make the character move in a given direction
 function character:Move()
-	local self : Character = self
+	local self : types.Character = self
 
 	-- Move the humanoid
 	self.humanoid:Move(self:GetWorldMoveDirection(), false);
@@ -775,14 +681,14 @@ end
 -- || EFFECTS ||
 
 -- Add an effect to the character's effect table
-function character:AddEffect(effect : effectModule.EffectTable)
-	local self : Character = self
+function character:AddEffect(effect : types.EffectTable)
+	local self : types.Character = self
 
 	-- Make sure we are allowed to add effects
 	if not self.characterStats.canAddEffects then return end
 
 	-- 'Clone' the effect
-	local effectClone : effectModule.Effect = effectModule.new(effect)
+	local effectClone : types.Effect = effectModule.new(effect)
 	
 	-- Check if the effect can stack
 	if effectClone.canStack then
@@ -806,7 +712,7 @@ end
 
 -- Remove an effect from the character's effect table
 function character:RemoveEffect(effectName : string)
-	local self : Character = self
+	local self : types.Character = self
 
 	-- Loop through all current effects
 	for i, v in self.effects do
@@ -827,7 +733,7 @@ function character:RemoveEffect(effectName : string)
 			end
 
 			-- The effect to remove and it's effected data
-			local effectToRemove : effectModule.Effect = self.effects[i]
+			local effectToRemove : types.Effect = self.effects[i]
 			local resetData = effectToRemove.resetDataWhenDone
 			local changedData = effectToRemove.dataToModify
 
@@ -871,8 +777,8 @@ function character:RemoveEffect(effectName : string)
 end
 
 -- Find a specific effect
-function character:FindEffect(effectName : string, returnBoolean : boolean)
-	local self : Character = self
+function character:FindEffect(effectName : string, returnBoolean : boolean) : types.Effect
+	local self : types.Character = self
 	
 	-- Loop through the current effects
 	for i, v in pairs(self.effects) do
@@ -892,7 +798,6 @@ function character:FindEffect(effectName : string, returnBoolean : boolean)
 				end
 			end
 			
-
 			-- Check if we want to return the effect or boolean
 			return not returnBoolean and v or true
 		end
@@ -903,8 +808,8 @@ function character:FindEffect(effectName : string, returnBoolean : boolean)
 end
 
 -- Find the amount of a specific effect the character has
-function character:FindEffectAmount(effectName : string)
-	local self : Character = self
+function character:FindEffectAmount(effectName : string) : number
+	local self : types.Character = self
 	
 	local count = 0
 
@@ -937,7 +842,7 @@ end
 
 -- Sort the effects by priority
 function character:SortEffects(effectsToSort)
-	local self : Character = self
+	local self : types.Character = self
 
 	local array = {}
 	
@@ -957,7 +862,7 @@ end
 
 -- Apply all effects (or ones modifying a certain piece of data)
 function character:ApplyEffects(modifiedData : string, forceApply : boolean, effectsToIgnore)
-	local self : Character = self
+	local self : types.Character = self
 
 	local priorityList = {}
 	
@@ -968,7 +873,7 @@ function character:ApplyEffects(modifiedData : string, forceApply : boolean, eff
 	for i, v in pairs(priorityList) do
 
 		-- Get the effect and data it is modifying
-		local effect : effectModule.Effect = v.value
+		local effect : types.Effect = v.value
 		local dataToModify = effect.dataToModify
 
 		-- Check if we only want to apply specific effects
@@ -1022,7 +927,7 @@ end
 
 -- Apply root motion to the character
 function character:ApplyRootMotion(deltaTime)
-	local self : Character = self
+	local self : types.Character = self
 
 	local transform = self.rootJoint.Transform
 
@@ -1052,7 +957,7 @@ end
 
 -- Change the current core animation being played
 function character:ChangeCoreAnimation(newAnimation : AnimationTrack, oldValue : AnimationTrack, transitionTime : number)
-	local self : Character = self
+	local self : types.Character = self
 
 	-- Switch animation
 	if (newAnimation ~= oldValue) then
@@ -1074,7 +979,7 @@ end
 
 -- Change the speed of the current core animation
 function character:CoreAnimationSpeedReflectMovementSpeed(characterSpeed, reset)
-	local self : Character = self
+	local self : types.Character = self
 	
 	-- Make sure the animation exists
 	if not self.characterStats.currentCoreAnimation then return end
@@ -1103,7 +1008,7 @@ end
 
 -- Change the current action animation (if any) being played
 function character:ChangeActionAnimation(newAnimation : AnimationTrack, transitionTime : number, animationPriority : Enum.AnimationPriority, loop : boolean)
-	local self : Character = self
+	local self : types.Character = self
 
 	-- A short simplification
 	local characterStats = self.characterStats
@@ -1155,7 +1060,7 @@ end
 
 -- Change the speed of the current core animation
 function character:ChangeActionAnimationSpeed(characterSpeed)
-	local self : Character = self
+	local self : types.Character = self
 
 	-- Make sure the animation exists
 	if not self.characterStats.currentActionAnimation then return end
@@ -1170,7 +1075,7 @@ end
 
 -- Track a given animation
 function character:TrackAnimation(anim : AnimationTrack)
-	local self : Character = self
+	local self : types.Character = self
 	
 	-- Make sure we were provided an animation
 	if not anim or not anim:IsA("AnimationTrack") then
@@ -1215,7 +1120,7 @@ end
 
 -- Get function name and parameters from animation event
 function character:GetFunctionFromAnimationEvent(paramString : string) : (string, table)
-	local self : Character = self
+	local self : types.Character = self
 
 	-- Check if this value has already been provided
 	if self.savedAnimationEvents[paramString] then
@@ -1245,7 +1150,7 @@ end
 
 -- Change the tilt of the character
 function character:TiltBody(deltaTime)
-	local self : Character = self
+	local self : types.Character = self
 
 	-- Get the chracter's movement direction
 	local moveDirection = self.humanoidRootPart.CFrame:VectorToObjectSpace(self:GetWorldMoveDirection())
@@ -1267,9 +1172,9 @@ end
 
 -- Check if the current action's prerequisites are met
 function character:CheckCurrentAction()
-	local self : Character = self
+	local self : types.Character = self
 	
-	local currentAction : actionModule.Action = self.characterStats.currentAction
+	local currentAction : types.Action = self.characterStats.currentAction
 	
 	-- Make sure an action exists
 	if not currentAction then return end
@@ -1287,7 +1192,7 @@ end
 
 -- Add a new module to the character
 function character:AddModule(name, module)
-	local self : Character = self
+	local self : types.Character = self
 
 	-- Get the module table
 	module = require(module)
@@ -1332,7 +1237,7 @@ end
 
 -- Make the humanoid take damage
 function character:TakeDamage(damageAmount, ignoreForceField)
-	local self : Character = self
+	local self : types.Character = self
 
 	-- Check if we want to ignore forcefields
 	if not ignoreForceField then
@@ -1348,7 +1253,7 @@ end
 
 -- Reaction animation to damage
 function character:DamageReaction(damageAmount)
-	local self : Character = self
+	local self : types.Character = self
 
 	-- Make sure the character has taken enough damage to warrent a reaction
 	if damageAmount < 5 then return end
@@ -1359,7 +1264,7 @@ end
 
 -- Death function
 function character:OnDeath()
-	local self : Character = self
+	local self : types.Character = self
 
 	-- Play the death animation if grounded
 	if self:CheckGround() then
@@ -1384,7 +1289,7 @@ end
 
 -- Play a sound
 function character:SpawnSound(id : string, volume : number, attachment : string, attachmentParent : Instance)
-	local self : Character = self
+	local self : types.Character = self
 
 	-- Make sure the volume is a number
 	if type(volume) == "string" then
@@ -1417,7 +1322,7 @@ end
 
 -- Spawn a VFX element a certain number of times
 function character:SpawnVFX(name : string, timesToEmit : number, timeBetweenEmits : number, attachment : string, color : ColorSequence, parent : Instance)
-	local self : Character = self
+	local self : types.Character = self
 
 	-- Emit the particle
 	for i = 1, timesToEmit, 1 do
@@ -1429,7 +1334,7 @@ end
 
 -- Spawn and emit a vfx instance
 function character:VFX(name : string, color : ColorSequence, attachment : string, attachmentParent : Instance)
-	local self : Character = self
+	local self : types.Character = self
 	
 	-- Find the attachment
 	local attachmentParent = attachmentParent or self.model
@@ -1452,7 +1357,7 @@ end
 
 -- Apply an impulse to an object
 function character:ApplyImpulse(objectToPush : Part, amount : number, direction : Vector3)
-	local self : Character = self
+	local self : types.Character = self
 
 	-- Get the direction relative to the part
 	if direction then
@@ -1467,7 +1372,7 @@ end
 
 -- Aply an angular impulse to an object
 function character:ApplyAngularImpulse(objectToPush : Part, direction : Vector3)
-	local self : Character = self
+	local self : types.Character = self
 
 	objectToPush:ApplyAngularImpulse(direction)
 end
@@ -1476,7 +1381,7 @@ end
 
 -- See if anything needs to be done after a fall
 function character:CheckFall(newTick)
-	local self : Character = self
+	local self : types.Character = self
 
 	-- Get the time spent falling and the distance
 	local timeFalling = newTick - self.fallTime
@@ -1502,7 +1407,7 @@ end
 
 -- Check if the character is grounded
 function character:CheckGround(origin : Vector3) : (boolean, Enum.Material, Instance)
-	local self : Character = self
+	local self : types.Character = self
 
 	-- The raycast origin and direction
 	local origin = origin or self.humanoidRootPart.CFrame.Position
@@ -1531,7 +1436,7 @@ end
 
 -- See if the character can see an object
 function character:CheckSight(newModel, excluded, angle, distance) : boolean
-	local self : Character = self
+	local self : types.Character = self
 
 	-- Find the required angles
 	local distanceToObject = (self.head.Position - newModel.PrimaryPart.Position)
@@ -1574,7 +1479,7 @@ end
 
 -- Fired when the humanoid state changes
 function character:HumanoidStateChanged(oldState, newState)
-	local self : Character = self
+	local self : types.Character = self
 
 	newState = newState or self.humanoid:GetState()
 	
@@ -1590,7 +1495,7 @@ end
 
 -- Make the character speak
 function character:Talk(text : string, color : Enum.ChatColor, talkPoint)
-	local self : Character = self
+	local self : types.Character = self
 
 	-- Set the talk part
 	local talkPart = talkPoint or self.head
@@ -1604,7 +1509,7 @@ end
 
 -- Destroy the character
 function character:Destroy()
-	local self : Character = self
+	local self : types.Character = self
 	
 	-- Disconnect all connections
 	self.renderSteppedConnection:Disconnect()

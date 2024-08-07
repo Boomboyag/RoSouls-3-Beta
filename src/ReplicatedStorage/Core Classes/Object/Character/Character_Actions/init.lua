@@ -4,6 +4,9 @@ local replicatedStorage = game:GetService("ReplicatedStorage")
 -- Required folders
 local coreFolder = replicatedStorage:WaitForChild("Core Classes")
 
+-- Required scripts
+local types = require(coreFolder.Types)
+
 -- Class creation
 local action = {}
 action.__index = action
@@ -55,60 +58,9 @@ local actionTableExample = {
 	end,
 } --]]
 
--- The action table
-export type ActionTable = {
-	
-	Name : string,
-	Type : Enum.ActionType,
-
-	CanQueue : boolean,
-	MaxQueueTime : number,
-	QueueWhenOveridden : boolean,
-
-	CanCancel : boolean,
-
-	Prerequisites : table,
-
-	ActionBeginFunction : (character : table) -> (),
-	ActionEndFunction : (character : table) -> (),
-
-	ActionBeginFunction_PLAYER : (player : table) -> (),
-	ActionEndFunction_PLAYER : (character : table) -> (),
-}
-
--- The action prefab
-export type Action = {
-	
-	name : string,
-	actionType : Enum.ActionType,
-
-	canQueue : boolean,
-	maxQueueTime : number,
-	queueWhenOveridden : boolean,
-
-	prerequisites : table,
-
-	actionBeginFunction : (character : table) -> (),
-	actionEndFunction : (character : table) -> (),
-
-	actionBeginFunction_PLAYER : (player : table) -> (),
-	actionEndFunction_PLAYER : (character : table) -> (),
-
-	CheckPrerequisites : (characterStats : table) -> (boolean),
-	GetPrerequisites : () -> (table),
-
-	BeginAction : (character : table) -> (),
-	EndAction : (character : table) -> (),
-
-	BeginActionPlayer : (player : table) -> (),
-	EndActionPlayer : (player : table) -> (),
-
-	GetType : () -> (Enum.ActionType)
-}
-
 -- Class constructor
-function action.new(newAction : ActionTable)
-	local self : Action = {}
+function action.new(newAction : types.ActionTable)
+	local self : types.Action = {}
 	
 	-- The name of the effect
 	self.name = newAction.Name

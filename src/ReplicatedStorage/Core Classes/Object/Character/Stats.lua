@@ -7,61 +7,14 @@ local coreFolder = replicatedStorage:WaitForChild("Core Classes")
 -- Required scripts
 local movementTypes = require(coreFolder:WaitForChild("Enum").MovementType)
 local characterStates = require(coreFolder:WaitForChild("Enum").CharacterStates) 
+local types = require(coreFolder:WaitForChild("Types"))
 
 -- Class creation
 local characterStats = {}
 characterStats.__index = characterStats
 
--- The stats prefab
-export type CharacterStats = {
-
-    canChangeState: boolean,
-    movementType: any, 
-    characterStateRef: any,
-    
-    currentAction: any?,
-    actionsEnabled: boolean,
-    
-    currentHealth: number,
-    maxHealth: number,
-    immuneToDamage: boolean,
-    
-    minStamina: number,
-    maxStamina: number,
-    currentStamina: number,
-    
-    staminaRegenRate: number,
-    staminaRegenDelay: number,
-    
-    isMovingRef: boolean,
-    currentWalkSpeed: number,
-    
-    actionAnimationSpeed: number,
-    currentActionAnimation: any?,
-    
-    coreAnimationSpeed: number,
-    coreAnimationInfluencedByCharacterMovement: boolean,
-    currentCoreAnimation: any?,
-    
-    maxTiltAngle: number,
-    rootMotionEnabled: boolean,
-    
-    viewAngle: number,
-    viewDistance: number,
-    
-    autoRotate: boolean,
-    canJump: boolean,
-    canClimb: boolean,
-    canStrafe: boolean,
-    canAddEffects: boolean,
-    canTilt: boolean,
-    footstepsEnabled: boolean,
-    
-    currentGroundMaterial: string
-}
-
 -- Class constructor
-function characterStats.new(newCharacter) : CharacterStats
+function characterStats.new(newCharacter) : types.CharacterStats
 	local self = {}
 	
 	-- CHARACTER STATES
