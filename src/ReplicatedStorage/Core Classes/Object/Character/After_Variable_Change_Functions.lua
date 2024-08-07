@@ -1,10 +1,3 @@
--- Required services
-local replicatedStorage = game:GetService("ReplicatedStorage")
-
--- Required folders
-local coreFolder = replicatedStorage:WaitForChild("Core Classes")
-local characterFolder = coreFolder:WaitForChild("Object"):WaitForChild("Character")
-
 local statsChangedFunctions = {
 	
 	-- || ACTIONS ||

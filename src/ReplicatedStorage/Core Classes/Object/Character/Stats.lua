@@ -12,8 +12,56 @@ local characterStates = require(coreFolder:WaitForChild("Enum").CharacterStates)
 local characterStats = {}
 characterStats.__index = characterStats
 
+-- The stats prefab
+export type CharacterStats = {
+
+    canChangeState: boolean,
+    movementType: any, 
+    characterStateRef: any,
+    
+    currentAction: any?,
+    actionsEnabled: boolean,
+    
+    currentHealth: number,
+    maxHealth: number,
+    immuneToDamage: boolean,
+    
+    minStamina: number,
+    maxStamina: number,
+    currentStamina: number,
+    
+    staminaRegenRate: number,
+    staminaRegenDelay: number,
+    
+    isMovingRef: boolean,
+    currentWalkSpeed: number,
+    
+    actionAnimationSpeed: number,
+    currentActionAnimation: any?,
+    
+    coreAnimationSpeed: number,
+    coreAnimationInfluencedByCharacterMovement: boolean,
+    currentCoreAnimation: any?,
+    
+    maxTiltAngle: number,
+    rootMotionEnabled: boolean,
+    
+    viewAngle: number,
+    viewDistance: number,
+    
+    autoRotate: boolean,
+    canJump: boolean,
+    canClimb: boolean,
+    canStrafe: boolean,
+    canAddEffects: boolean,
+    canTilt: boolean,
+    footstepsEnabled: boolean,
+    
+    currentGroundMaterial: string
+}
+
 -- Class constructor
-function characterStats.new(newCharacter)
+function characterStats.new(newCharacter) : CharacterStats
 	local self = {}
 	
 	-- CHARACTER STATES

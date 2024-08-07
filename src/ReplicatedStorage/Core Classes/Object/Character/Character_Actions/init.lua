@@ -55,38 +55,89 @@ local actionTableExample = {
 	end,
 } --]]
 
+-- The action table
+export type ActionTable = {
+	
+	Name : string,
+	Type : Enum.ActionType,
+
+	CanQueue : boolean,
+	MaxQueueTime : number,
+	QueueWhenOveridden : boolean,
+
+	CanCancel : boolean,
+
+	Prerequisites : table,
+
+	ActionBeginFunction : (character : table) -> (),
+	ActionEndFunction : (character : table) -> (),
+
+	ActionBeginFunction_PLAYER : (player : table) -> (),
+	ActionEndFunction_PLAYER : (character : table) -> (),
+}
+
+-- The action prefab
+export type Action = {
+	
+	name : string,
+	actionType : Enum.ActionType,
+
+	canQueue : boolean,
+	maxQueueTime : number,
+	queueWhenOveridden : boolean,
+
+	prerequisites : table,
+
+	actionBeginFunction : (character : table) -> (),
+	actionEndFunction : (character : table) -> (),
+
+	actionBeginFunction_PLAYER : (player : table) -> (),
+	actionEndFunction_PLAYER : (character : table) -> (),
+
+	CheckPrerequisites : (characterStats : table) -> (boolean),
+	GetPrerequisites : () -> (table),
+
+	BeginAction : (character : table) -> (),
+	EndAction : (character : table) -> (),
+
+	BeginActionPlayer : (player : table) -> (),
+	EndActionPlayer : (player : table) -> (),
+
+	GetType : () -> (Enum.ActionType)
+}
+
 -- Class constructor
-function action.new(newAction)
-	local self = {}
+function action.new(newAction : ActionTable)
+	local self : Action = {}
 	
 	-- The name of the effect
-	self.name = newAction["Name"]
+	self.name = newAction.Name
 	
 	-- The type of action
-	self.actionType = newAction["Type"]
+	self.actionType = newAction.Type
 	
 	-- If the action can be queued
-	self.canQueue = newAction["CanQueue"] or false
-	self.maxQueueTime = newAction["MaxQueueTime"] or -1
-	self.queueWhenOveridden = newAction["QueueWhenOveridden"] or false
+	self.canQueue = newAction.CanQueue or false
+	self.maxQueueTime = newAction.MaxQueueTime or -1
+	self.queueWhenOveridden = newAction.QueueWhenOveridden or false
 
 	-- If the action can be canceled
-	self.canCancel = newAction["CanCancel"]
+	self.canCancel = newAction.CanCancel
 	
 	-- The action's prerequisites
-	self.prerequisites = newAction["Prerequisites"]
+	self.prerequisites = newAction.Prerequisites
 
 	-- The function performed on the character when the action begins
-	self.actionBeginFunction = newAction["ActionBeginFunction"]
+	self.actionBeginFunction = newAction.ActionBeginFunction
 	
 	-- The function performed on the character when the action ends
-	self.actionEndFunction = newAction["ActionEndFunction"]
+	self.actionEndFunction = newAction.ActionEndFunction
 
 	-- The function performed on the PLAYER when the action begins (optional)
-	self.actionBeginFunctionPlayer = newAction["ActionBeginFunction_PLAYER"] or nil
+	self.actionBeginFunctionPlayer = newAction.ActionBeginFunction_PLAYER or nil
 	
 	-- The function performed on the PLAYER when the action ends (optional)
-	self.actionEndFunctionPlayer = newAction["ActionEndFunction_PLAYER"] or nil
+	self.actionEndFunctionPlayer = newAction.ActionEndFunction_PLAYER or nil
 
 	-- Set the metatable and return
 	setmetatable(self, action)
@@ -96,7 +147,7 @@ end
 -- || PREREQUISITES ||
 
 -- The function to check the action prerequisites
-function action:CheckPrerequisites(characterStats)
+function action:CheckPrerequisites(characterStats) : boolean
 	
 	-- Loop through the actions prerequisites
 	for i, v in pairs(self.prerequisites) do
@@ -168,25 +219,6 @@ end
 function action:GetType()
 	
 	return self.actionType
-end
-
--- || MISCELLANEOUS ||
-
--- The function to return the effects data (used for cloning)
-function action:Clone()
-	
-	-- Return the data table
-	return {
-		
-		-- The name of the effect
-		["Name"] = self.name,
-
-		-- The function performed on the character when the action begins
-		["ActionBeginFunction"] = self.actionEndFunction,
-
-		-- The function performed on the character when the action is finished
-		["ActionEndFunction"] = self.actionEndFunction,
-	}
 end
 
 return action

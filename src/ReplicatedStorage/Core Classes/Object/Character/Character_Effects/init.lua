@@ -60,38 +60,79 @@ local effectTableExample = {
 	["ResetDataWhenDone"] = false,
 }
 
+-- The table passed when creating a new effect
+export type EffectTable = {
+
+	Name : string,
+	Priority : number,
+	DataToModify : string,
+
+	EffectTickAmount : number,
+	TimeBetweenEffectTick : number,
+
+	EffectFunction : (input : any) -> (),
+
+	CanStack : boolean,
+	ResetDataWhenDone : boolean,
+}
+
+-- The effect itself
+export type Effect = {
+
+	name : string,
+	priority : number,
+	dataToModify : string,
+
+	effectTickAmount : number,
+	timeBetweenEffectTick : number,
+
+	effectFunction : (input : any) -> (),
+
+	canStack : boolean,
+	resetDataWhenDone : boolean,
+
+	canTerminate : boolean,
+	metTickAmount : boolean,
+	stopWhenTickAmountReached : boolean,
+	
+	previousTick : number,
+
+	ApplyEffect : (dataToChange : string, forceApply : boolean) -> (),
+	Clone : () -> (),
+}
+
 -- Class constructor
-function effect.new(newEffect)
+function effect.new(newEffect : EffectTable)
 	local self = {}
 	
 	-- || REQUIRED VARIABLES ||
 	
 	-- The name of the effect
-	self.name = newEffect["Name"]
+	self.name = newEffect.Name
 	
 	-- Whether or not the effect can stack
-	self.canStack = newEffect["Can_Stack"] or true
+	self.canStack = newEffect.CanStack or true
 	
 	-- The priority of the effect (the lower the number the sooner it is called)
-	self.priority = newEffect["Priority"]
+	self.priority = newEffect.Priority
 
 	-- The data the effect will modify (must be within the 'Stats' module script of character)
-	self.dataToModify = newEffect["DataToModify"]
+	self.dataToModify = newEffect.DataToModify
 
 	-- The amount of times the effect will be called (0 lasts forever until manually removed, 1 calls the effect once)
-	self.effectTickAmount = newEffect["EffectTickAmount"]
+	self.effectTickAmount = newEffect.EffectTickAmount
 	self.currentTickAmount = 0
 
 	-- The time in between the effect being called in seconds (will not be used if the EffectTickAmount is 1), will call effect once when 0
-	self.timeBetweenEffectTick = newEffect["TimeBetweenEffectTick"]
+	self.timeBetweenEffectTick = newEffect.TimeBetweenEffectTick
 
 	-- The function performed on the DataToModify (takes the DataToModify as an argument)
-	self.effectFunction = newEffect["EffectFunction"]
+	self.effectFunction = newEffect.EffectFunction
 
 	-- || OPTIONAL VARIABLES ||
 
 	-- Whether or not the effect resets the DataToModify value when finished (default is false)
-	self.resetDataWhenDone = newEffect["ResetDataWhenDone"] or false
+	self.resetDataWhenDone = newEffect.ResetDataWhenDone or false
 
 	-- The delay before the effect is first called (default is 0)
 	--self.effectDelay = newEffect["EffectDelay"] or 0
