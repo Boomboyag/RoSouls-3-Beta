@@ -1,8 +1,23 @@
+-- || OBJECT ||
+
+export type Object = {
+
+    name: string,
+    objectType: table,
+    model: Model,
+    size: CFrame,
+
+    -- Methods
+
+    ChangeParent: (self: Object, newParent: Instance) -> (),
+    AddFunction: (self: Object, name: string, func: () -> ()) -> (),
+    Destroy: (self: Object) -> (),
+}
 
 -- || CHARACTER ||
 
 -- The character type
-export type Character = {
+export type Character = Object & {
 
     objectType: table,
     characterType: table,
@@ -43,8 +58,8 @@ export type Character = {
     coreAnimations: {
         [string]: Animations,
         Strafing: {
-            Left: Animations,
-            Right: Animations
+            Left: Animation,
+            Right: Animation
         }
     },
     trackedAnimations: {Animations},
@@ -95,6 +110,8 @@ export type Character = {
 	
     renderSteppedConnection: RBXScriptConnection,
     heartbeatConnection: RBXScriptConnection,
+
+    -- Methods
 
     ChangeControlType: (self: Character, newType: table, direction: Vector3) -> (),
     GetWorldMoveDirection: (self: Character) -> Vector3,
@@ -218,6 +235,63 @@ export type Animations = {
 	}
 }
  
+-- || PLAYER ||
+
+-- The player type
+export type Player = Character & {
+
+    player: Player,
+
+    playerStats: PlayerStats,
+    defaultPlayerStats: PlayerStats,
+
+    camera: Camera,
+    cameraBlock: BasePart,
+    mouse: Mouse,
+    cameraHandler: CameraHandler,
+
+    debugEnabled: boolean,
+    
+    NewAction: RBXScriptSignal,
+    CharacterStateChanged: RBXScriptSignal,
+    
+    -- Methods
+
+    new: (newPlayerTable: table) -> Player,
+    ChangeMouseLock: (self: Player) -> (),
+    DebugMenu: (self: Player) -> (),
+    Destroy: (self: Player) -> (),
+}
+
+-- The player stats sheet
+export type PlayerStats = {
+
+    cameraType: any,
+    cameraLockOnType: any,
+    firstPersonCamera: boolean,
+
+    movementRelativeToCamera: boolean,
+
+    cameraFollowsTarget: boolean,
+    cameraStiffness: number,
+    cameraOffset: Vector3,
+    cameraZoomDistance: number,
+
+    fieldOfView: number,
+    fieldOfViewEffectsAllowed: boolean,
+
+    cameraBlockFollow: any,
+    cameraSubject: any,
+    cameraTarget: any,
+
+    cameraSwayAmount: Vector2,
+    cameraSwaySpeed: Vector2,
+
+    cursorType: any,
+    mouseSensitivity: number,
+    mouseMovesCamera: boolean,
+}
+
 -- || ACTIONS ||
 
 -- The action table
@@ -312,6 +386,52 @@ export type Effect = {
 
 	ApplyEffect : (dataToChange : string, forceApply : boolean) -> (),
 	Clone : () -> (),
+}
+
+-- || CAMERA ||
+
+export type CameraHandler = {
+
+    humanoidRootPart: Part,
+    rootOrientation: any,
+
+    camera: Camera,
+
+    mouse: Mouse,
+    mouseSensitivity: number,
+    mouseMovesCamera: boolean,
+    movementRelativeToCamera: boolean,
+
+    cameraFollowsTarget: boolean,
+    cameraStiffness: number,
+    cameraOffset: Vector3,
+    appliedCameraOffset: Vector3,
+
+    cameraBlock: any,
+    cameraBodyPosition: any,
+    cameraBlockFollow: any,
+
+    cameraTarget: any,
+    cameraTween: any?,
+
+    cameraSwayAmount: Vector2,
+    cameraSwaySpeed: Vector2,
+
+    shakeModule: any,
+    blendingFactor: number?,
+
+    -- Methods 
+
+    new: (player: Player) -> CameraHandler,
+    LookInCameraDirection: (self: CameraHandler) -> (),
+    ApplyOffset: (self: CameraHandler, deltaTime: number) -> (),
+    UpdateCollision: (self: CameraHandler, targetFrame: CFrame, ignoreList: {Instance}?) -> CFrame,
+    CreateCameraBlock: (self: CameraHandler, player: any) -> Part,
+    SmoothCamera: (self: CameraHandler) -> (),
+    LookAt: (self: CameraHandler, deltaTime: number) -> (),
+    CameraSway: (self: CameraHandler) -> (),
+    ShakeCamera: (self: CameraHandler, magnitude: number, roughness: number, fadeInTime: number, fadeOutTime: number) -> (),
+    Update: (self: CameraHandler, deltaTime: number) -> (),
 }
 
 return {}

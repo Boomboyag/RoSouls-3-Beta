@@ -10,6 +10,7 @@ local coreFolder = replicatedStorage:WaitForChild("Core Classes")
 local characterPath = coreFolder:WaitForChild("Object"):WaitForChild("Character")
 
 -- Required scripts
+local types = require(coreFolder.Types)
 local character = require(characterPath)
 local Enum = require(coreFolder:WaitForChild("Enum"))
 local playerStatsSheet = require(script:WaitForChild("Player_Stats"))
@@ -17,7 +18,7 @@ local effectPrefabs = require(script:WaitForChild("Player_Effect_Prefabs"))
 local characterEffectPrefabs = require(characterPath.Character_Effects.Effect_Prefabs)
 local cameraHandler = require(script:WaitForChild("Camera_Handler"))
 
--- Required actions
+-- Required modules
 local requiredModules = script:WaitForChild("Required_Modules")
 
 -- Humanoid state changed table
@@ -42,14 +43,14 @@ end
 setmetatable(player, character)
 
 -- Class constructor
-function player.new(newPlayerTable)
+function player.new(newPlayerTable) : types.Player
 
 	-- Inherit the character class
 	local newPlayer = character.new(newPlayerTable)
 	setmetatable(newPlayer, player)
 
 	-- Create the proxy table to track changes made to variables
-	local self = setmetatable({}, {
+	local self : types.Player = setmetatable({}, {
 
 		__index = newPlayer,
 
@@ -280,6 +281,7 @@ end
 
 -- Unlock or lock the mouse
 function player:ChangeMouseLock()
+	local self : types.Player = self
 	
 	-- Change the mouse lock to the opposite of the current version
 	if self.playerStats.cursorType == Enum.CustomCursorType.Locked then
@@ -296,6 +298,7 @@ end
 -- || DEBUG MENU ||
 
 function player:DebugMenu()
+	local self : types.Player = self
 	
 	-- Start iris
 	iris:Connect(function()
@@ -535,6 +538,7 @@ end
 
 -- Destroy the player
 function player:Destroy()
+	local self : types.Player = self
 
 	-- Stop the debug
 	self.debugEnabled = false

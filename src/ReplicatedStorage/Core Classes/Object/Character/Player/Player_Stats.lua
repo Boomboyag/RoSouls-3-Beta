@@ -6,6 +6,7 @@ local coreFolder = replicatedStorage:WaitForChild("Core Classes")
 local characterFolder = coreFolder:WaitForChild("Object"):WaitForChild("Character")
 
 -- Required scripts
+local types = require(coreFolder.Types)
 local cameraTypes = require(coreFolder:WaitForChild("Enum").CameraType)
 local cursorTypes = require(coreFolder:WaitForChild("Enum").CursorType)
 local lockOnTypes = require(coreFolder:WaitForChild("Enum").LockOnType)
@@ -15,7 +16,7 @@ local playerStats = {}
 playerStats.__index = playerStats
 
 -- Class constructor
-function playerStats.new(newPlayerTable, player)
+function playerStats.new(newPlayerTable, player) : types.PlayerStats
 	local self = {}
 	
 	-- || CAMERA SETTINGS ||

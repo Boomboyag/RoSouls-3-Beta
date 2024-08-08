@@ -1,5 +1,6 @@
 -- Required scripts
 local objectsTypes = require(script.Parent:WaitForChild("Enum").ObjectType)
+local types = require(script.Parent:WaitForChild("Types"))
 
 -- Create the class
 local object = {}
@@ -13,10 +14,10 @@ object.__tostring = function(object)
 end
 
 -- Class constructor
-function object.new(newObject)
+function object.new(newObject) : types.Object
 	
 	-- Create the self
-	local self = {}
+	local self : types.Object = {}
 	
 	-- Create the name
 	self.name = newObject.name or newObject.model.Name
@@ -47,12 +48,14 @@ end
 
 -- The function to change the parent of the object
 function object:ChangeParent(newParent)
+	local self : types.Object = self
 	
 	self.model.Parent = newParent
 end
 
 -- Add a function to the object
 function object:AddFunction(name, func)
+	local self : types.Object = self
 
 	if self[name] ~= nil then
 		warn("The function " .. name .. " was overwritten")
@@ -63,6 +66,7 @@ end
 
 -- The function to destroy the object
 function object:Destroy()
+	local self : types.Object = self
 	
 	-- Destroy the model and metatable
 	self.model:Destroy()
