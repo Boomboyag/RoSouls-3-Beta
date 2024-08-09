@@ -328,7 +328,7 @@ module.MaterialMap = {
 
 -- Footstep settings
 module.stats = {
-	volume = 0.05
+	volume = 0.01
 }
 local stats = module.stats
 local materialMap = module.MaterialMap
