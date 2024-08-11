@@ -841,7 +841,7 @@ function character:FindEffectAmount(effectName : string) : number
 end
 
 -- Sort the effects by priority
-function character:SortEffects(effectsToSort)
+function character:SortEffects(effectsToSort) : table
 	local self : types.Character = self
 
 	local array = {}
