@@ -23,6 +23,7 @@ function playerStats.new(newPlayerTable, player) : types.PlayerStats
 
 	-- The camera state
 	self.cameraType = cameraTypes.Default
+	self.cameraMode = Enum.CameraType.Custom
 	self.cameraLockOnType = lockOnTypes.Full
 
 	-- Whether or not the camera is in first person

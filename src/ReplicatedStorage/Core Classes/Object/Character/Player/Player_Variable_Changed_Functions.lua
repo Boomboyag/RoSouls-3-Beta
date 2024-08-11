@@ -84,6 +84,27 @@ local statsChangedFunctions = {
 
     -- || CAMERA SETTINGS ||
 
+    -- The camera type (enum)
+    ["cameraMode"] = function(player, oldValue, newValue, startup)
+        
+        -- Create the pcall
+        local success, response = pcall(function()
+
+            -- Check if this is being fired for the first time or if the values are the same
+		    if (oldValue == nil and not startup) or (oldValue == newValue) or newValue == nil then return end
+
+            -- Change the camera handler to reflect the new value
+            player.camera.CameraType = newValue
+        end)
+
+        -- Check if not a success
+        if not success then
+            warn(response)
+        end
+
+        return newValue
+    end,
+
     -- First person camera
     ["firstPersonCamera"] = function(player, oldValue, newValue, startup)
         
