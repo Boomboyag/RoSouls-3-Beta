@@ -45,6 +45,19 @@ function module:Init()
     local bindableEvent = Instance.new("BindableEvent")
     bindableEvent.Name = "Ragdoll_Bindable"
 
+    -- Change the network onwer of the character
+    local function SetNetworkOwner(player : Player, character : Model)
+    
+        -- Get all the parts in the character
+        for i, v in character:GetChildren() do
+            
+            -- Set the part's newtowk owner to the player
+            if v:IsA("BasePart") then
+                v:SetNetworkOwner(player)
+            end
+        end
+    end
+
     -- Change the character's current ragdoll state
     local function ChangeRagdollState(character, value : boolean)
 
@@ -85,7 +98,10 @@ function module:Init()
         
         -- Get the character
         local character = player.Character
+
+        -- Change the character state and set it's network owner
         ChangeRagdollState(character, value)
+        SetNetworkOwner(player, character)
     end)
 
     -- Fired when the bindable event is fired

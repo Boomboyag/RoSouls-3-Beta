@@ -35,7 +35,7 @@ function module:CallFunction(wantToRagdoll : boolean, silly : boolean)
         -- Change the humanoid state
 		humanoid:ChangeState(Enum.HumanoidStateType.Ragdoll)
 		humanoid:SetStateEnabled(Enum.HumanoidStateType.GettingUp, false)
-        self:ApplyImpulse(self.torso, 50)
+        self:ApplyImpulse(self.torso, 10)
 	elseif ragdoll then
         
         -- Change the humanoid state
