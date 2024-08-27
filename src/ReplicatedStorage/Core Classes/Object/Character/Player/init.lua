@@ -232,7 +232,12 @@ function player.new(newPlayerTable) : types.Player
 	-- Heartbeat
 	runService.Heartbeat:Connect(function(deltaTime)
 		
-		self.cameraHandler:LookAt(deltaTime)
+		-- Make the camera look at it's current target
+		if self.cameraHandler:LookAt(deltaTime) then
+
+			-- Reset the current target if applicable
+			self.playerStats.cameraTarget = nil
+		end
 	end)
 
 	-- || CONNECTIONS ||

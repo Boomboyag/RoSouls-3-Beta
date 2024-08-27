@@ -221,12 +221,24 @@ function cameraHandler:LookAt(deltaTime)
 		return
 	end
 
+	-- Base variables
+	local camera : Camera = self.camera
+	local target : Part = self.cameraTarget
+
+	-- Calculate the distance between the camera and target
+	local distance = (camera.CFrame.Position - target.CFrame.Position).Magnitude
+
+	-- Let the player know to stop locking on if too far from target
+	if distance >= 60 then
+		return true
+	end
+
 	-- Calculate the target CFrame
-	local targetCFrame = CFrame.lookAt(self.camera.CFrame.Position, self.cameraTarget.CFrame.Position)
+	local targetCFrame : CFrame = CFrame.lookAt(camera.CFrame.Position, target.CFrame.Position)
 
 	-- Interpolate between the current and target CFrame
 	local lerpFactor = 8.0 * deltaTime -- Further reduced lerp factor for smoother movement
-	local currentCFrame = self.camera.CFrame
+	local currentCFrame = camera.CFrame
 	local newCFrame = currentCFrame:Lerp(targetCFrame, lerpFactor)
 
 	-- Extract orientation and clamp X axis rotation
@@ -238,6 +250,7 @@ function cameraHandler:LookAt(deltaTime)
 
 	-- Set the new camera CFrame
 	self.camera.CFrame = newCFrame
+	return false
 end
 
 -- || CAMERA SHAKE & SWAY ||
