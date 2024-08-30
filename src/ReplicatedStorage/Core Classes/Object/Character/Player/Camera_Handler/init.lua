@@ -222,19 +222,32 @@ function cameraHandler:LookAt(deltaTime)
 	end
 
 	-- Base variables
+	local rootPart : Part = self.humanoidRootPart
+	local rootPos = rootPart.CFrame.Position
+
 	local camera : Camera = self.camera
+	local cameraPos = camera.CFrame.Position
+
 	local target : Part = self.cameraTarget
+	local targetPos = target.CFrame.Position
 
 	-- Calculate the distance between the camera and target
-	local distance = (camera.CFrame.Position - target.CFrame.Position).Magnitude
+	local baseDistance = (rootPos - targetPos)
+	local distance = baseDistance.Magnitude
 
 	-- Let the player know to stop locking on if too far from target
 	if distance >= 60 then
 		return true
 	end
 
+	-- Calculate the Y distance
+	local yDist = -baseDistance.Y
+	yDist = (-0.05 * math.pow(0.75, -21 + (yDist / 2.8))) + 15.5
+	yDist = math.max(yDist, -1)
+
 	-- Calculate the target CFrame
-	local targetCFrame : CFrame = CFrame.lookAt(camera.CFrame.Position, target.CFrame.Position)
+	local basePos = cameraPos + Vector3.new(0, yDist, 0)
+	local targetCFrame : CFrame = CFrame.lookAt(basePos, targetPos)
 
 	-- Interpolate between the current and target CFrame
 	local lerpFactor = 8.0 * deltaTime -- Further reduced lerp factor for smoother movement
@@ -242,8 +255,8 @@ function cameraHandler:LookAt(deltaTime)
 	local newCFrame = currentCFrame:Lerp(targetCFrame, lerpFactor)
 
 	-- Extract orientation and clamp X axis rotation
-	local RX, RY, RZ = newCFrame:ToOrientation() -- These values are in radians.
-	local clampedRX = math.clamp(RX, math.rad(-80), math.rad(80)) -- Clamp X axis rotation in radians
+	local RX, RY, RZ = newCFrame:ToOrientation()
+	local clampedRX = math.clamp(RX, math.rad(-80), math.rad(80))
 
 	-- Reconstruct the new CFrame with the clamped X axis rotation
 	newCFrame = CFrame.new(newCFrame.Position) * CFrame.fromOrientation(clampedRX, RY, RZ)
