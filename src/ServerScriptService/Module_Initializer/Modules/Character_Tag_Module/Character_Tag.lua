@@ -16,7 +16,7 @@ module.Name = "Character Tag Module"
 -- The init function
 function module:Init()
 
-    -- Add the forcefield
+    -- Add the tag
     if self.onServer then
         bindableEvent:Fire(self.model)
     else
