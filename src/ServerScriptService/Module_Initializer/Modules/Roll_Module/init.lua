@@ -33,6 +33,26 @@ function module:Init()
     local bindableEvent = Instance.new("BindableEvent")
     bindableEvent.Name = "Roll_Bindable"
 
+    -- Get the remote folder
+    local remoteFolder = replicatedStorage:FindFirstChild("Remote")
+    if not remoteFolder then
+            
+        remoteFolder = Instance.new("Folder")
+        remoteFolder.Name = "Remote"
+        remoteFolder.Parent = replicatedStorage
+    end
+    remoteEvent.Parent = remoteFolder
+
+    -- Get the bindable folder
+    local bindableFolder = replicatedStorage:FindFirstChild("Bindable")
+    if not bindableFolder then
+            
+        bindableFolder = Instance.new("Folder")
+        bindableFolder.Name = "Bindable"
+        bindableFolder.Parent = replicatedStorage
+    end
+    bindableEvent.Parent = bindableFolder
+
     -- The function to add the forcefield to the character
     local function RollForceField(character)
         
@@ -40,6 +60,10 @@ function module:Init()
         if not character then return end
 
         task.wait(iFrameDelay)
+
+        -- Add the descriptors
+        bindableFolder.Manage_Character_Descriptor:Fire(character, "Invincible", false, iFrameTime)
+        bindableFolder.Manage_Character_Descriptor:Fire(character, "Rolling", false, iFrameTime)
 
         -- Add the force field
         local forceField = Instance.new("ForceField")
@@ -64,26 +88,6 @@ function module:Init()
         
         RollForceField(character)
     end)
-
-    -- Get the remote folder
-    local remoteFolder = replicatedStorage:FindFirstChild("Remote")
-    if not remoteFolder then
-        
-        remoteFolder = Instance.new("Folder")
-        remoteFolder.Name = "Remote"
-        remoteFolder.Parent = replicatedStorage
-    end
-    remoteEvent.Parent = remoteFolder
-
-    -- Get the bindable folder
-    local bindableFolder = replicatedStorage:FindFirstChild("Bindable")
-    if not bindableFolder then
-        
-        bindableFolder = Instance.new("Folder")
-        bindableFolder.Name = "Bindable"
-        bindableFolder.Parent = replicatedStorage
-    end
-    bindableEvent.Parent = bindableFolder
 end
 
 return module
