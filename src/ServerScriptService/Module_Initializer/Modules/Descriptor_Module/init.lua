@@ -8,7 +8,7 @@ local module = {}
 function module:Init()
     
     -- Add in the bindable event
-    local bindableEvent = Instance.new("BindableEvent")
+    local bindableEvent = Instance.new("BindableEvent") 
     bindableEvent.Name = "Manage_Character_Descriptor"
 
     -- Fired when the bindable event is fired
