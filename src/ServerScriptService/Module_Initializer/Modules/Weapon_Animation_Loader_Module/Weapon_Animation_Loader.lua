@@ -42,7 +42,7 @@ function module:Init()
     module:PreloadAnimations()
 end
 
--- Load all animations
+-- Preload all animations
 function module:PreloadAnimations()
 
     -- The recursive loadinf function
@@ -73,6 +73,8 @@ function module:PreloadAnimations()
                             warn("Failed to load weapon animation ID(s): " .. assetId)
                         end
                     end)
+
+                    tableToLoad[i] = animation
                 end)
 
             elseif type(v) == "table" then
@@ -92,6 +94,55 @@ function module:PreloadAnimations()
         -- Wrap in a coroutine
        coroutine.wrap(LoadAnimationRecursive)(i, v, startingFolder)
     end
+end
+
+-- Load specific weapon animations
+function module:LoadWeaponAnimations(weaponName : string) : table
+    
+    -- Make sure the given weapon was valid
+    if not module.WeaponAnimations[weaponName] then
+        print(weaponName .. " is not a valid weapon")
+        return
+    end
+
+    -- The function to create a copy of a table
+    local function CopyTable(original : table) : table
+        local copy = {}
+        for k, v in pairs(original) do
+            if type(v) == "table" then
+                v = CopyTable(v)
+            end
+            copy[k] = v
+        end
+        return copy
+    end
+
+    -- The function to make a humanoid load a weapon's animations
+    local function LoadAnimations(animator : Animator, tableToLoad : table) : table
+        
+        local copy = {}
+        for k, v in pairs(tableToLoad) do
+
+            -- Check if the value is a table
+            if type(v) == "table" then
+                v = LoadAnimations(v)
+
+            -- Check if the value is an animation
+            elseif v:IsA("AnimationTrack") then
+
+                -- Load the animation
+                v = animator:LoadAnimation(v)
+            end
+            copy[k] = v
+        end
+        return copy
+    end
+
+    -- Copy the weapon animation table
+    local weapon = CopyTable(module.WeaponAnimations[weaponName])
+    weapon = LoadAnimations(self.animator, weapon)
+    
+    return weapon
 end
 
 return module
