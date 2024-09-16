@@ -1223,7 +1223,7 @@ function character:AddModule(name, module)
 	
 	-- Call the init function
 	if module.Init then
-		module.Init(self)
+		coroutine.wrap(module.Init)(self)
 	end
 
 	-- Add the given module
