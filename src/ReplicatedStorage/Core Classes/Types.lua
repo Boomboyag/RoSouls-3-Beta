@@ -175,6 +175,8 @@ export type CharacterStats = {
     minStamina: number,
     maxStamina: number,
     currentStamina: number,
+
+    currentPoise: number, 
     
     staminaRegenRate: number,
     staminaRegenDelay: number,

@@ -99,7 +99,7 @@ local effectTable = {
 
 			-- Get a random stun animation
 			local randomStun = stunAnims[math.random(#stunAnims)]
-			character:ChangeActionAnimation(randomStun, 0.1, Enum.AnimationPriority.Action, false, 1)
+			character:ChangeActionAnimation(randomStun, 0.1, Enum.AnimationPriority.Action, false)
 
 			local animationEnded = false
 			local connection
@@ -169,6 +169,7 @@ local effectTable = {
 
 			-- Disable actions
 			character:AddEffect(characterEffectPrefabs.Disable_Actions)
+			character:AddEffect(characterEffectPrefabs.Action_Animation_Speed_Halved)
 			
 			-- Lock the character
 			character.characterState = Enum.CharacterState.Locked
@@ -179,7 +180,7 @@ local effectTable = {
 
 			-- Get a random stun animation
 			local randomStun = stunAnims[math.random(#stunAnims)]
-			character:ChangeActionAnimation(randomStun, 0.1, Enum.AnimationPriority.Action, false, 1)
+			character:ChangeActionAnimation(randomStun, 0.1, Enum.AnimationPriority.Action, false)
 
 			local animationEnded = false
 			local connection
@@ -197,6 +198,7 @@ local effectTable = {
 			-- Unlock the character
 			character.characterState = Enum.CharacterState.Default
 			character:RemoveEffect(characterEffectPrefabs.Disable_Auto_Rotate.Name)
+			character:RemoveEffect(characterEffectPrefabs.Action_Animation_Speed_Halved.Name)
 
 			task.wait(0.1)
 			
