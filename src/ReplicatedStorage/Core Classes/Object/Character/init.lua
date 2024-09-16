@@ -1255,11 +1255,30 @@ end
 function character:DamageReaction(damageAmount)
 	local self : types.Character = self
 
-	-- Make sure the character has taken enough damage to warrent a reaction
-	if damageAmount < 5 then return end
+	-- Get the damage amount after poise
+	local poiseDamage = damageAmount - self.characterStats.currentPoise
 
-	-- Play a light stun
-	self.characterStats.currentAction = self.actionPrefabs["Light Stun"]
+	-- Make sure the character has taken enough poise damage to warrent a reaction
+	if poiseDamage < 0 then return end
+
+	if poiseDamage <= 20 then
+		
+		-- Play a light stun
+		self.characterStats.currentAction = self.actionPrefabs["Light Stun"]
+
+	elseif poiseDamage <= 50 then
+		
+		-- Play a heavy stun
+		self.characterStats.currentAction = self.actionPrefabs["Heavy Stun"]
+	else
+
+		-- Ragdoll the character
+		coroutine.wrap(function()
+			if self.Ragdoll then self:Ragdoll(true) else return end
+			task.wait(poiseDamage / 40)
+			self:Ragdoll(false)
+		end)()
+	end
 end
 
 -- Death function

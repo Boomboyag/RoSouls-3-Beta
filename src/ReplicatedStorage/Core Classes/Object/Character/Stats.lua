@@ -39,6 +39,9 @@ function characterStats.new(newCharacter) : types.CharacterStats
 	
 	self.staminaRegenRate = 1
 	self.staminaRegenDelay = 0.5
+
+	-- || POISE ||
+	self.currentPoise = 0
 	
 	-- || WALK SPEED & MOVEMENT ||
 	self.isMovingRef = false
