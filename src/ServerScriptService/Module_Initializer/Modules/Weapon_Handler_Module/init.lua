@@ -51,8 +51,8 @@ function module:Init()
     local playerMod = actionModule:Clone()
     playerMod.Parent = playerFolder
 
-     -- || LOADING WEAPONS ||
-     LoadWeaponEvents()
+    -- Loading weapons
+    LoadWeaponEvents()
 end
 
 return module
