@@ -19,6 +19,7 @@ function LoadWeaponEvents()
     remoteFunction.Name = "Load_Weapons_Remote"
     local bindableFunction = Instance.new("BindableFunction")
     bindableFunction.Name = "Load_Weapons_Bindable"
+    
     -- Get the remote folder
     local remoteFolder = replicatedStorage:FindFirstChild("Remote")
     if not remoteFolder then
