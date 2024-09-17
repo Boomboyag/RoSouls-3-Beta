@@ -50,7 +50,7 @@ function GetPlayerProfileData(player : Player, data : string) : any
         for i, v in tableToSearch do
 
             -- Check if we found the desired data
-            if i == data then return i end
+            if i == data then return v end
             
             -- Check if the value was a table to loop through
             if type(v) == "table" then
@@ -62,11 +62,12 @@ function GetPlayerProfileData(player : Player, data : string) : any
         end
 
         -- Return nil if nothing is found
-        warn("Player data " .. data .. " was nout found in " .. player.Name .. "s profile!")
         return nil
     end
 
-    return FindData(profile, data)
+    local foundData = FindData(profile, data)
+    if not foundData then  warn("Player data " .. data .. " was nout found in " .. player.Name .. "s profile!") end
+    return foundData
 end
 
 -- Handling player connections
@@ -126,7 +127,7 @@ function LoadEvents()
     bindableFunction.Parent = bindableFolder
 
     -- Get a player's data
-    bindableFunction.OnInvoke = GetPlayerProfile
+    bindableFunction.OnInvoke = GetPlayerProfileData
 end
 
 -- The function to initialize the module
@@ -143,6 +144,5 @@ function module:Init()
     LoadEvents()
 	PlayerConnections()
 end
-
 
 return module

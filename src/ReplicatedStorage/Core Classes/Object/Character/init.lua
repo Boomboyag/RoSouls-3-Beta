@@ -1194,9 +1194,6 @@ end
 function character:AddModule(name, module)
 	local self : types.Character = self
 
-	-- Get the module table
-	module = require(module)
-
 	-- Make sure the module hasn't already been added
 	if table.find(self.modules, module.Name) then
 		warn("The module \'" .. module.Name .. "\' has already been added")
@@ -1209,7 +1206,7 @@ function character:AddModule(name, module)
 		-- Add any required modules
 		for i, v in pairs(module.requiredModules) do
 			local reqMod = moduleFolder:FindFirstChild(v)
-			if reqMod then self:AddModule(v, reqMod) end
+			if reqMod then self:AddModule(v, require(reqMod)) end
 		end
 	end
 
@@ -1223,7 +1220,7 @@ function character:AddModule(name, module)
 	
 	-- Call the init function
 	if module.Init then
-		coroutine.wrap(module.Init)(self)
+		module.Init(self)
 	end
 
 	-- Add the given module

@@ -42,7 +42,7 @@ local defaultProfile : table = {
 		["Weapons"] = {
 
 			["Right_Hand"] = {
-				["Slot_A"] = "Default",
+				["Slot_A"] = "Ultra Greatsword",
 				["Slot_B"] = "Default",
 				["Slot_C"] = "Default",
 				["Slot_D"] = "Default",

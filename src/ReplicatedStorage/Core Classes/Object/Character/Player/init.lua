@@ -164,10 +164,25 @@ function player.new(newPlayerTable) : types.Player
 	-- || ACTIONS ||
 
 	-- Get all the required action modules
-	for i, v in ipairs(requiredModules:GetChildren()) do
+	local modulesToAdd = {}
+	for i, v in ipairs(requiredModules:GetChildren()) do 
+		local module = require(v)
+		module.callName = v.Name
+		table.insert(modulesToAdd, module) 
+	end
+	table.sort(modulesToAdd, function(a, b)
 		
+		-- Assign a priority
+		if not a.Priority then a.Priority = 1 end
+		if not b.Priority then b.Priority = 1 end
+		
+		-- Sort by priority
+		return a.Priority > b.Priority
+	end)
+	for i, v in pairs(modulesToAdd) do
+
 		-- Add said modules to the player
-		self:AddModule(v.Name, v)
+		self:AddModule(v.callName, v)
 	end
 
 	-- || CAMERA ||

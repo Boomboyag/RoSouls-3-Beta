@@ -7,11 +7,14 @@ local module = {}
 -- The module name
 module.Name = "Weapon Animation Loader"
 
+-- The module priority
+module.Priority = 10
+
 -- The weapon animations
 module.WeaponAnimations = {
 
     -- The greatsword animations
-    ["Greatsword"] = {
+    ["Ultra Greatsword"] = {
 
         -- Left hand animations
         ["Left"] = {
@@ -40,6 +43,9 @@ function module:Init()
 
     -- Load the animation IDs
     module:PreloadAnimations()
+
+    -- Add the required functions to the character
+    self.LoadWeaponAnimations = module.LoadWeaponAnimations
 end
 
 -- Preload all animations
@@ -57,25 +63,21 @@ function module:PreloadAnimations()
             -- Check if an animation ID was provided
             if type(v) == "number" then
                 
-                 -- Wrap to minimize time spent
-                task.spawn(function()
+                -- Create the animation
+                local animation = Instance.new("Animation", folder)
+                animation.Name = i
+                animation.AnimationId = "rbxassetid://" .. v
 
-                    -- Create the animation
-                    local animation = Instance.new("Animation", folder)
-                    animation.Name = i
-                    animation.AnimationId = v
+                -- Preload the animation
+                contentProvider:PreloadAsync({animation}, function(assetId, assetFetchStatus)
 
-                    -- Preload the animation
-                    contentProvider:PreloadAsync({animation}, function(assetId, assetFetchStatus)
-
-                        -- Warn the user if the load failed
-                        if assetFetchStatus == Enum.AssetFetchStatus.Failure and not game:GetService("RunService"):IsStudio() then
-                            warn("Failed to load weapon animation ID(s): " .. assetId)
-                        end
-                    end)
-
-                    tableToLoad[i] = animation
+                    -- Warn the user if the load failed
+                    if assetFetchStatus == Enum.AssetFetchStatus.Failure and not game:GetService("RunService"):IsStudio() then
+                        warn("Failed to load weapon animation ID(s): " .. assetId)
+                    end
                 end)
+
+                tableToLoad[i] = animation
 
             elseif type(v) == "table" then
 
@@ -92,7 +94,7 @@ function module:PreloadAnimations()
     for i, v in module.WeaponAnimations do
 
         -- Wrap in a coroutine
-       coroutine.wrap(LoadAnimationRecursive)(i, v, startingFolder)
+       LoadAnimationRecursive(i, v, startingFolder)
     end
 end
 
@@ -100,8 +102,8 @@ end
 function module:LoadWeaponAnimations(weaponName : string) : table
     
     -- Make sure the given weapon was valid
-    if not module.WeaponAnimations[weaponName] then
-        print(weaponName .. " is not a valid weapon")
+    if not weaponName or not module.WeaponAnimations[weaponName] then
+        warn(weaponName .. " is not a valid weapon")
         return
     end
 
@@ -125,10 +127,10 @@ function module:LoadWeaponAnimations(weaponName : string) : table
 
             -- Check if the value is a table
             if type(v) == "table" then
-                v = LoadAnimations(v)
+                v = LoadAnimations(animator, v)
 
             -- Check if the value is an animation
-            elseif v:IsA("AnimationTrack") then
+            elseif v:IsA("Animation") then
 
                 -- Load the animation
                 v = animator:LoadAnimation(v)
@@ -140,9 +142,9 @@ function module:LoadWeaponAnimations(weaponName : string) : table
 
     -- Copy the weapon animation table
     local weapon = CopyTable(module.WeaponAnimations[weaponName])
-    weapon = LoadAnimations(self.animator, weapon)
+    local weaponAnimationTable = LoadAnimations(self.animator, weapon)
     
-    return weapon
+    return weaponAnimationTable
 end
 
 return module

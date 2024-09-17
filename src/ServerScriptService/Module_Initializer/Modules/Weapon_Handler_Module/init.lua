@@ -19,7 +19,7 @@ function LoadWeaponEvents()
     remoteFunction.Name = "Load_Weapons_Remote"
     local bindableFunction = Instance.new("BindableFunction")
     bindableFunction.Name = "Load_Weapons_Bindable"
-    
+
     -- Get the remote folder
     local remoteFolder = replicatedStorage:FindFirstChild("Remote")
     if not remoteFolder then
@@ -39,6 +39,16 @@ function LoadWeaponEvents()
         bindableFolder.Parent = replicatedStorage
     end
     bindableFunction.Parent = bindableFolder
+
+    -- When the load function is called by a player
+    remoteFunction.OnServerInvoke = function(player : Player)
+    
+        -- Get the player's profile
+        local profile : table = bindableFolder:WaitForChild("Get_Player_Data_Bindable"):Invoke(player, "Weapons")
+        if not profile then return end
+        
+        return profile["Left_Hand"]["Slot_A"], profile["Right_Hand"]["Slot_A"]
+    end
 end
 
 -- The function to initialize the module
