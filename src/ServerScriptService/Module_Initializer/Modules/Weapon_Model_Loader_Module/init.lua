@@ -7,7 +7,7 @@ local moduleFolder = coreFolder:WaitForChild("Object").Character.Modules
 local playerFolder = moduleFolder.Parent.Player.Required_Modules
 
 -- The action module
-local actionModule = script:WaitForChild("Weapon_Animation_Loader")
+local actionModule = script:WaitForChild("Weapon_Model_Loader")
 
 local module = {}
 

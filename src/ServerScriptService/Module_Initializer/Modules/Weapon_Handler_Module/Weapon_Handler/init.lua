@@ -1,5 +1,4 @@
 -- Required services
-local contentProvider = game:GetService("ContentProvider")
 local replicatedStorage = game:GetService("ReplicatedStorage")
 
 -- Required folders

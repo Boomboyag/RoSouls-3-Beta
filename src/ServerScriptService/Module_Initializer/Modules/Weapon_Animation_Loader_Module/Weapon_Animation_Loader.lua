@@ -14,7 +14,7 @@ module.Priority = 10
 module.WeaponAnimations = {
 
     -- The greatsword animations
-    ["Ultra Greatsword"] = {
+    ["Greatsword"] = {
 
         -- Left hand animations
         ["Left"] = {
