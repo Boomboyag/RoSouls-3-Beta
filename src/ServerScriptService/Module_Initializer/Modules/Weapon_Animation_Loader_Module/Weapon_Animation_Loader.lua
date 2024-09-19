@@ -1,6 +1,9 @@
 -- Required services
 local contentProvider = game:GetService("ContentProvider")
-local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local replicatedStorage = game:GetService("ReplicatedStorage")
+
+-- Required folders
+local coreFolder = replicatedStorage:WaitForChild("Core Classes")
 
 local module = {}
 
@@ -11,38 +14,13 @@ module.Name = "Weapon Animation Loader"
 module.Priority = 10
 
 -- The weapon animations
-module.WeaponAnimations = {
-
-    -- The greatsword animations
-    ["Greatsword"] = {
-
-        -- Left hand animations
-        ["Left"] = {
-
-            -- || One handed animations
-            ["1H_Idle"] = 14794876958,
-            ["1H_Light_1"] = 15714345920,
-            ["1H_Light_2"] = 15714531168,
-            ["1H_Light_3"] = 15714577681,
-        },
-
-        -- Right hand animations
-        ["Right"] = {
-
-            -- || One handed animations
-            ["1H_Idle"] = 14004079995,
-            ["1H_Light_1"] = 14004083451,
-            ["1H_Light_2"] = 14006530152,
-            ["1H_Light_3"] = 14071419088,
-        }
-    }
-}
+module.WeaponAnimations = require(coreFolder.Weapons.Weapon_Animations)
 
 -- The init function
 function module:Init()
 
     -- Load the animation IDs
-    module:PreloadAnimations()
+    module.PreloadAnimations(self)
 
     -- Add the required functions to the character
     self.LoadWeaponAnimations = module.LoadWeaponAnimations
@@ -50,6 +28,9 @@ end
 
 -- Preload all animations
 function module:PreloadAnimations()
+
+    -- Check if the animations need to be preloaded
+    if replicatedStorage:FindFirstChild("Weapon_Animations") then return end
 
     -- The recursive loadinf function
     local function LoadAnimationRecursive(tableName : string, tableToLoad : table, previousFolder : Folder)
@@ -68,15 +49,17 @@ function module:PreloadAnimations()
                 animation.Name = i
                 animation.AnimationId = "rbxassetid://" .. v
 
-                -- Preload the animation
-                contentProvider:PreloadAsync({animation}, function(assetId, assetFetchStatus)
+                -- Preload the animation if on client
+                if self.onClient then
+                    contentProvider:PreloadAsync({animation}, function(assetId, assetFetchStatus)
 
-                    -- Warn the user if the load failed
-                    if assetFetchStatus == Enum.AssetFetchStatus.Failure and not game:GetService("RunService"):IsStudio() then
-                        warn("Failed to load weapon animation ID(s): " .. assetId)
-                    end
-                end)
-
+                        -- Warn the user if the load failed
+                        if assetFetchStatus == Enum.AssetFetchStatus.Failure and not game:GetService("RunService"):IsStudio() then
+                            warn("Failed to load weapon animation ID(s): " .. assetId)
+                        end
+                    end)
+                end
+                
                 tableToLoad[i] = animation
 
             elseif type(v) == "table" then
@@ -87,7 +70,7 @@ function module:PreloadAnimations()
     end
 
     -- Create the starting folder
-    local startingFolder = Instance.new("Folder", ReplicatedStorage)
+    local startingFolder = Instance.new("Folder", replicatedStorage)
     startingFolder.Name = "Weapon_Animations"
     
     -- Preload all animations
@@ -108,13 +91,15 @@ function module:LoadWeaponAnimations(weaponName : string) : table
     end
 
     -- The function to create a copy of a table
-    local function CopyTable(original : table) : table
+    local function TableFromFolder(original : Folder) : table
         local copy = {}
-        for k, v in pairs(original) do
-            if type(v) == "table" then
-                v = CopyTable(v)
+        for k, v in pairs(original:GetChildren()) do
+
+            local name = v.Name
+            if v:IsA("Folder") then
+                v = TableFromFolder(v)
             end
-            copy[k] = v
+            copy[name] = v
         end
         return copy
     end
@@ -141,7 +126,7 @@ function module:LoadWeaponAnimations(weaponName : string) : table
     end
 
     -- Copy the weapon animation table
-    local weapon = CopyTable(module.WeaponAnimations[weaponName])
+    local weapon = TableFromFolder(replicatedStorage["Weapon_Animations"])[weaponName]
     local weaponAnimationTable = LoadAnimations(self.animator, weapon)
     
     return weaponAnimationTable
