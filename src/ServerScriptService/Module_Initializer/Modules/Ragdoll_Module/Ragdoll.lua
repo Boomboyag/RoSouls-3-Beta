@@ -17,6 +17,9 @@ module.Name = "Ragdoll Module"
 -- The function to be called
 function module:CallFunction(wantToRagdoll : boolean, silly : boolean)
 
+    -- Make sure the character is alive
+    if not self.alive and not wantToRagdoll then return end
+
     -- The character
     local character = self.model
     local humanoid = self.humanoid
