@@ -339,11 +339,19 @@ local lastSound = nil
 function module:Init()
 
     -- Load the sound IDs
-    module:LoadSounds()
+    module.LoadSounds(self)
 end
 
 -- Load all sounds
 function module:LoadSounds()
+
+	-- Make sure the script is on the client side
+	if self.onServer then return end
+
+	-- Check if the sounds have already been loaded
+	local player = game.Players.LocalPlayer
+	if player:HasTag("Footstep Sounds Loaded") then return end
+	player:AddTag("Footstep Sounds Loaded")
     
     -- Preload all sounds
     for i, v in module.SoundIds do
