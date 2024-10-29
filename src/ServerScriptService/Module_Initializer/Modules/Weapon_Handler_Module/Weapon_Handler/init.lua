@@ -6,6 +6,9 @@ local replicatedStorage = game:GetService("ReplicatedStorage")
 local coreFolder = replicatedStorage:WaitForChild("Core Classes")
 local remoteFolder = replicatedStorage:WaitForChild("Remote")
 
+-- Required remote events
+local loadWeapon = remoteFolder:WaitForChild("Load_Weapon_Model")
+
 -- Required scripts
 local weapon = require(script:WaitForChild("Weapon"))
 
@@ -30,6 +33,7 @@ function module:Init()
 
     -- Add the required functions to the character
     self.LoadWeaponAnimations = module.LoadWeaponAnimations
+    self.LoadWeaponModel = module.LoadWeaponModel
 
     -- Get the weapons from the server
     local leftHand, rightHand = loadWeapons:InvokeServer()
@@ -48,7 +52,7 @@ end
 function module:PreloadAnimations()
 
     -- Check if the animations need to be preloaded
-    if replicatedStorage:FindFirstChild("Weapon_Animations") then return end
+    if replicatedStorage:FindFirstChild("Weapon_Animations") or not self.onClient then return end
 
     -- The recursive loadinf function
     local function LoadAnimationRecursive(tableName : string, tableToLoad : table, previousFolder : Folder)
@@ -100,8 +104,8 @@ end
 -- Preloading all models
 function module:PreloadModels()
 
-    -- Check if the animations need to be preloaded
-    if replicatedStorage:FindFirstChild("Weapon_Models") then return end
+    -- Check if the models need to be preloaded
+    if replicatedStorage:FindFirstChild("Weapon_Models") or not self.onClient then return end
     
     -- Loop through the weapon folder
     for index, weapon in module.WeaponPrefabs do
@@ -136,9 +140,11 @@ function module:PreloadModels()
     end
 end
 
+-- || LOADING ||
+
 -- Load specific weapon animations
 function module:LoadWeaponAnimations(weaponName : string) : table
-    
+
     -- Make sure the given weapon was valid
     if not weaponName or not module.WeaponAnimations[weaponName] then
         warn(weaponName .. " is not a valid weapon")
@@ -185,6 +191,12 @@ function module:LoadWeaponAnimations(weaponName : string) : table
     local weaponAnimationTable = LoadAnimations(self.animator, weapon)
     
     return weaponAnimationTable
+end
+
+-- Load specific weapon models
+function module:LoadWeaponModel(weaponName : string, weaponHand : string)
+    
+    
 end
 
 return module

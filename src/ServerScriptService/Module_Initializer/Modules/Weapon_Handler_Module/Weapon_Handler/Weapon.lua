@@ -19,7 +19,12 @@ function weapon.new(character, weaponName : string, weaponHand : string)
     -- Get the character
     self.character = character
 
+    -- Get the weapon data table
+    self.weaponData = weaponPrefabs[weaponName]
+    if not self.weaponData then warn("Weapon data for " .. weaponName .. " not found") end
+
     -- Assign the weapon variables
+    self.weaponName = weaponName
     self.weaponHand = weaponHand
     self:ChangeWeapon(weaponName, weaponHand)
 	
@@ -50,10 +55,11 @@ end
 function weapon:Equip()
     
     -- Load the weapon model
+    self.character:LoadWeaponModel(self.weaponName, self.weaponHand)
 
     -- Play the idle animation
     local idle : AnimationTrack = self.animations1H["1H_Idle"]
-    idle.Priority = Enum.AnimationPriority.Idle
+    idle.Priority = self.weaponData.IdlePriority
     idle:Play(0.2)
 end
 

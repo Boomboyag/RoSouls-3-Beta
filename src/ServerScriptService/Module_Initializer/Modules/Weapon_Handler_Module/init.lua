@@ -51,6 +51,25 @@ function LoadWeaponEvents()
     end
 end
 
+-- The function to spawn weapon models
+function LoadWeaponModelsRemote()
+    
+    -- Find the remove folder
+    local remoteFolder = replicatedStorage:WaitForChild("Remote")
+
+    -- Create the remote function
+    local remoteFunction = Instance.new("RemoteFunction", remoteFolder)
+    remoteFunction.Name = "Load_Weapon_Model"
+
+    -- When the remote function is called
+    remoteFunction.OnServerInvoke = function(player, weaponName, weaponHand)
+        
+        -- Create the weapon model
+
+        -- Add the model to the character
+    end
+end
+
 -- The function to initialize the module
 function module:Init()
     
@@ -64,6 +83,7 @@ function module:Init()
 
     -- Loading weapons
     LoadWeaponEvents()
+    LoadWeaponModelsRemote()
 end
 
 return module
