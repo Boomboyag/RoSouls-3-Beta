@@ -4,7 +4,7 @@ local weapons = {}
 weapons["Ultra Greatsword"] = {
 
     -- The type of weapon it is
-    ["Type"] = "Greatsword",
+    ["Type"] = "Ultra_Greatsword",
 
     -- The model ID
     ["Model"] = 108602256816717,

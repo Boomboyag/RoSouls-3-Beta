@@ -14,6 +14,7 @@ local weapon = require(script:WaitForChild("Weapon"))
 
 -- Required remote events
 local loadWeapons : RemoteFunction = remoteFolder:WaitForChild("Load_Weapons_Remote")
+local loadWeaponModel : RemoteFunction = remoteFolder:WaitForChild("Load_Weapon_Model")
 
 local module = {}
 
@@ -72,15 +73,17 @@ function module:PreloadAnimations()
                 animation.AnimationId = "rbxassetid://" .. v
 
                 -- Preload the animation if on client
-                if self.onClient then
-                    contentProvider:PreloadAsync({animation}, function(assetId, assetFetchStatus)
-
-                        -- Warn the user if the load failed
-                        if assetFetchStatus == Enum.AssetFetchStatus.Failure and not game:GetService("RunService"):IsStudio() then
-                            warn("Failed to load weapon animation ID(s): " .. assetId)
-                        end
-                    end)
-                end
+                coroutine.wrap(function()
+                    if self.onClient then
+                        contentProvider:PreloadAsync({animation}, function(assetId, assetFetchStatus)
+    
+                            -- Warn the user if the load failed
+                            if assetFetchStatus == Enum.AssetFetchStatus.Failure and not game:GetService("RunService"):IsStudio() then
+                                warn("Failed to load weapon animation ID(s): " .. assetId)
+                            end
+                        end)
+                    end
+                end)()
                 
                 tableToLoad[i] = animation
 
@@ -119,7 +122,7 @@ function module:PreloadModels()
             -- Preload the model if on client
             if self.onClient then
 
-                print("Loading " .. index)
+                --print("Loading " .. index)
 
                 contentProvider:PreloadAsync({modelID}, function(assetId, assetFetchStatus)
 
@@ -196,7 +199,8 @@ end
 -- Load specific weapon models
 function module:LoadWeaponModel(weaponName : string, weaponHand : string)
     
-    
+    -- Invoke the server
+    loadWeaponModel:InvokeServer(weaponName, weaponHand)
 end
 
 return module

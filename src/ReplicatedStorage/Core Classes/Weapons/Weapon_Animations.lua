@@ -1,7 +1,7 @@
 local animations = {
 
     -- The greatsword animations
-    ["Greatsword"] = {
+    ["Ultra_Greatsword"] = {
 
         -- Left hand animations
         ["Left"] = {
